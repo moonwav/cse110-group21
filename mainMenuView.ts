@@ -1,6 +1,7 @@
 import Konva from 'konva';
 import { loadFont } from './fonts';
 //import MainMenuController from './mainMenuController';
+import NameEntryView from './nameEntryView';
 
 //Main color palatte of the game
 const primary_color = '#4A5A9A';
@@ -53,6 +54,7 @@ export default class MainMenuView{
 	back_button_shape: Konva.Rect;
 	back_button_text: Konva.Text;
 	back_button: Konva.Group;
+
 	page: Konva.Group;
 
 
@@ -121,7 +123,7 @@ export default class MainMenuView{
 		this.start_button.add(this.start_button_text);
 
 		this.start_button.on('click', () => {
-			
+			this.start();
 		});
 
 
@@ -211,6 +213,7 @@ export default class MainMenuView{
 		this.back_button.on('click', () => {
 			this.back();
 		});
+			
 
 		this.page = new Konva.Group();
 		this.page.add(this.background);
@@ -242,9 +245,13 @@ export default class MainMenuView{
 	}
 
 	start() {
-
+		const nameEntry = new NameEntryView(this.stage_width, this.stage_height);
+		this.page.add(nameEntry.getPage());
+		const stage = this.page.getStage();
+		if (stage != null){
+			nameEntry.addTextBox(this.stage_width, this.stage_height, stage);
+		}
 	}
 
 
 }
-
