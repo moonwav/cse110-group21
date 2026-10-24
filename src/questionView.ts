@@ -1,7 +1,8 @@
 import Konva from 'konva';
-import { loadFont } from './src/fonts';
-import GameModel from './src/model';
-import Question from './src/question';
+import { loadFont } from './fonts';
+import GameModel from './model';
+import Question from './question';
+import { View } from './types';
 
 
 const primary_color = '#4A5A9A';
@@ -10,13 +11,15 @@ const button_color = '#92A1DF';
 
 
 //Will define the QuestionView class, very unfinished
-export default class QuestionView{
+export default class QuestionView implements View{
 	SILKSCREEN = 'Silkscreen';
 	ROBOTO = 'Roboto';
+	STAGE_WIDTH = 1000;
+	STAGE_HEIGHT = 900;
 
     model: GameModel;
-    stage_width: number;
-    stage_height: number;
+    //stage_width: number;
+    //stage_height: number;
     background: Konva.Rect;
     main_card: Konva.Rect;
 	question: Question;
@@ -36,12 +39,12 @@ export default class QuestionView{
 	reveal_button_shape: Konva.Rect;
 	reveal_button_text: Konva.Text;
 	reveal_button: Konva.Group;
-    page: Konva.Group;
+    group: Konva.Group;
 
 
-    constructor(stage_width: number, stage_height: number, model: GameModel, question: Question, score: number) {
-        this.stage_width = stage_width;
-        this.stage_height = stage_height;
+    constructor(model: GameModel, question: Question, score: number, 
+				onSubmitClick: () => void, onHintClick: () => void, 
+				onRevealClick: () => void) {
         this.model = model;
 		this.question = question;
 		this.score_number = score;
@@ -49,100 +52,100 @@ export default class QuestionView{
         this.background = new Konva.Rect({
             x: 0,
             y: 0,
-            width: stage_width,
-            height: stage_height,
+            width: this.STAGE_WIDTH,
+            height: this.STAGE_HEIGHT,
             fill: primary_color,
         });
 
 		this.main_card = new Konva.Rect ({
-		x: stage_width*0.025,
-		y: stage_height*0.05,
-		width: stage_width*0.95,
-		height: stage_height*0.9,
+		x: this.STAGE_WIDTH*0.025,
+		y: this.STAGE_HEIGHT*0.05,
+		width: this.STAGE_WIDTH*0.95,
+		height: this.STAGE_HEIGHT*0.9,
 		cornerRadius: 25,
 		fill: secondary_color,
 		});
 
 		this.title = new Konva.Text ({
-		x: stage_width*0.06,
-		y: stage_height*0.1,
+		x: this.STAGE_WIDTH*0.06,
+		y: this.STAGE_HEIGHT*0.1,
 		text: `Question ${this.question.getQuestionNumber()} of 10`,
 		fontFamily: 'Silkscreen',
-		fontSize: stage_height*0.035,
+		fontSize: this.STAGE_HEIGHT*0.035,
 		align: 'center',
 		verticalAlign: 'center',
 		fill: 'Black',
 		});
 
 		this.score = new Konva.Text ({
-			x: stage_width*0.8,
-			y: stage_height*0.1,
+			x: this.STAGE_WIDTH*0.8,
+			y: this.STAGE_HEIGHT*0.1,
 			text: `Score ${this.score_number}%`,
 			fontFamily: 'Silkscreen',
-			fontSize: stage_height*0.035,
+			fontSize: this.STAGE_HEIGHT*0.035,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
 		});
 
 		this.question_location = new Konva.Text ({
-			x: stage_width*0.06,
-			y: stage_height*0.275,
+			x: this.STAGE_WIDTH*0.06,
+			y: this.STAGE_HEIGHT*0.275,
 			text: `${this.question.location}`,
 			fontFamily: this.ROBOTO,
-			fontSize: stage_height*0.035,
+			fontSize: this.STAGE_HEIGHT*0.035,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
 		});
 
 		this.question_text = new Konva.Text ({
-			x: stage_width*0.06,
-			y: stage_height*0.35,
+			x: this.STAGE_WIDTH*0.06,
+			y: this.STAGE_HEIGHT*0.35,
 			text: `${this.question.getQuestion()}`,
 			fontFamily: this.ROBOTO,
-			fontSize: stage_height*0.05,
-			width: stage_width*0.9,
+			fontSize: this.STAGE_HEIGHT*0.05,
+			width: this.STAGE_WIDTH*0.9,
 			verticalAlign: 'center',
 			fill: 'Black',
 		});
 
 		this.answer_header = new Konva.Text ({
-			x: stage_width*0.06,
-			y: stage_height*0.5,
+			x: this.STAGE_WIDTH*0.06,
+			y: this.STAGE_HEIGHT*0.5,
 			text: `Type answer below`,
 			fontFamily: this.ROBOTO,
-			fontSize: stage_height*0.035,
-			width: stage_width*0.9,
+			fontSize: this.STAGE_HEIGHT*0.035,
+			width: this.STAGE_WIDTH*0.9,
 			verticalAlign: 'center',
 			fill: 'Black',
 		});
 	
 		this.answer_bubble = new Konva.Rect ({
-			x: stage_width*0.06,
-			y: stage_height*0.575,
-			width: stage_width*0.37,
-			height: stage_height*0.1,
+			x: this.STAGE_WIDTH*0.06,
+			y: this.STAGE_HEIGHT*0.575,
+			width: this.STAGE_WIDTH*0.37,
+			height: this.STAGE_HEIGHT*0.1,
 			cornerRadius: 25,
 			fill: 'White',
 		});
 
 		this.submit_button_shape = new Konva.Rect({
-			x: stage_width*0.375,
-			y: stage_height*0.83,
-			width: stage_width*0.25,
-			height: stage_height*0.09,
+			x: this.STAGE_WIDTH*0.375,
+			y: this.STAGE_HEIGHT*0.83,
+			width: this.STAGE_WIDTH*0.25,
+			height: this.STAGE_HEIGHT*0.09,
 			cornerRadius: 25,
 			fill: button_color,
 		});
 
 		this.submit_button_text = new Konva.Text({
-			x: stage_width*0.05,
-			y: stage_height*0.835,
+			x: this.STAGE_WIDTH*0.05,
+			y: this.STAGE_HEIGHT*0.835,
 			text: 'Submit',
 			fontFamily: this.SILKSCREEN,
-			width: stage_width*0.9,
-			fontSize: stage_height*0.068,
+			width: this.STAGE_WIDTH*0.9,
+			fontSize: this.STAGE_HEIGHT*0.068,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
@@ -151,23 +154,24 @@ export default class QuestionView{
 		this.submit_button = new Konva.Group();
 		this.submit_button.add(this.submit_button_shape);
 		this.submit_button.add(this.submit_button_text);
+		this.submit_button.on('click', onSubmitClick);
 
 		this.hint_button_shape = new Konva.Rect({
-			x: stage_width*0.785,
-			y: stage_height*0.8325,
-			width: stage_width*0.15,
-			height: stage_height*0.085,
+			x: this.STAGE_WIDTH*0.785,
+			y: this.STAGE_HEIGHT*0.8325,
+			width: this.STAGE_WIDTH*0.15,
+			height: this.STAGE_HEIGHT*0.085,
 			cornerRadius: 25,
 			fill: button_color,
 		});
 
 		this.hint_button_text = new Konva.Text({
-			x: stage_width*0.76,
-			y: stage_height*0.84,
+			x: this.STAGE_WIDTH*0.76,
+			y: this.STAGE_HEIGHT*0.84,
 			text: 'Hint',
 			fontFamily: this.SILKSCREEN,
-			width: stage_width*0.2,
-			fontSize: stage_height*0.06,
+			width: this.STAGE_WIDTH*0.2,
+			fontSize: this.STAGE_HEIGHT*0.06,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
@@ -176,23 +180,24 @@ export default class QuestionView{
 		this.hint_button = new Konva.Group();
 		this.hint_button.add(this.hint_button_shape);
 		this.hint_button.add(this.hint_button_text);
+		this.hint_button.on('click', onHintClick);
 
 		this.reveal_button_shape = new Konva.Rect({
-			x: stage_width*0.785,
-			y: stage_height*0.8325,
-			width: stage_width*0.15,
-			height: stage_height*0.085,
+			x: this.STAGE_WIDTH*0.785,
+			y: this.STAGE_HEIGHT*0.8325,
+			width: this.STAGE_WIDTH*0.15,
+			height: this.STAGE_HEIGHT*0.085,
 			cornerRadius: 25,
 			fill: button_color,
 		});
 
 		this.reveal_button_text = new Konva.Text({
-			x: stage_width*0.76,
-			y: stage_height*0.84,
+			x: this.STAGE_WIDTH*0.76,
+			y: this.STAGE_HEIGHT*0.84,
 			text: 'Reveal',
 			fontFamily: this.SILKSCREEN,
-			width: stage_width*0.2,
-			fontSize: stage_height*0.06,
+			width: this.STAGE_WIDTH*0.2,
+			fontSize: this.STAGE_HEIGHT*0.06,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
@@ -208,23 +213,35 @@ export default class QuestionView{
 		this.reveal_button = new Konva.Group();
 		this.reveal_button.add(this.reveal_button_shape);
 		this.reveal_button.add(this.reveal_button_text);
+		this.reveal_button.on('click', onRevealClick);
 
-		this.page = new Konva.Group();
-		this.page.add(this.background);
-		this.page.add(this.main_card);
-		this.page.add(this.title);
-		this.page.add(this.score);
-		this.page.add(this.question_location);
-		this.page.add(this.question_text);
-		this.page.add(this.answer_bubble);
-		this.page.add(this.answer_header);
-		this.page.add(this.submit_button);
-		this.page.add(this.hint_button);
-
+		this.group = new Konva.Group();
+		this.group.add(this.background);
+		this.group.add(this.main_card);
+		this.group.add(this.title);
+		this.group.add(this.score);
+		this.group.add(this.question_location);
+		this.group.add(this.question_text);
+		this.group.add(this.answer_bubble);
+		this.group.add(this.answer_header);
+		this.group.add(this.submit_button);
+		this.group.add(this.hint_button);
 	}
 
-	getPage(){
-		return this.page;
+	getGroup(){
+		return this.group;
+	}
+
+	showHint() {
+		//code to show hint and add reveal button
+	}
+
+	hide() {
+		this.group.visible(false);
+	}
+
+	show() {
+		this.group.visible(true);
 	}
 
 }

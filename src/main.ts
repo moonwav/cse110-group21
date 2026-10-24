@@ -1,25 +1,121 @@
 import Konva from 'konva';
 import MainMenuView from './mainMenuView';
 import Question from './question';
-import QuestionView from '../questionView';
+import QuestionView from './questionView';
 import GameModel from './model';
+import MainMenuController from './mainMenuController';
+import QuestionController from './questionController';
+import type { ScreenSwitcher, Screen } from "./types.ts";
 
-const stage = new Konva.Stage({
-    container: 'container',
-    width: window.innerWidth,
-    height: window.innerHeight
-});
+/*
+const nameEntry = new NameEntryView(stage.width(), stage.height());
 
-const layer = new Konva.Layer();
-stage.add(layer);
+layer.add(nameEntry.getPage());
+nameEntry.addTextBox(stage, nameEntry.getTextNode());
+*/
+/**
+ * Main Application - Coordinates all screens
+ *
+ * This class demonstrates screen management using Konva Groups.
+ * Each screen (Menu, Game, Results) has its own Konva.Group that can be
+ * shown or hidden independently.
+ *
+ * Key concept: All screens are added to the same layer, but only one is
+ * visible at a time. This is managed by the switchToScreen() method.
+ */
+class Game implements ScreenSwitcher {
+	private stage: Konva.Stage;
+	private layer: Konva.Layer;
 
-const mainMenuView = new MainMenuView(stage.width(), stage.height(), );
+	private menuController: MainMenuController;
+	private questionController: QuestionController;
+	private infoController: InfoController;
+	private minigameController: MinigameController;
+	private resultsController: ResultsController;
 
-//layer.add(instructionView.getPage());
+	private model: GameModel
 
-layer.add(mainMenuView.getPage());
-//const model = new GameModel('Nicky');
-//const sampleQuestion = new Question(3, 'Souvenir Shop', 'You set aside $80 for souvenirs. You want to spend 25% of that on a gift. What is the most you can spend?', 20);
-//const questionView = new QuestionView(stage.width(), stage.height(), model, sampleQuestion, 90);
+	constructor(container: string) {
+		const stage = new Konva.Stage({
+    		container: 'container',
+    		width: window.innerWidth,
+   			height: window.innerHeight
+		});
 
-//layer.add(questionView.getPage());
+		// Initialize Konva stage (the main canvas)
+		this.stage = new Konva.Stage({
+			container,
+			width: STAGE_WIDTH,
+			height: STAGE_HEIGHT,
+		});
+
+		// Create a layer (screens will be added to this layer)
+		this.layer = new Konva.Layer();
+		this.stage.add(this.layer);
+		
+
+		this.model = new GameModel();
+		// Initialize all screen controllers
+		// Each controller manages a Model, View, and handles user interactions
+		this.menuController = new MainMenuController(this.model, this);
+		this.infoController = new InfoController(this);
+		this.questionController = new QuestionController(this);
+		this.resultsController = new ResultsController(this);
+
+		// Add all screen groups to the layer
+		// All screens exist simultaneously but only one is visible at a time
+		this.layer.add(this.menuController.getView().getGroup());
+		this.layer.add(this.questionController.getView().getGroup());
+		this.layer.add(this.resultsController.getView().getGroup());
+		this.layer.add(this.infoController.getView().getGroup());
+		this.layer.add(this.minigameController.getView().getGroup());
+		// Draw the layer (render everything to the canvas)
+		this.layer.draw();
+
+		// Start with menu screen visible
+		this.menuController.getView().show();
+	}
+
+	/**
+	 * Switch to a different screen
+	 *
+	 * This method implements screen management by:
+	 * 1. Hiding all screens (setting their Groups to invisible)
+	 * 2. Showing only the requested screen
+	 *
+	 * This pattern ensures only one screen is visible at a time.
+	 */
+	switchToScreen(screen: Screen): void {
+		// Hide all screens first by setting their Groups to invisible
+		this.menuController.hide();
+		this.gameController.hide();
+		this.resultsController.hide();
+
+		// Show the requested screen based on the screen type
+		switch (screen.type) {
+			case "menu":
+				this.menuController.show();
+				break;
+
+			case "game":
+				// Start the game (which also shows the game screen)
+				this.gameController.startGame();
+				break;
+
+			case "result":
+				// Show results with the final score
+				this.resultsController.showResults(screen.score);
+				break;
+
+			case "info":
+				break;
+
+			case "minigame":
+				break;
+			
+		}
+	}
+}
+
+// Initialize the application
+new Game("container");
