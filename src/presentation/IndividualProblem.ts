@@ -1,12 +1,6 @@
 import Konva from "konva";
-
-export type QuestionView = {
-  number: number;
-  total: number;
-  score: number;
-  scenario: string;
-  prompt: string;
-};
+import type { QuestionView } from "../logic/GameController";
+import { getCurrentQuestion } from "../logic/GameController";
 
 const grades = [
   { letter: "A", label: "90–100", min: 90 },
@@ -15,15 +9,6 @@ const grades = [
   { letter: "D", label: "60–69", min: 60 },
   { letter: "F", label: "0–59", min: 0 },
 ];
-
-const sample: QuestionView = {
-  number: 3,
-  total: 10,
-  score: 95,
-  scenario: "Souvenir shop",
-  prompt:
-    "You set aside $80 for souvenirs. You want to spend 25% of that on a gift. What is the most you can spend?",
-};
 
 function currentGrade(score: number) {
   return grades.find((grade) => score >= grade.min)?.letter ?? "A";
@@ -77,7 +62,8 @@ function draw(
   const height = stage.height();
   layer.destroyChildren();
 
-  layer.add(new Konva.Rect({ width, height, fill: "#4a5a9a" }));
+  const background = new Konva.Rect({ width, height, fill: "#4a5a9a" });
+  layer.add(background);
 
   const marginX = Math.min(70, width * 0.05);
   const marginY = Math.min(62, height * 0.06);
@@ -94,16 +80,15 @@ function draw(
   const headerSize = compact ? 22 : 36;
   const promptSize = compact ? 28 : 36;
 
-  layer.add(
-    new Konva.Rect({
-      x: cardX,
-      y: cardY,
-      width: cardWidth,
-      height: cardHeight,
-      fill: "#c2cae9",
-      cornerRadius: 25,
-    }),
-  );
+  const card = new Konva.Rect({
+    x: cardX,
+    y: cardY,
+    width: cardWidth,
+    height: cardHeight,
+    fill: "#c2cae9",
+    cornerRadius: 25,
+  });
+  layer.add(card);
 
   let y = cardY + padTop;
   const progress = new Konva.Text({
@@ -241,7 +226,16 @@ function draw(
   const hintHeight = compact ? 72 : 84;
   const buttonFont = compact ? 28 : 48;
   const hintFont = compact ? 28 : 36;
-  const actionsY = cardY + cardHeight - padBottom - submitHeight;
+  const boxBottom = y + boxHeight;
+  const pinnedActionsY = cardY + cardHeight - padBottom - submitHeight;
+  const actionsY = Math.max(pinnedActionsY, boxBottom + 24);
+  const cardBottom = actionsY + submitHeight + padBottom;
+  const neededHeight = cardBottom + cardY;
+  if (neededHeight > height) {
+    stage.height(neededHeight);
+    background.height(neededHeight);
+    card.height(cardBottom - cardY);
+  }
   const submitX = compact ? contentX : cardX + (cardWidth - submitWidth) / 2;
   const hintX = compact ? contentX + submitWidth + 12 : contentX + contentWidth - hintWidth;
 
@@ -271,7 +265,7 @@ async function loadFonts() {
 
 export function showQuestionScreen(
   root: HTMLDivElement,
-  question: QuestionView = sample,
+  question: QuestionView = getCurrentQuestion(),
 ) {
   root.replaceChildren();
 
