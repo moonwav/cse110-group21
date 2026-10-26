@@ -21,7 +21,7 @@ until you do.
 
 ## 2. Picking up work
 
-All work is tracked on the [GitHub Project](https://github.com/moonwav/cse110-group21/projects/4).
+All work is tracked on the [GitHub Project](https://github.com/users/moonwav/projects/4/views/1).
 
 1. Pick a task from the current sprint and assign yourself.
 2. Move it to **In Progress**.
