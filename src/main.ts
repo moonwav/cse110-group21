@@ -1,18 +1,4 @@
-import Konva from "konva";
+import { showQuestionScreen } from "./presentation/questionScreen";
 
-const stage = new Konva.Stage({
-  container: "game",
-  width: 800,
-  height: 500,
-});
-
-const layer = new Konva.Layer();
-layer.add(
-  new Konva.Text({
-    x: 40,
-    y: 40,
-    text: "Percentage Trip Game: setup works!",
-    fontSize: 28,
-  })
-);
-stage.add(layer);
+const root = document.querySelector("#game");
+if (root instanceof HTMLElement) showQuestionScreen(root);
