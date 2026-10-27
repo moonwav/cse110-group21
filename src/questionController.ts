@@ -11,28 +11,33 @@ export default class QuestionController extends Controller{
     constructor (model: GameModel, screenSwitcher: ScreenSwitcher) {
         super();
         this.model = model;
-        this.view = new QuestionView(() => this.handleSubmitClick(), () => this.handleHintClick(), () => this.handleRevealClick());
+        this.view = new QuestionView(() => this.handleSubmitClick(), 
+                    () => this.handleHintClick(), 
+                    () => this.handleRevealClick());
         this.screenSwitcher = screenSwitcher;
     }
-
-    handleStartClick() {
-        this.view.hide();
-        this.model.setPlayer(this.view.enterName());
-        this.model.setStateQuestion();
-        this.screenSwitcher.switchToScreen({type: "game"});
-    }
-    handleInfoClick() {
-        this.view.hide();
-        this.model.setStateInfo();
-        this.screenSwitcher.switchToScreen({type: "info"});
+    handleSubmitClick() {
+        //tell model to check submission?
+        //display if the answer is correct or not
+        //
     }
 
-    handleMinigameClick() {
-        this.view.hide();
-        this.model.setStateMinigame();
-        
+    handleHintClick() {
+        //tell view to show hint
+        //tell model to update score
+    }
+
+    handleRevealClick() {
+        //tell view to reveal
+        //tell model to update score
     }
     
+    newQuestion() {
+        //model to make new question instance?
+        //update current question.
+
+    }
+
     show() {
         this.view.show();
     }
@@ -41,18 +46,6 @@ export default class QuestionController extends Controller{
         this.view.hide();
     }
 
-    handleSubmitClick() {
-
-    }
-
-    handleHintClick() {
-
-    }
-
-    handleRevealClick() {
-
-    }
-    
     getView(): QuestionView {
         return this.view;
     }

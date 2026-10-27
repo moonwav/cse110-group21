@@ -7,7 +7,7 @@ const primary_color = '#4A5A9A';
 const secondary_color = '#C2CAE9';
 const button_color = '#92A1DF';
 
-//Defines the MainMenuView class
+//Defines the InfoView class
 export default class InfoView implements View{
 	
 	HOW_TO_PLAY = "How to play";

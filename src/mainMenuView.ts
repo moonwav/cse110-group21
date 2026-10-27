@@ -1,7 +1,5 @@
 import Konva from 'konva';
 import { loadFont } from './fonts';
-import MainMenuController from './mainMenuController';
-import NameEntryView from './nameEntryView';
 import { View } from './types';
 
 //Main color palatte of the game

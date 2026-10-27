@@ -5,14 +5,15 @@ import QuestionView from './questionView';
 import GameModel from './model';
 import MainMenuController from './mainMenuController';
 import QuestionController from './questionController';
+import InfoController from './infoController';
+import ResultController from './resultController';
+import MinigameController from './minigameController';
 import type { ScreenSwitcher, Screen } from "./types.ts";
 
-/*
-const nameEntry = new NameEntryView(stage.width(), stage.height());
+const STAGE_WIDTH = 1000;
+const STAGE_HEIGHT = 900;
 
-layer.add(nameEntry.getPage());
-nameEntry.addTextBox(stage, nameEntry.getTextNode());
-*/
+
 /**
  * Main Application - Coordinates all screens
  *
@@ -30,10 +31,10 @@ class Game implements ScreenSwitcher {
 	private menuController: MainMenuController;
 	private questionController: QuestionController;
 	private infoController: InfoController;
-	private minigameController: MinigameController;
-	private resultsController: ResultsController;
+	//private minigameController: MinigameController;
+	//private resultsController: ResultController;
 
-	private model: GameModel
+	private model: GameModel;
 
 	constructor(container: string) {
 		const stage = new Konva.Stage({
@@ -58,17 +59,18 @@ class Game implements ScreenSwitcher {
 		// Initialize all screen controllers
 		// Each controller manages a Model, View, and handles user interactions
 		this.menuController = new MainMenuController(this.model, this);
-		this.infoController = new InfoController(this);
-		this.questionController = new QuestionController(this);
-		this.resultsController = new ResultsController(this);
+		this.infoController = new InfoController(this.model, this);
+		this.questionController = new QuestionController(this.model, this);
+		//this.resultsController = new ResultController(this.model, this);
+		//this.minigameController = new MinigameController(this.model, this);
 
 		// Add all screen groups to the layer
 		// All screens exist simultaneously but only one is visible at a time
 		this.layer.add(this.menuController.getView().getGroup());
 		this.layer.add(this.questionController.getView().getGroup());
-		this.layer.add(this.resultsController.getView().getGroup());
+		//this.layer.add(this.resultsController.getView().getGroup());
 		this.layer.add(this.infoController.getView().getGroup());
-		this.layer.add(this.minigameController.getView().getGroup());
+		//this.layer.add(this.minigameController.getView().getGroup());
 		// Draw the layer (render everything to the canvas)
 		this.layer.draw();
 
@@ -88,8 +90,9 @@ class Game implements ScreenSwitcher {
 	switchToScreen(screen: Screen): void {
 		// Hide all screens first by setting their Groups to invisible
 		this.menuController.hide();
-		this.gameController.hide();
-		this.resultsController.hide();
+		this.questionController.hide();
+		this.infoController.hide();
+		//this.resultsController.hide();
 
 		// Show the requested screen based on the screen type
 		switch (screen.type) {
@@ -97,21 +100,21 @@ class Game implements ScreenSwitcher {
 				this.menuController.show();
 				break;
 
-			case "game":
+			case "question":
 				// Start the game (which also shows the game screen)
-				this.gameController.startGame();
+				this.questionController.newQuestion();
 				break;
 
-			case "result":
+			//case "result":
 				// Show results with the final score
-				this.resultsController.showResults(screen.score);
-				break;
+				//this.resultsController.showResults(screen.score);
+				//break;
 
 			case "info":
 				break;
 
-			case "minigame":
-				break;
+			//case "minigame":
+				//break;
 			
 		}
 	}

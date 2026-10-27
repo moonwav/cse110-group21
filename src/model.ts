@@ -25,6 +25,10 @@ export default class GameModel {
         this.playerName = playerName;
     }
 
+    getPlayer() {
+        return this.playerName;
+    }
+
     setStateMinigame() {
         this.gameState = this.MINIGAME;
     }

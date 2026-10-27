@@ -2,8 +2,8 @@ import InfoView from './infoView';
 import GameModel from './model';
 import { ScreenSwitcher, Controller } from "./types";
 
-//will define the MainMenuController
-export default class MainMenuController extends Controller{
+//will define the InfoController
+export default class InfoController extends Controller{
     model: GameModel;
     view: InfoView;
     screenSwitcher: ScreenSwitcher;

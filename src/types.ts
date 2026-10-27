@@ -10,13 +10,15 @@ export interface View {
  * Screen types for navigation
  *
  * - "menu": Main menu screen
- * - "game": Gameplay screen
+ * - "question": Main gameplay question screen
  * - "result": Results screen with final score
  *   - score: Final score to display on results screen
+ * - "info": The how to play instructions screen
+ * - "minigame": The minigame screen
  */
 export type Screen =
 	| { type: "menu" }
-	| { type: "game" }
+	| { type: "question" }
 	| { type: "result"; score: number }
     | { type: "minigame" }
     | { type: "info" };
