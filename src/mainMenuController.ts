@@ -20,11 +20,11 @@ export default class MainMenuController extends Controller{
     }
 
     handleStartClick() {
-        this.hide();
-        this.model.setPlayer(this.view.enterName());
+        this.view.enterName();
+        //this.hide();
         console.log(this.model.getPlayer());
         this.model.setStateQuestion();
-        this.screenSwitcher.switchToScreen({type: "question"});
+        //this.screenSwitcher.switchToScreen({type: "question"});
     }
 
     handleInfoClick() {

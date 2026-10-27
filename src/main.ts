@@ -101,7 +101,7 @@ class Game implements ScreenSwitcher {
 
 			case "question":
 				// Start the game (which also shows the game screen)
-				this.questionController.newQuestion();
+				this.questionController.show();
 				break;
 
 			//case "result":

@@ -2,7 +2,7 @@ import Konva from 'konva';
 
 const loadedFonts = {};
 
-function measureFont(fontName, fallbackFont, fontStyle = 'normal', fontWeight = '400') {
+function measureFont(fontName: string, fallbackFont, fontStyle = 'normal', fontWeight = '400') {
 	const canvas = document.createElement('canvas');
 	const ctx = canvas.getContext('2d');
   	const sampleText = 'The quick brown fox 0123456789';
@@ -14,7 +14,7 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function loadFont(fontName, fontStyle = 'normal', fontWeight = '400') {
+async function loadFont(fontName: string, fontStyle = 'normal', fontWeight = '400') {
   	if (loadedFonts[fontName]) return;
 
   	const hasFontsLoadSupport = !!(document.fonts && document.fonts.load);

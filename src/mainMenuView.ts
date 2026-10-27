@@ -14,7 +14,7 @@ export default class MainMenuView implements View {
 	MINIGAME = 'Mini-Game';
 	HOW_TO_PLAY = 'How to play';
 
-
+	
 	SILKSCREEN = 'Silkscreen';
 
 
@@ -43,7 +43,6 @@ export default class MainMenuView implements View {
 	text_node: Konva.Text;
 
 	group: Konva.Group;
-
 
 	constructor(onStartClick: () => void, onInfoClick: () => void, 
 				onMinigameClick: () => void, stage_width: number, 
@@ -101,15 +100,12 @@ export default class MainMenuView implements View {
 			verticalAlign: 'center',
 			fill: 'Black',
 		});
-		loadFont(this.SILKSCREEN, 'normal', '400').then(() => {
-  		this.start_button_text.fontFamily(this.SILKSCREEN);
-		});
 
 		this.start_button = new Konva.Group();
 
 		this.start_button.add(this.start_button_shape);
 		this.start_button.add(this.start_button_text);
-		this.start_button.on('click', () => onStartClick);
+		this.start_button.on('click', onStartClick);
 
 		this.info_button_shape = new Konva.Rect({
 			x: this.stage_width*0.275,
@@ -213,6 +209,7 @@ export default class MainMenuView implements View {
 			fill: 'black',
 		});
 
+		this.loadfonts();
 		this.group = new Konva.Group();
 		this.group.add(this.background);
 		this.group.add(this.title);
@@ -222,6 +219,14 @@ export default class MainMenuView implements View {
 		this.group.add(this.mini_game_button);
 	}	
 
+	loadfonts() {
+		loadFont(this.SILKSCREEN, 'normal', '400').then(() => {
+  		this.title.fontFamily(this.SILKSCREEN);
+		this.start_button_text.fontFamily(this.SILKSCREEN);
+		this.info_button_text.fontFamily(this.SILKSCREEN);
+		this.mini_game_button_text.fontFamily(this.SILKSCREEN);
+		});
+	}
 
 	getGroup() : Konva.Group {
 		return this.group;
@@ -237,7 +242,7 @@ export default class MainMenuView implements View {
 		this.group.getLayer()?.draw();
 	}
 
-	addTextBox(stage: Konva.Stage, text_node: Konva.Text): string{
+	addTextBox(stage: Konva.Stage, text_node: Konva.Text): string {
         const text_overlay = new Konva.Layer();
         stage.add(text_overlay);
 
@@ -275,21 +280,23 @@ export default class MainMenuView implements View {
                     document.body.removeChild(input);
                 }
             });
+			
             text_overlay.add(text_node);
             return text_node.text();
         });
         return text_node.text();
 	}
 
-	enterName(): string {
+	enterName(){
 		this.group.add(this.background_blur);
         this.group.add(this.name_card);
         this.group.add(this.name_box);
         this.group.add(this.name_entry_text);
         this.group.add(this.text_node);
+		this.group.getLayer()?.draw();
 		const stage = this.group.getStage();
 		if (stage != null){
-			return this.addTextBox(stage, this.text_node);;
+			return this.addTextBox(stage, this.text_node);
 		}
 		return '';
 	}
