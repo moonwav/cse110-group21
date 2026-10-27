@@ -8,12 +8,14 @@ export default class MainMenuController extends Controller{
     view: MainMenuView;
     screenSwitcher: ScreenSwitcher;
 
-    constructor (model: GameModel, screenSwitcher: ScreenSwitcher) {
+    constructor (model: GameModel, screenSwitcher: ScreenSwitcher, 
+                stage_width: number, stage_height: number) {
         super();
         this.model = model;
         this.view = new MainMenuView(() => this.handleStartClick(), 
                                         () => this.handleInfoClick(), 
-                                        () => this.handleMinigameClick());
+                                        () => this.handleMinigameClick(), 
+                                        stage_width, stage_height);
         this.screenSwitcher = screenSwitcher;
     }
 

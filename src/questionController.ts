@@ -1,6 +1,7 @@
 import QuestionView from './questionView';
 import GameModel from './model';
 import { ScreenSwitcher, Controller } from "./types";
+import Question from './question';
 
 //will define the MainMenuController
 export default class QuestionController extends Controller{
@@ -8,12 +9,15 @@ export default class QuestionController extends Controller{
     view: QuestionView;
     screenSwitcher: ScreenSwitcher;
 
-    constructor (model: GameModel, screenSwitcher: ScreenSwitcher) {
+    constructor (model: GameModel, screenSwitcher: ScreenSwitcher, 
+                stage_width: number, stage_height: number) {
         super();
         this.model = model;
-        this.view = new QuestionView(() => this.handleSubmitClick(), 
+        this.view = new QuestionView(this.model, new Question(3, 
+                    'Souvenir Shop', 'a really good question here', 15), 
+                    20, () => this.handleSubmitClick(), 
                     () => this.handleHintClick(), 
-                    () => this.handleRevealClick());
+                    () => this.handleRevealClick(), stage_width, stage_height);
         this.screenSwitcher = screenSwitcher;
     }
     handleSubmitClick() {

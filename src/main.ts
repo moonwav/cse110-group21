@@ -28,6 +28,8 @@ const STAGE_HEIGHT = 900;
 class Game implements ScreenSwitcher {
 	private stage: Konva.Stage;
 	private layer: Konva.Layer;
+	private stage_width: number;
+	private stage_height: number;
 
 	private menuController: MainMenuController;
 	private questionController: QuestionController;
@@ -38,30 +40,26 @@ class Game implements ScreenSwitcher {
 	private model: GameModel;
 
 	constructor(container: string) {
-		const stage = new Konva.Stage({
-    		container: 'container',
+		this.stage = new Konva.Stage({
+    		container: container,
     		width: window.innerWidth,
    			height: window.innerHeight
 		});
 
-		// Initialize Konva stage (the main canvas)
-		this.stage = new Konva.Stage({
-			container,
-			width: STAGE_WIDTH,
-			height: STAGE_HEIGHT,
-		});
+		this.stage_width = this.stage.width();
+		this.stage_height = this.stage.height();
+
 
 		// Create a layer (screens will be added to this layer)
 		this.layer = new Konva.Layer();
 		this.stage.add(this.layer);
-		
 
 		this.model = new GameModel();
 		// Initialize all screen controllers
 		// Each controller manages a Model, View, and handles user interactions
-		this.menuController = new MainMenuController(this.model, this);
-		this.infoController = new InfoController(this.model, this);
-		this.questionController = new QuestionController(this.model, this);
+		this.menuController = new MainMenuController(this.model, this, this.stage_width, this.stage_height);
+		this.infoController = new InfoController(this.model, this, this.stage_width, this.stage_height);
+		this.questionController = new QuestionController(this.model, this, this.stage_width, this.stage_height);
 		//this.resultsController = new ResultController(this.model, this);
 		//this.minigameController = new MinigameController(this.model, this);
 
@@ -73,10 +71,10 @@ class Game implements ScreenSwitcher {
 		this.layer.add(this.infoController.getView().getGroup());
 		//this.layer.add(this.minigameController.getView().getGroup());
 		// Draw the layer (render everything to the canvas)
-		this.layer.draw();
 
 		// Start with menu screen visible
 		this.menuController.getView().show();
+		this.layer.draw();
 	}
 
 	/**
@@ -112,6 +110,7 @@ class Game implements ScreenSwitcher {
 				//break;
 
 			case "info":
+				this.infoController.show();
 				break;
 
 			//case "minigame":
@@ -123,12 +122,3 @@ class Game implements ScreenSwitcher {
 
 // Initialize the application
 new Game("container");
-
-
-// pulled from main
-/*
-import { showQuestionScreen } from "./presentation/IndividualProblem";
-
-const root = document.querySelector("#game");
-if (root instanceof HTMLDivElement) showQuestionScreen(root);
-*/

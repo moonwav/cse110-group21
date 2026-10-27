@@ -27,12 +27,9 @@ export default class InfoView implements View{
 
 	SILKSCREEN = 'Silkscreen';
 
-    STAGE_WIDTH = 1000;
-	STAGE_HEIGHT = 900;
-
 	
-	//stage_width: number;
-	//stage_height: number;
+	stage_width: number;
+	stage_height: number;
 	background: Konva.Rect;
 	main_card: Konva.Rect;
 	title: Konva.Text;
@@ -43,22 +40,24 @@ export default class InfoView implements View{
 	group: Konva.Group;
 
 
-	constructor(onBackClick: () => void) {
-
+	constructor(onBackClick: () => void, stage_width: number, stage_height: number) {
+		this.stage_width = stage_width;
+		this.stage_height = stage_height;
+		
 		this.background = new Konva.Rect({
 			x: 0,
 			y: 0,
-			width: this.STAGE_WIDTH,
-			height: this.STAGE_HEIGHT,
+			width: this.stage_width,
+			height: this.stage_height,
 			fill: primary_color,
 		});
 
 
 		this.main_card = new Konva.Rect({
-			x: this.STAGE_WIDTH*0.05,
-			y: this.STAGE_HEIGHT*0.17,
-			width: this.STAGE_WIDTH*0.9,
-			height: this.STAGE_HEIGHT*0.78,
+			x: this.stage_width*0.05,
+			y: this.stage_height*0.17,
+			width: this.stage_width*0.9,
+			height: this.stage_height*0.78,
 			cornerRadius: 25,
 			fill: secondary_color,
 		});
@@ -69,33 +68,33 @@ export default class InfoView implements View{
 		    });
 
 		this.title = new Konva.Text({
-			x: this.STAGE_WIDTH*0.05,
-			y: this.STAGE_HEIGHT*0.05,
+			x: this.stage_width*0.05,
+			y: this.stage_height*0.05,
 			text: this.HOW_TO_PLAY,
 			fontFamily: this.SILKSCREEN,
-			width: this.STAGE_WIDTH*0.9,
-			fontSize: this.STAGE_HEIGHT*0.068,
+			width: this.stage_width*0.9,
+			fontSize: this.stage_height*0.068,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'white',
 		});
 
 		this.back_button_shape = new Konva.Rect({
-			x: this.STAGE_WIDTH*0.315,
-			y: this.STAGE_HEIGHT*0.83,
-			width: this.STAGE_WIDTH*0.37,
-			height: this.STAGE_HEIGHT*0.09,
+			x: this.stage_width*0.315,
+			y: this.stage_height*0.83,
+			width: this.stage_width*0.37,
+			height: this.stage_height*0.09,
 			cornerRadius: 25,
 			fill: button_color,
 		});
 	
 		this.back_button_text = new Konva.Text({
-			x: this.STAGE_WIDTH*0.315,
-			y: this.STAGE_HEIGHT*0.835,
+			x: this.stage_width*0.315,
+			y: this.stage_height*0.835,
 			text: this.BACK,
 			fontFamily: this.SILKSCREEN,
-			width: this.STAGE_WIDTH*0.37,
-			fontSize: this.STAGE_HEIGHT*0.068,
+			width: this.stage_width*0.37,
+			fontSize: this.stage_height*0.068,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
@@ -111,6 +110,7 @@ export default class InfoView implements View{
 		this.group.add(this.title);
 		this.group.add(this.main_card);
 		this.group.add(this.back_button);
+		this.hide();
 	}	
 
 	getGroup() : Konva.Group {
@@ -119,9 +119,11 @@ export default class InfoView implements View{
 	
 	hide() {
 		this.group.visible(false);
+		this.group.getLayer()?.draw();
 	}
 
     show() {
         this.group.visible(true);
+		this.group.getLayer()?.draw();
     }
 }

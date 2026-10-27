@@ -17,11 +17,9 @@ export default class MainMenuView implements View {
 
 	SILKSCREEN = 'Silkscreen';
 
-	STAGE_WIDTH = 1000;
-	STAGE_HEIGHT = 900;
 
-	//stage_width: number;
-	//stage_height: number;
+	stage_width: number;
+	stage_height: number;
 	background: Konva.Rect;
 	main_card: Konva.Rect;
 	title: Konva.Text;
@@ -48,54 +46,57 @@ export default class MainMenuView implements View {
 
 
 	constructor(onStartClick: () => void, onInfoClick: () => void, 
-				onMinigameClick: () => void ) {
+				onMinigameClick: () => void, stage_width: number, 
+				stage_height: number) {
+		this.stage_width = stage_width;
+		this.stage_height = stage_height;
 
 		this.background = new Konva.Rect({
 			x: 0,
 			y: 0,
-			width: this.STAGE_WIDTH,
-			height: this.STAGE_HEIGHT,
+			width: this.stage_width,
+			height: this.stage_height,
 			fill: primary_color,
 		});
 
 
 		this.main_card = new Konva.Rect({
-			x: this.STAGE_WIDTH*0.05,
-			y: this.STAGE_HEIGHT*0.17,
-			width: this.STAGE_WIDTH*0.9,
-			height: this.STAGE_HEIGHT*0.78,
+			x: this.stage_width*0.05,
+			y: this.stage_height*0.17,
+			width: this.stage_width*0.9,
+			height: this.stage_height*0.78,
 			cornerRadius: 25,
 			fill: secondary_color,
 		});
 
 		this.title = new Konva.Text({
-			x: this.STAGE_WIDTH*0.05,
-			y: this.STAGE_HEIGHT*0.05,
+			x: this.stage_width*0.05,
+			y: this.stage_height*0.05,
 			text: this.TITLE,
 			fontFamily: this.SILKSCREEN,
-			width: this.STAGE_WIDTH*0.9,
-			fontSize: this.STAGE_HEIGHT*0.068,
+			width: this.stage_width*0.9,
+			fontSize: this.stage_height*0.068,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'white',
 		});
 
 		this.start_button_shape = new Konva.Rect({
-			x: this.STAGE_WIDTH*0.3,
-			y: this.STAGE_HEIGHT*0.2,
-			width: this.STAGE_WIDTH*0.4,
-			height: this.STAGE_HEIGHT*0.09,
+			x: this.stage_width*0.3,
+			y: this.stage_height*0.2,
+			width: this.stage_width*0.4,
+			height: this.stage_height*0.09,
 			cornerRadius: 25,
 			fill: button_color,
 		});
 
 		this.start_button_text = new Konva.Text({
-			x: this.STAGE_WIDTH*0.3,
-			y: this.STAGE_HEIGHT*0.205,
+			x: this.stage_width*0.3,
+			y: this.stage_height*0.205,
 			text: this.START,
 			fontFamily: this.SILKSCREEN,
-			width: this.STAGE_WIDTH*0.4,
-			fontSize: this.STAGE_HEIGHT*0.068,
+			width: this.stage_width*0.4,
+			fontSize: this.stage_height*0.068,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
@@ -111,21 +112,21 @@ export default class MainMenuView implements View {
 		this.start_button.on('click', () => onStartClick);
 
 		this.info_button_shape = new Konva.Rect({
-			x: this.STAGE_WIDTH*0.275,
-			y: this.STAGE_HEIGHT*0.32,
-			width: this.STAGE_WIDTH*0.45,
-			height: this.STAGE_HEIGHT*0.09,
+			x: this.stage_width*0.275,
+			y: this.stage_height*0.32,
+			width: this.stage_width*0.45,
+			height: this.stage_height*0.09,
 			cornerRadius: 25,
 			fill: button_color,
 		});
 
 		this.info_button_text = new Konva.Text({
-			x: this.STAGE_WIDTH*0.275,
-			y: this.STAGE_HEIGHT*0.327,
+			x: this.stage_width*0.275,
+			y: this.stage_height*0.327,
 			text: this.HOW_TO_PLAY,
 			fontFamily: this.SILKSCREEN,
-			width: this.STAGE_WIDTH*0.45,
-			fontSize: this.STAGE_HEIGHT*0.068,
+			width: this.stage_width*0.45,
+			fontSize: this.stage_height*0.068,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
@@ -137,21 +138,21 @@ export default class MainMenuView implements View {
 		this.info_button.on('click', onInfoClick);
 
 		this.mini_game_button_shape = new Konva.Rect({
-			x: this.STAGE_WIDTH*0.315,
-			y: this.STAGE_HEIGHT*0.83,
-			width: this.STAGE_WIDTH*0.37,
-			height: this.STAGE_HEIGHT*0.09,
+			x: this.stage_width*0.315,
+			y: this.stage_height*0.83,
+			width: this.stage_width*0.37,
+			height: this.stage_height*0.09,
 			cornerRadius: 25,
 			fill: button_color,
 		});
 
 		this.mini_game_button_text = new Konva.Text({
-			x: this.STAGE_WIDTH*0.315,
-			y: this.STAGE_HEIGHT*0.835,
+			x: this.stage_width*0.315,
+			y: this.stage_height*0.835,
 			text: this.MINIGAME,
 			fontFamily: this.SILKSCREEN,
-			width: this.STAGE_WIDTH*0.37,
-			fontSize: this.STAGE_HEIGHT*0.068,
+			width: this.stage_width*0.37,
+			fontSize: this.stage_height*0.068,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
@@ -163,10 +164,10 @@ export default class MainMenuView implements View {
 		this.mini_game_button.on('click', onMinigameClick);
 
 		this.name_card = new Konva.Rect({
-			x: this.STAGE_WIDTH*0.15,
-			y: this.STAGE_HEIGHT*0.27,
-			width: this.STAGE_WIDTH*0.7,
-			height: this.STAGE_HEIGHT*0.58,
+			x: this.stage_width*0.15,
+			y: this.stage_height*0.27,
+			width: this.stage_width*0.7,
+			height: this.stage_height*0.58,
 			cornerRadius: 25,
 			fill: primary_color,
 		});
@@ -174,29 +175,29 @@ export default class MainMenuView implements View {
 		this.background_blur = new Konva.Rect({
 			x: 0,
 			y: 0,
-			width: this.STAGE_WIDTH,
-			height: this.STAGE_HEIGHT,
+			width: this.stage_width,
+			height: this.stage_height,
 			fill: 'black',
 			opacity: 0.5,
 		});
 				
 		this.name_entry_text = new Konva.Text({
-			x: this.STAGE_WIDTH*0.2,
-			y: this.STAGE_HEIGHT*0.32,
+			x: this.stage_width*0.2,
+			y: this.stage_height*0.32,
 			text: 'Enter a username for leaderboard below',
 			fontFamily: this.SILKSCREEN,
-			width: this.STAGE_WIDTH*0.6,
-			fontSize: this.STAGE_HEIGHT*0.068,
+			width: this.stage_width*0.6,
+			fontSize: this.stage_height*0.068,
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
 		});
 				
 		this.name_box = new Konva.Rect({
-			x: this.STAGE_WIDTH*0.315,
-			y: this.STAGE_HEIGHT*0.575,
-			width: this.STAGE_WIDTH*0.37,
-			height: this.STAGE_HEIGHT*0.1,
+			x: this.stage_width*0.315,
+			y: this.stage_height*0.575,
+			width: this.stage_width*0.37,
+			height: this.stage_height*0.1,
 			cornerRadius: 25,
 			fill: 'White',
 		});
@@ -205,10 +206,10 @@ export default class MainMenuView implements View {
 			text: 'type name here',
 			fontSize: 20,
 			fontFamily: 'Roboto',
-			x: this.STAGE_WIDTH*0.35,
-			y: this.STAGE_HEIGHT*0.6,
-			width: this.STAGE_WIDTH*0.37,
-			height: this.STAGE_HEIGHT*0.1,
+			x: this.stage_width*0.35,
+			y: this.stage_height*0.6,
+			width: this.stage_width*0.37,
+			height: this.stage_height*0.1,
 			fill: 'black',
 		});
 
@@ -227,7 +228,7 @@ export default class MainMenuView implements View {
 	}
 	
 	show() {
-		this.group.visible(false);
+		this.group.visible(true);
 		this.group.getLayer()?.draw();
 	}
 	

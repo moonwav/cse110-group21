@@ -8,10 +8,12 @@ export default class InfoController extends Controller{
     view: InfoView;
     screenSwitcher: ScreenSwitcher;
 
-    constructor (model: GameModel, screenSwitcher: ScreenSwitcher) {
+    constructor (model: GameModel, screenSwitcher: ScreenSwitcher,
+                stage_width: number, stage_height: number) {
         super();
         this.model = model;
-        this.view = new InfoView(() => this.handleBackClick());
+        this.view = new InfoView(() => this.handleBackClick(), stage_width, 
+                                stage_height);
         this.screenSwitcher = screenSwitcher;
     }
 
