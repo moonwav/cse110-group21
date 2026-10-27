@@ -1,10 +1,13 @@
 {
   "name": "cse110-group21",
   "version": "1.0.0",
-  "description": "",
+  "description": "A browser game where middle schoolers spend a day on a trip and answer ten percentage questions about food, activities, and shopping. Players earn points toward a score out of 100, can use hints (at a point cost), and get a letter grade at the end.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "repository": {
     "type": "git",
@@ -13,7 +16,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/moonwav/cse110-group21/issues"
   },
@@ -22,13 +25,9 @@
     "konva": "^10.9.0"
   },
   "devDependencies": {
+    "@types/node": "^26.6.5",
     "typescript": "^7.0.2",
-    "vite": "^8.3.4"
-  },
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
   }
-
 }

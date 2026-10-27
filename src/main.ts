@@ -1,3 +1,4 @@
+
 import Konva from 'konva';
 import MainMenuView from './mainMenuView';
 import Question from './question';
@@ -122,3 +123,12 @@ class Game implements ScreenSwitcher {
 
 // Initialize the application
 new Game("container");
+
+
+// pulled from main
+/*
+import { showQuestionScreen } from "./presentation/IndividualProblem";
+
+const root = document.querySelector("#game");
+if (root instanceof HTMLDivElement) showQuestionScreen(root);
+*/
