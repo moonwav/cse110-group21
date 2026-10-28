@@ -2,10 +2,6 @@ import Konva from 'konva';
 //import { loadFont } from './fonts';
 import { View } from '../types';
 
-//Main color palatte of the game
-const primary_color = '#4A5A9A';
-const secondary_color = '#C2CAE9';
-const button_color = '#92A1DF';
 
 //Defines the MainMenuView class
 export default class MainMenuView implements View {
@@ -55,7 +51,7 @@ export default class MainMenuView implements View {
 			y: 0,
 			width: this.stage_width,
 			height: this.stage_height,
-			fill: primary_color,
+			fill: PRIMARY_COLOR,
 		});
 
 
@@ -65,7 +61,7 @@ export default class MainMenuView implements View {
 			width: this.stage_width*0.9,
 			height: this.stage_height*0.78,
 			cornerRadius: 25,
-			fill: secondary_color,
+			fill: SECONDARY_COLOR,
 		});
 
 		this.title = new Konva.Text({
@@ -86,7 +82,7 @@ export default class MainMenuView implements View {
 			width: this.stage_width*0.4,
 			height: this.stage_height*0.09,
 			cornerRadius: 25,
-			fill: button_color,
+			fill: BUTTON_COLOR,
 		});
 
 		this.start_button_text = new Konva.Text({
@@ -113,7 +109,7 @@ export default class MainMenuView implements View {
 			width: this.stage_width*0.45,
 			height: this.stage_height*0.09,
 			cornerRadius: 25,
-			fill: button_color,
+			fill: BUTTON_COLOR,
 		});
 
 		this.info_button_text = new Konva.Text({
@@ -139,7 +135,7 @@ export default class MainMenuView implements View {
 			width: this.stage_width*0.37,
 			height: this.stage_height*0.09,
 			cornerRadius: 25,
-			fill: button_color,
+			fill: BUTTON_COLOR,
 		});
 
 		this.mini_game_button_text = new Konva.Text({
@@ -165,7 +161,7 @@ export default class MainMenuView implements View {
 			width: this.stage_width*0.7,
 			height: this.stage_height*0.58,
 			cornerRadius: 25,
-			fill: primary_color,
+			fill: PRIMARY_COLOR,
 		});
 				
 		this.background_blur = new Konva.Rect({

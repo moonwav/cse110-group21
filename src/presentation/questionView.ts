@@ -5,11 +5,6 @@ import Question from '../logic/question';
 import { View } from '../types';
 
 
-const primary_color = '#4A5A9A';
-const secondary_color = '#C2CAE9';
-const button_color = '#92A1DF';
-
-
 //Will define the QuestionView class, very unfinished
 export default class QuestionView implements View{
 	SILKSCREEN = 'Silkscreen';
@@ -55,7 +50,7 @@ export default class QuestionView implements View{
             y: 0,
             width: this.stage_width,
             height: this.stage_height,
-            fill: primary_color,
+            fill: PRIMARY_COLOR,
         });
 
 		this.main_card = new Konva.Rect ({
@@ -64,7 +59,7 @@ export default class QuestionView implements View{
 			width: this.stage_width*0.95,
 			height: this.stage_height*0.9,
 			cornerRadius: 25,
-			fill: secondary_color,
+			fill: SECONDARY_COLOR,
 		});
 
 		this.title = new Konva.Text ({
@@ -137,7 +132,7 @@ export default class QuestionView implements View{
 			width: this.stage_width*0.25,
 			height: this.stage_height*0.09,
 			cornerRadius: 25,
-			fill: button_color,
+			fill: BUTTON_COLOR,
 		});
 
 		this.submit_button_text = new Konva.Text({
@@ -163,7 +158,7 @@ export default class QuestionView implements View{
 			width: this.stage_width*0.15,
 			height: this.stage_height*0.085,
 			cornerRadius: 25,
-			fill: button_color,
+			fill: BUTTON_COLOR,
 		});
 
 		this.hint_button_text = new Konva.Text({
@@ -189,7 +184,7 @@ export default class QuestionView implements View{
 			width: this.stage_width*0.15,
 			height: this.stage_height*0.085,
 			cornerRadius: 25,
-			fill: button_color,
+			fill: BUTTON_COLOR,
 		});
 
 		this.reveal_button_text = new Konva.Text({

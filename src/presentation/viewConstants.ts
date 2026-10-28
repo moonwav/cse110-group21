@@ -1,0 +1,3 @@
+const PRIMARY_COLOR = '#4A5A9A';
+const SECONDARY_COLOR = '#C2CAE9';
+const BUTTON_COLOR = '#92A1DF';

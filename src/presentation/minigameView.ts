@@ -2,10 +2,7 @@ import Konva from 'konva';
 //import { loadFont } from './fonts';
 import { View } from '../types';
 
-//Main color palatte of the game
-const primary_color = '#4A5A9A';
-const secondary_color = '#C2CAE9';
-const button_color = '#92A1DF';
+
 
 //Defines the MinigameView class
 export default class MinigameView implements View{
