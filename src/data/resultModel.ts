@@ -1,7 +1,7 @@
 /**
- * Represents a results of one game
+ * Represents result of one game
  */
-export type ResultsData = {
+export type ResultData = {
   percent: number;
   wrongAnswers: number;
   hintsUsed: number;
@@ -53,20 +53,20 @@ const grades: Grade[] = [
   },
 ];
 
-const placeholderResults: ResultsData = {
+const placeholderResults: ResultData = {
   percent: 95,
   wrongAnswers: 7,
   hintsUsed: 15,
 };
 
-export class ResultsModel {
-  private data: ResultsData;
+export class ResultModel {
+  private data: ResultData;
 
-  constructor(data: ResultsData = placeholderResults) {
+  constructor(data: ResultData = placeholderResults) {
     this.data = data;
   }
 
-  getResults(): ResultsData {
+  getResults(): ResultData {
     return this.data;
   }
 

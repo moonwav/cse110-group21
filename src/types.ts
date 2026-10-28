@@ -15,13 +15,15 @@ export interface View {
  *   - score: Final score to display on results screen
  * - "info": The how to play instructions screen
  * - "minigame": The minigame screen
+ * - "answer": The answer key screen
  */
 export type Screen =
 	| { type: "menu" }
 	| { type: "question" }
-	| { type: "result"; score: number }
+	| { type: "result" }
     | { type: "minigame" }
-    | { type: "info" };
+    | { type: "info" }
+	| { type: "answer" };
 
 export abstract class Controller {
 	abstract getView(): View;

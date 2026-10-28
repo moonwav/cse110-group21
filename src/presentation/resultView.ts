@@ -4,7 +4,7 @@ import { View } from '../types';
 import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
 
 
-//Defines the MainMenuView class
+//Defines the resultsView class
 export default class ResultsView implements View{
 
 	SILKSCREEN = 'Silkscreen';
