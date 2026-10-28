@@ -1,7 +1,7 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
 import { View } from '../types';
-
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
 
 
 //Defines the MinigameView class

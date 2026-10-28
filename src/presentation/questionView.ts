@@ -3,6 +3,7 @@ import Konva from 'konva';
 import GameModel from '../logic/model';
 import Question from '../logic/question';
 import { View } from '../types';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
 
 
 //Will define the QuestionView class, very unfinished
