@@ -1,11 +1,11 @@
 
 import Konva from 'konva';
-import GameModel from './model';
-import MainMenuController from './mainMenuController';
-import QuestionController from './questionController';
-import InfoController from './infoController';
-import ResultController from './resultController';
-import MinigameController from './minigameController';
+import GameModel from './logic/model';
+import MainMenuController from './logic/mainMenuController';
+import QuestionController from './logic/questionController';
+import InfoController from './logic/infoController';
+import ResultController from './logic/resultController';
+import MinigameController from './logic/minigameController';
 import type { ScreenSwitcher, Screen } from "./types.ts";
 
 
