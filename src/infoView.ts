@@ -1,5 +1,5 @@
 import Konva from 'konva';
-import { loadFont } from './fonts';
+//import { loadFont } from './fonts';
 import { View } from './types';
 
 //Main color palatte of the game
@@ -62,11 +62,6 @@ export default class InfoView implements View{
 			fill: secondary_color,
 		});
 
-        loadFont(this.SILKSCREEN, 'normal', '400').then(() => {
-  		    this.title.fontFamily(this.SILKSCREEN);
-            this.back_button_text.fontFamily(this.SILKSCREEN);
-		    });
-
 		this.title = new Konva.Text({
 			x: this.stage_width*0.05,
 			y: this.stage_height*0.05,
@@ -99,11 +94,11 @@ export default class InfoView implements View{
 			verticalAlign: 'center',
 			fill: 'Black',
 		});
-		
+		this.loadFonts();
 		this.back_button = new Konva.Group();
 		this.back_button.add(this.back_button_shape);
 		this.back_button.add(this.back_button_text);
-		this.back_button.on('click', () => onBackClick());
+		this.back_button.on('click', onBackClick);
 
 		this.group = new Konva.Group();
 		this.group.add(this.background);
@@ -112,6 +107,19 @@ export default class InfoView implements View{
 		this.group.add(this.back_button);
 		this.hide();
 	}	
+ 
+	async loadFonts() {
+  		await document.fonts.ready;
+  		await Promise.all([
+   			document.fonts.load("700 48px Silkscreen"),
+    		document.fonts.load("400 36px Silkscreen"),
+    		document.fonts.load("400 40px Roboto"),
+    		document.fonts.load("400 36px Roboto"),
+    		document.fonts.load("400 24px Roboto"),
+    		document.fonts.load("400 22px Roboto"),
+  		]);
+	}
+
 
 	getGroup() : Konva.Group {
 		return this.group;

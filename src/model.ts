@@ -49,6 +49,10 @@ export default class GameModel {
         this.gameState = this.RECAP;
     }
 
+    getState() {
+        return this.gameState;
+    }
+
 
 
 }

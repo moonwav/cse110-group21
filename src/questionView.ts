@@ -1,5 +1,5 @@
 import Konva from 'konva';
-import { loadFont } from './fonts';
+//import { loadFont } from './fonts';
 import GameModel from './model';
 import Question from './question';
 import { View } from './types';
@@ -203,14 +203,16 @@ export default class QuestionView implements View{
 			verticalAlign: 'center',
 			fill: 'Black',
 		});
-		
+		/*
 		loadFont(this.SILKSCREEN, 'normal', '400').then(() => {
   		this.title.fontFamily(this.SILKSCREEN);
 		});
 		loadFont(this.ROBOTO, 'normal', '400').then(() => {
   		this.question_text.fontFamily(this.ROBOTO);
 		});
+		*/
 
+		this.loadFonts(); 
 		this.reveal_button = new Konva.Group();
 		this.reveal_button.add(this.reveal_button_shape);
 		this.reveal_button.add(this.reveal_button_text);
@@ -229,6 +231,18 @@ export default class QuestionView implements View{
 		this.group.add(this.hint_button);
 
 		this.hide();
+	}
+
+	async loadFonts() {
+  		await document.fonts.ready;
+  		await Promise.all([
+   			document.fonts.load("700 48px Silkscreen"),
+    		document.fonts.load("400 36px Silkscreen"),
+    		document.fonts.load("400 40px Roboto"),
+    		document.fonts.load("400 36px Roboto"),
+    		document.fonts.load("400 24px Roboto"),
+    		document.fonts.load("400 22px Roboto"),
+  		]);
 	}
 
 	getGroup(){

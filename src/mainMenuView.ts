@@ -1,5 +1,5 @@
 import Konva from 'konva';
-import { loadFont } from './fonts';
+//import { loadFont } from './fonts';
 import { View } from './types';
 
 //Main color palatte of the game
@@ -209,7 +209,7 @@ export default class MainMenuView implements View {
 			fill: 'black',
 		});
 
-		this.loadfonts();
+		this.loadFonts();
 		this.group = new Konva.Group();
 		this.group.add(this.background);
 		this.group.add(this.title);
@@ -219,13 +219,16 @@ export default class MainMenuView implements View {
 		this.group.add(this.mini_game_button);
 	}	
 
-	loadfonts() {
-		loadFont(this.SILKSCREEN, 'normal', '400').then(() => {
-  		this.title.fontFamily(this.SILKSCREEN);
-		this.start_button_text.fontFamily(this.SILKSCREEN);
-		this.info_button_text.fontFamily(this.SILKSCREEN);
-		this.mini_game_button_text.fontFamily(this.SILKSCREEN);
-		});
+	async loadFonts() {
+  		await document.fonts.ready;
+  		await Promise.all([
+   			document.fonts.load("700 48px Silkscreen"),
+    		document.fonts.load("400 36px Silkscreen"),
+    		document.fonts.load("400 40px Roboto"),
+    		document.fonts.load("400 36px Roboto"),
+    		document.fonts.load("400 24px Roboto"),
+    		document.fonts.load("400 22px Roboto"),
+  		]);
 	}
 
 	getGroup() : Konva.Group {

@@ -1,8 +1,5 @@
 
 import Konva from 'konva';
-import MainMenuView from './mainMenuView';
-import Question from './question';
-import QuestionView from './questionView';
 import GameModel from './model';
 import MainMenuController from './mainMenuController';
 import QuestionController from './questionController';
@@ -10,9 +7,6 @@ import InfoController from './infoController';
 import ResultController from './resultController';
 import MinigameController from './minigameController';
 import type { ScreenSwitcher, Screen } from "./types.ts";
-
-const STAGE_WIDTH = 1000;
-const STAGE_HEIGHT = 900;
 
 
 /**

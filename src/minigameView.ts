@@ -1,5 +1,5 @@
 import Konva from 'konva';
-import { loadFont } from './fonts';
+//import { loadFont } from './fonts';
 import { View } from './types';
 
 //Main color palatte of the game
