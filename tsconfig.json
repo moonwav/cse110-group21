@@ -2,14 +2,18 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "ESNext",
+    "lib": ["ES2020", "DOM"],
     "moduleResolution": "bundler",
     "esModuleInterop": true,
     "strict": true,
     "jsx": "preserve",
+    "noEmit": true,
     "types": [
       "vite/client",
       "node"
-    ]
+    ],
+    "skipLibCheck": true,
+    "isolatedModules": true
   },
-  "include": ["src"]
+  "include": ["src", "tests"]
 }
