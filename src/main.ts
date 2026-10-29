@@ -71,7 +71,7 @@ class Game implements ScreenSwitcher {
 		// Draw the layer (render everything to the canvas)
 
 		// Start with menu screen visible
-		this.menuController.getView().show();
+		this.resultController.getView().show();
 		this.layer.draw();
 	}
 
