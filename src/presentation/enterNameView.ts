@@ -3,6 +3,7 @@ import Konva from 'konva';
 import { View } from '../types';
 import { PRIMARY_COLOR, SECONDARY_COLOR, 
         BUTTON_COLOR, loadFonts } from './viewConstants';
+import GameModel from '../logic/model';
 
 
 //Defines the MainMenuView class
@@ -12,7 +13,7 @@ export default class EnterNameView implements View {
     
     SILKSCREEN = 'Silkscreen';
 
-
+    model: GameModel;
     stage_width: number;
     stage_height: number;
 
@@ -25,11 +26,12 @@ export default class EnterNameView implements View {
 
     group: Konva.Group;
 
-    constructor(stage_width: number, 
+    constructor(model: GameModel, stage_width: number, 
                 stage_height: number) {
 
         this.stage_width = stage_width;
         this.stage_height = stage_height;
+        this.model = model;
 
         this.name_card = new Konva.Rect({
             x: this.stage_width*0.15,
@@ -81,20 +83,19 @@ export default class EnterNameView implements View {
         this.group.add(this.name_entry_text);
     }
 
-    waitForUsername(input: HTMLInputElement): Promise<string> {
+    waitForUsername(element: HTMLInputElement): Promise<string> {
         return new Promise((resolve) => {
-            input.addEventListener("keydown", function handler(e: KeyboardEvent) {
+            element.addEventListener("keydown", function handler(e: KeyboardEvent) {
                 if (e.key === 'Enter' && !e.shiftKey) {
-                    input.removeEventListener("keydown", handler);
-                    document.body.removeChild(input);
-                    resolve(input.value);
+                    element.removeEventListener("keydown", handler);
+                    document.body.removeChild(element);
+                    resolve(element.value);
                 }
             });
         });
     }
 
-
-    async showName(onEnterName: (name: string) => void) {
+    async getUsername(): Promise<string> {
         const areaPosition = {
             x: this.stage_width*0.33,
             y: this.stage_height*0.6
@@ -108,24 +109,47 @@ export default class EnterNameView implements View {
     
         this.input.focus();
         
-        const name = await this.waitForUsername(this.input);
+        return await this.waitForUsername(this.input);
+    }
+
+    async displayWelcomeMessage(onReady: () => void){
         this.name_entry_text.remove();
         this.name_box.remove();
-        const name_checker = new Konva.Text({
-            x: this.stage_width*0.3,
-            y: this.stage_height*0.5,
-            text: `${name}`,
+        const welcome_message = new Konva.Text({
+            x: this.stage_width*0.2,
+            y: this.stage_height*0.3,
+            text: `Hello ${this.model.getPlayer()}!\nWelcome to Percentage City!`,
             fontFamily: this.SILKSCREEN,
             width: this.stage_width*0.6,
             fontSize: this.stage_height*0.068,
             align: 'center',
             verticalAlign: 'center',
-            fill: 'Black',
+            fill: 'white',
         });
-        this.group.add(name_checker);
+        const ready_instructions = new Konva.Text({
+            x: this.stage_width*0.2,
+            y: this.stage_height*0.75,
+            text: `Press any key to begin`,
+            fontFamily: this.SILKSCREEN,
+            width: this.stage_width*0.6,
+            fontSize: this.stage_height*0.05,
+            align: 'center',
+            verticalAlign: 'center',
+            fill: 'white',
+        });
+        this.group.add(welcome_message);
+        this.group.add(ready_instructions);
         this.group.getLayer()?.draw();
-        onEnterName(name);
+        const stage = this.group.getStage();
+        if (stage != null) {
+            stage.container().tabIndex = 1;
+            stage.container().focus();
+            stage.container().addEventListener('keydown', (e) => {
+                onReady();
+            });
+        };
     }
+
 
     getGroup() : Konva.Group {
         return this.group;

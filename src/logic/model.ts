@@ -1,13 +1,13 @@
 export default class GameModel {
-    STARTSTATE = 'start page';
-    MINIGAME = 'minigame';
-    QUESTION = 'question state';
-    RECAP = 'game over';
-    INFO = 'How to play';
+    private STARTSTATE = 'start page';
+    private MINIGAME = 'minigame';
+    private QUESTION = 'question state';
+    private RECAP = 'game over';
+    private INFO = 'How to play';
     
-    gameState: string;
-    playerName: string;
-    currentScore: number;
+    private gameState: string;
+    private playerName: string;
+    private currentScore: number;
 
     constructor() {
         this.gameState = this.STARTSTATE;
@@ -15,10 +15,8 @@ export default class GameModel {
         this.currentScore = 0;
     }
 
-    beginGame() {
-        this.gameState = this.QUESTION;
-        //question
-        //update score and question number
+    newQuestion() {
+        
     }
 
     setPlayer(playerName: string) {

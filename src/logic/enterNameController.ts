@@ -13,22 +13,20 @@ export default class EnterNameController extends Controller{
         super();
         this.model = model;
         this.screenSwitcher = screenSwitcher;
-        this.view = new EnterNameView(stage_width, stage_height);
+        this.view = new EnterNameView(model, stage_width, stage_height);
     }
     
 
-    handleNameEntered(name: string) {
-        setTimeout(()=>{
-            this.model.setPlayer(name);
-            this.model.setStateQuestion();
-            this.screenSwitcher.switchToScreen({type: "question"});}, 
-            3000);
+    handleReady() {
+        this.model.setStateQuestion();
+        this.screenSwitcher.switchToScreen({type: "question"});
     }
 
 
-    show() {
+    async show() {
         this.view.show();
-        this.view.showName((name: string) => this.handleNameEntered(name));
+        this.model.setPlayer(await this.view.getUsername());
+        await this.view.displayWelcomeMessage(() => this.handleReady());3
     }
 
     hide() {

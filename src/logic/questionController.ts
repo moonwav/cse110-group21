@@ -20,6 +20,7 @@ export default class QuestionController extends Controller{
                     () => this.handleRevealClick(), stage_width, stage_height);
         this.screenSwitcher = screenSwitcher;
     }
+
     handleSubmitClick() {
         //tell model to check submission?
         //display if the answer is correct or not
@@ -37,13 +38,14 @@ export default class QuestionController extends Controller{
     }
     
     newQuestion() {
-        //model to make new question instance?
+        //tell model to make new question instance?
         //update current question.
-
+        this.show();
     }
 
     show() {
         this.view.show();
+        this.view.displayQuestion();
     }
 
     hide() {
