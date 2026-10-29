@@ -84,6 +84,12 @@ export default class AnswerView implements View{
         this.back_button.add(this.back_button_shape);
         this.back_button.add(this.back_button_text);
         this.back_button.on('click', onBackClick);
+        this.back_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		this.back_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 
         this.group = new Konva.Group();
         this.group.add(this.background);

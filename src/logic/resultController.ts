@@ -12,8 +12,23 @@ export default class ResultController extends Controller{
                     stage_width: number, stage_height: number) {
         super();
         this.model = model;
-        this.view = new ResultView();
+        this.view = new ResultView(() => this.handleAnswerKeyClick(),
+                                    () => this.handleLeaderboardClick(),
+                                    () => this.handlePlayAgainClick(),
+                                    stage_width, stage_height);
         this.screenSwitcher = screenSwitcher;
+    }
+
+    handleAnswerKeyClick() {
+        this.screenSwitcher.switchToScreen({type: "answer"});;
+    }
+
+    handleLeaderboardClick() {
+        return;
+    }
+
+    handlePlayAgainClick() {
+        this.screenSwitcher.switchToScreen({type: "menu"});;
     }
     
     show() {
