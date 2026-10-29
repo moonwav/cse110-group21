@@ -52,7 +52,4 @@ export default class GameModel {
     getState() {
         return this.gameState;
     }
-
-
-
 }

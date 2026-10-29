@@ -21,7 +21,8 @@ export type Screen =
 	| { type: "question" }
 	| { type: "result"; score: number }
     | { type: "minigame" }
-    | { type: "info" };
+    | { type: "info" }
+	| { type: "enter name"};
 
 export abstract class Controller {
 	abstract getView(): View;

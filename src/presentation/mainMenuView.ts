@@ -1,7 +1,7 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
 import { View } from '../types';
-import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from './viewConstants';
 
 
 //Defines the MainMenuView class
@@ -37,7 +37,6 @@ export default class MainMenuView implements View {
 	name_card: Konva.Rect;
 	name_entry_text: Konva.Text;
 	name_box: Konva.Rect;
-	text_node: Konva.Text;
 
 	group: Konva.Group;
 
@@ -194,7 +193,7 @@ export default class MainMenuView implements View {
 			cornerRadius: 25,
 			fill: 'White',
 		});
-				
+		/*	
 		this.text_node = new Konva.Text({
 			text: 'type name here',
 			fontSize: 20,
@@ -205,8 +204,8 @@ export default class MainMenuView implements View {
 			height: this.stage_height*0.1,
 			fill: 'black',
 		});
-
-		this.loadFonts();
+		*/
+		loadFonts();
 		this.group = new Konva.Group();
 		this.group.add(this.background);
 		this.group.add(this.title);
@@ -215,18 +214,6 @@ export default class MainMenuView implements View {
 		this.group.add(this.info_button);
 		this.group.add(this.mini_game_button);
 	}	
-
-	async loadFonts() {
-  		await document.fonts.ready;
-  		await Promise.all([
-   			document.fonts.load("700 48px Silkscreen"),
-    		document.fonts.load("400 36px Silkscreen"),
-    		document.fonts.load("400 40px Roboto"),
-    		document.fonts.load("400 36px Roboto"),
-    		document.fonts.load("400 24px Roboto"),
-    		document.fonts.load("400 22px Roboto"),
-  		]);
-	}
 
 	getGroup() : Konva.Group {
 		return this.group;
@@ -242,62 +229,5 @@ export default class MainMenuView implements View {
 		this.group.getLayer()?.draw();
 	}
 
-	addTextBox(stage: Konva.Stage, text_node: Konva.Text): string {
-        const text_overlay = new Konva.Layer();
-        stage.add(text_overlay);
-
-        text_node.on('click', () => {
-            text_node.remove();
-            // create textarea over canvas with absolute position
-            
-            // first we need to find its position
-            const textPosition = text_node.getAbsolutePosition();    
-            const stageBox = stage.container().getBoundingClientRect();
-
-            const areaPosition = {
-                x: textPosition.x + stageBox.left,
-                y: textPosition.y + stageBox.top
-            };
-
-            // create textarea and style it
-            const input = document.createElement('input');
-            document.body.appendChild(input);
-
-            input.value = text_node.text();
-            input.style.position = 'absolute';
-            input.style.top = areaPosition.y + 'px';
-            input.style.left = areaPosition.x + 'px';
-
-    
-            input.focus();
-
-            input.addEventListener('keydown', function (e) {
-                // hide on enter
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    const entry = input.value;
-                    text_node.text(entry);
-                    text_overlay.draw();
-                    document.body.removeChild(input);
-                }
-            });
-			
-            text_overlay.add(text_node);
-            return text_node.text();
-        });
-        return text_node.text();
-	}
-
-	enterName(){
-		this.group.add(this.background_blur);
-        this.group.add(this.name_card);
-        this.group.add(this.name_box);
-        this.group.add(this.name_entry_text);
-        this.group.add(this.text_node);
-		this.group.getLayer()?.draw();
-		const stage = this.group.getStage();
-		if (stage != null){
-			return this.addTextBox(stage, this.text_node);
-		}
-		return '';
-	}
+	
 }

@@ -3,7 +3,7 @@ import Konva from 'konva';
 import GameModel from '../logic/model';
 import Question from '../logic/question';
 import { View } from '../types';
-import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from './viewConstants';
 
 
 //Will define the QuestionView class, very unfinished
@@ -16,23 +16,30 @@ export default class QuestionView implements View{
     stage_height: number;
     background: Konva.Rect;
     main_card: Konva.Rect;
+
 	question: Question;
 	question_location: Konva.Text;
 	question_text: Konva.Text;
+
 	title: Konva.Text;
 	score: Konva.Text;
 	score_number: number;
+
 	answer_header: Konva.Text;
 	answer_bubble: Konva.Rect;
+
 	submit_button_shape: Konva.Rect;
 	submit_button_text: Konva.Text;
 	submit_button: Konva.Group;
+
 	hint_button_shape: Konva.Rect;
 	hint_button_text: Konva.Text;
 	hint_button: Konva.Group;
+
 	reveal_button_shape: Konva.Rect;
 	reveal_button_text: Konva.Text;
 	reveal_button: Konva.Group;
+
     group: Konva.Group;
 
 
@@ -99,7 +106,7 @@ export default class QuestionView implements View{
 		this.question_text = new Konva.Text ({
 			x: this.stage_width*0.06,
 			y: this.stage_height*0.35,
-			text: `${this.question.getQuestion()}`,
+			text: `Your name is ${this.model.getPlayer()}`,
 			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.05,
 			width: this.stage_width*0.9,
@@ -208,7 +215,7 @@ export default class QuestionView implements View{
 		});
 		*/
 
-		this.loadFonts(); 
+		loadFonts(); 
 		this.reveal_button = new Konva.Group();
 		this.reveal_button.add(this.reveal_button_shape);
 		this.reveal_button.add(this.reveal_button_text);
@@ -229,18 +236,6 @@ export default class QuestionView implements View{
 		this.hide();
 	}
 
-	async loadFonts() {
-  		await document.fonts.ready;
-  		await Promise.all([
-   			document.fonts.load("700 48px Silkscreen"),
-    		document.fonts.load("400 36px Silkscreen"),
-    		document.fonts.load("400 40px Roboto"),
-    		document.fonts.load("400 36px Roboto"),
-    		document.fonts.load("400 24px Roboto"),
-    		document.fonts.load("400 22px Roboto"),
-  		]);
-	}
-
 	getGroup(){
 		return this.group;
 	}
@@ -251,10 +246,12 @@ export default class QuestionView implements View{
 
 	hide() {
 		this.group.visible(false);
+		this.group.getLayer()?.draw();
 	}
 
 	show() {
 		this.group.visible(true);
+		this.group.getLayer()?.draw();
 	}
 
 }

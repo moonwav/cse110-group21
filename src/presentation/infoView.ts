@@ -1,7 +1,7 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
 import { View } from '../types';
-import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from './viewConstants';
 
 
 //Defines the InfoView class
@@ -91,7 +91,8 @@ export default class InfoView implements View{
 			verticalAlign: 'center',
 			fill: 'Black',
 		});
-		this.loadFonts();
+		
+		loadFonts();
 		this.back_button = new Konva.Group();
 		this.back_button.add(this.back_button_shape);
 		this.back_button.add(this.back_button_text);
@@ -104,18 +105,6 @@ export default class InfoView implements View{
 		this.group.add(this.back_button);
 		this.hide();
 	}	
- 
-	async loadFonts() {
-  		await document.fonts.ready;
-  		await Promise.all([
-   			document.fonts.load("700 48px Silkscreen"),
-    		document.fonts.load("400 36px Silkscreen"),
-    		document.fonts.load("400 40px Roboto"),
-    		document.fonts.load("400 36px Roboto"),
-    		document.fonts.load("400 24px Roboto"),
-    		document.fonts.load("400 22px Roboto"),
-  		]);
-	}
 
 
 	getGroup() : Konva.Group {
