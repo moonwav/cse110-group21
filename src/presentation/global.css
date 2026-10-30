@@ -12,3 +12,7 @@ body,
   overflow: auto;
   background: #4a5a9a;
 }
+
+#container {
+  position: relative;
+}
