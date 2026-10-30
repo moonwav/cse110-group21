@@ -1,15 +1,10 @@
+import type { Formula } from "../logic/formulas";
+
+export type { Formula };
+
 export type Difficulty = "easy" | "medium" | "hard";
 
 export type Category = "food" | "activities" | "shopping";
-
-export type Formula =
-  | "percentOf"
-  | "discount"
-  | "tip"
-  | "tax"
-  | "reverseTax"
-  | "compare"
-  | "discountThenTax";
 
 export type QuestionTemplate = {
   id: string;
