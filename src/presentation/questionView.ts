@@ -24,6 +24,7 @@ export default class QuestionView implements View{
 	score_number: number;
 	answer_header: Konva.Text;
 	answer_bubble: Konva.Rect;
+	answer_input: HTMLInputElement;
 	submit_button_shape: Konva.Rect;
 	submit_button_text: Konva.Text;
 	submit_button: Konva.Group;
@@ -126,6 +127,14 @@ export default class QuestionView implements View{
 			cornerRadius: 25,
 			fill: 'White',
 		});
+
+		this.answer_input = document.createElement("input");
+		this.answer_input.className = "answer-field";
+		this.answer_input.inputMode = "decimal";
+		this.answer_input.autocomplete = "off";
+		this.answer_input.setAttribute("aria-label", "Your answer");
+		this.placeAnswerInput();
+		document.getElementById("container")?.append(this.answer_input);
 
 		this.submit_button_shape = new Konva.Rect({
 			x: this.stage_width*0.375,
@@ -245,11 +254,28 @@ export default class QuestionView implements View{
 		return this.group;
 	}
 
+	placeAnswerInput() {
+		const box = this.answer_bubble;
+		this.answer_input.style.left = `${box.x() + 24}px`;
+		this.answer_input.style.top = `${box.y() + box.height() / 2 - 20}px`;
+		this.answer_input.style.width = `${box.width() - 48}px`;
+		this.answer_input.style.height = "40px";
+		this.answer_input.style.fontSize = "32px";
+	}
+
+	getPlayerAnswer() {
+		const text = this.answer_input.value.trim();
+		const value = Number(text);
+		if (text === "" || Number.isNaN(value)) return null;
+		return value;
+	}
+
 	showQuestion(question: Question) {
 		this.question = question;
 		this.title.text(`Question ${question.getQuestionNumber()} of 10`);
 		this.question_location.text(question.getLocation());
 		this.question_text.text(question.getQuestion());
+		this.answer_input.value = "";
 	}
 
 	showHint() {
@@ -258,10 +284,12 @@ export default class QuestionView implements View{
 
 	hide() {
 		this.group.visible(false);
+		this.answer_input.style.display = "none";
 	}
 
 	show() {
 		this.group.visible(true);
+		this.answer_input.style.display = "block";
 	}
 
 }

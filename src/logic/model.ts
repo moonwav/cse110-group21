@@ -11,6 +11,7 @@ export default class GameModel {
     gameState: string;
     playerName: string;
     currentScore: number;
+    playerAnswer: number | null;
     questions: Question[];
     questionIndex: number;
 
@@ -18,6 +19,7 @@ export default class GameModel {
         this.gameState = this.STARTSTATE;
         this.playerName = '';
         this.currentScore = 0;
+        this.playerAnswer = null;
         this.questions = generateTrip();
         this.questionIndex = 0;
     }
@@ -26,6 +28,11 @@ export default class GameModel {
         this.gameState = this.QUESTION;
         this.questions = generateTrip();
         this.questionIndex = 0;
+        this.playerAnswer = null;
+    }
+
+    submitAnswer(answer: number | null) {
+        this.playerAnswer = answer;
     }
 
     getCurrentQuestion() {
@@ -36,6 +43,7 @@ export default class GameModel {
         if (this.questionIndex < this.questions.length - 1) {
             this.questionIndex += 1;
         }
+        this.playerAnswer = null;
         return this.getCurrentQuestion();
     }
 
