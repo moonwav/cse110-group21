@@ -1,15 +1,7 @@
 import type { QuestionTemplate } from "../data/questionTemplates";
 import { questionTemplates } from "../data/questionTemplates";
 import { formulas } from "./formulas";
-
-export type GeneratedQuestion = {
-  id: string;
-  scenario: string;
-  prompt: string;
-  answer: number;
-  points: number;
-  hint: string;
-};
+import Question from "./question";
 
 const money = (value: number) => Math.round(value * 100) / 100;
 
@@ -23,24 +15,25 @@ function pickedNumbers(template: QuestionTemplate, random: () => number) {
 
 export function generateQuestion(
   template: QuestionTemplate,
+  questionNumber: number,
   random: () => number = Math.random,
-): GeneratedQuestion {
+): Question {
   const numbers = pickedNumbers(template, random);
   let prompt = template.prompt;
   for (const [name, value] of Object.entries(numbers)) {
     prompt = prompt.split(`{${name}}`).join(String(money(value)));
   }
 
-  return {
-    id: template.id,
-    scenario: template.scenario,
+  return new Question(
+    questionNumber,
+    template.scenario,
     prompt,
-    answer: money(formulas[template.formula](numbers)),
-    points: template.points,
-    hint: template.hint,
-  };
+    money(formulas[template.formula](numbers)),
+  );
 }
 
 export function generateTrip(random: () => number = Math.random) {
-  return questionTemplates.map((template) => generateQuestion(template, random));
+  return questionTemplates.map((template, index) =>
+    generateQuestion(template, index + 1, random),
+  );
 }

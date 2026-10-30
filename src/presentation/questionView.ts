@@ -245,6 +245,13 @@ export default class QuestionView implements View{
 		return this.group;
 	}
 
+	showQuestion(question: Question) {
+		this.question = question;
+		this.title.text(`Question ${question.getQuestionNumber()} of 10`);
+		this.question_location.text(question.getLocation());
+		this.question_text.text(question.getQuestion());
+	}
+
 	showHint() {
 		//code to show hint and add reveal button
 	}
