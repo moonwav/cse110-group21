@@ -1,8 +1,10 @@
+import type { Formula } from "../data/questionTemplates";
+
 export type Numbers = Record<string, number>;
 
 const percent = (amount: number, rate: number) => (amount * rate) / 100;
 
-export const formulas = {
+export const formulas: Record<Formula, (n: Numbers) => number> = {
   percentOf: (n: Numbers) => percent(n.budget, n.percent),
   discount: (n: Numbers) => n.price - percent(n.price, n.percent),
   tip: (n: Numbers) => n.price + percent(n.price, n.percent),
@@ -18,5 +20,3 @@ export const formulas = {
     return sale + percent(sale, n.tax);
   },
 };
-
-export type Formula = keyof typeof formulas;
