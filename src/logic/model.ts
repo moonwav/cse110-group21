@@ -37,7 +37,7 @@ export default class GameModel {
     submitAnswer(answer: number | null) {
         this.playerAnswer = answer;
         this.answerIsCorrect =
-            answer !== null && this.getCurrentQuestion().matches(answer);
+            answer === null ? null : this.getCurrentQuestion().matches(answer);
     }
 
     getCurrentQuestion() {

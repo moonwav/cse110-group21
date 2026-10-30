@@ -275,7 +275,16 @@ export default class QuestionView implements View{
 		this.title.text(`Question ${question.getQuestionNumber()} of 10`);
 		this.question_location.text(question.getLocation());
 		this.question_text.text(question.getQuestion());
+		this.answer_header.text("Type answer below");
 		this.answer_input.value = "";
+	}
+
+	showInvalid() {
+		this.answer_header.text("Enter a number.");
+	}
+
+	clearInvalid() {
+		this.answer_header.text("Type answer below");
 	}
 
 	showHint() {
