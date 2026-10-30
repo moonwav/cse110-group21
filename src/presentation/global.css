@@ -1,0 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&family=Silkscreen:wght@400;700&display=swap");
+
+html,
+body,
+#game {
+  margin: 0;
+  height: 100%;
+}
+
+#game {
+  position: relative;
+  overflow: auto;
+  background: #4a5a9a;
+}

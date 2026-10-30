@@ -64,7 +64,7 @@ Full details: [Game vision and decisions](docs/decisions.md)
 | [Contributing](CONTRIBUTING.md) | Branching, pull requests, definition of done |
 | [Figma mockups](https://www.figma.com/design/bQuWbczVU3FqEZtMuZA6Tx/CSE-110-Mockup?node-id=0-1&t=fXMIbBTT8kAez9Qe-0) | UI screens, including error and hint paths |
 | [Module view (Figma)](https://www.figma.com/design/QOx6lEtyU4C2QbAcc2jVZ7/Module-View-CSE110?node-id=0-1&t=yPAnapl2EZCjIfL0-1) | Static architecture diagram |
-| [GitHub Project](https://github.com/moonwav/cse110-group21/projects/4) | User stories, tasks, estimates, priorities |
+| [GitHub Project](https://github.com/users/moonwav/projects/4/views/1) | User stories, tasks, estimates, priorities |
 
 
 ## Team (Team 21)
