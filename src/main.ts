@@ -71,7 +71,8 @@ class Game implements ScreenSwitcher {
 		// Draw the layer (render everything to the canvas)
 
 		// Start with menu screen visible
-		this.resultController.getView().show();
+		// this.switchToScreen({ type: "menu" })
+		this.switchToScreen({ type: "result", data: { percent: 72, wrongAnswers: 4, hintsUsed: 2 } });
 		this.layer.draw();
 	}
 
@@ -104,8 +105,8 @@ class Game implements ScreenSwitcher {
 				break;
 
 			case "result":
-				// Show results with the final score
-				this.resultController.show();
+				// Show results with the final data
+				this.resultController.show(screen.data);
 				break;
 
 			case "info":

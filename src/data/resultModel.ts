@@ -54,15 +54,15 @@ const grades: Grade[] = [
 ];
 
 const placeholderResults: ResultData = {
-  percent: 95,
-  wrongAnswers: 7,
-  hintsUsed: 15,
+  percent: 0,
+  wrongAnswers: 0,
+  hintsUsed: 0,
 };
 
 export class ResultModel {
-  private data: ResultData;
+  private data: ResultData = placeholderResults;
 
-  constructor(data: ResultData = placeholderResults) {
+  setResults(data: ResultData) {
     this.data = data;
   }
 
@@ -71,9 +71,13 @@ export class ResultModel {
   }
 
   getGrade(): Grade {
-    return (
-      grades.find((grade) => this.data.percent >= grade.min) ??
-      grades[grades.length - 1]
-    );
+    // highest grade that qualifies is the grade earned
+    for (const grade of grades) {
+      if (this.data.percent >= grade.min) {
+        return grade;
+      }
+    }
+    // fallback returns F for invalid percents
+    return grades[grades.length - 1];
   }
 }

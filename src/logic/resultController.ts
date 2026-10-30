@@ -1,10 +1,12 @@
 import ResultView from '../presentation/resultView';
 import GameModel from './model';
+import { ResultData, ResultModel } from '../data/resultModel';
 import { ScreenSwitcher, Controller } from "../types";
 
 //will define the ResultsController
 export default class ResultController extends Controller{
     model: GameModel;
+    resultModel: ResultModel;
     view: ResultView;
     screenSwitcher: ScreenSwitcher;
 
@@ -12,6 +14,7 @@ export default class ResultController extends Controller{
                     stage_width: number, stage_height: number) {
         super();
         this.model = model;
+        this.resultModel = new ResultModel();
         this.view = new ResultView(() => this.handleAnswerKeyClick(),
                                     () => this.handleLeaderboardClick(),
                                     () => this.handlePlayAgainClick(),
@@ -30,8 +33,12 @@ export default class ResultController extends Controller{
     handlePlayAgainClick() {
         this.screenSwitcher.switchToScreen({type: "menu"});;
     }
-    
-    show() {
+
+    show(data?: ResultData) {
+        if (data) {
+            this.resultModel.setResults(data);
+        }
+        this.view.updateResults(this.resultModel.getResults(), this.resultModel.getGrade());
         this.view.show();
     }
 

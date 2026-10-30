@@ -1,4 +1,5 @@
 import type { Group } from "konva/lib/Group";
+import { ResultData } from "./data/resultModel";
 
 export interface View {
 	getGroup(): Group;
@@ -12,7 +13,7 @@ export interface View {
  * - "menu": Main menu screen
  * - "question": Main gameplay question screen
  * - "result": Results screen with final score
- *   - score: Final score to display on results screen
+ *   - data: Final numerical results to display on results screen
  * - "info": The how to play instructions screen
  * - "minigame": The minigame screen
  * - "answer": The answer key screen
@@ -20,7 +21,7 @@ export interface View {
 export type Screen =
 	| { type: "menu" }
 	| { type: "question" }
-	| { type: "result" }
+	| { type: "result"; data?: ResultData }
     | { type: "minigame" }
     | { type: "info" }
 	| { type: "answer" };

@@ -1,6 +1,7 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
 import { View } from '../types';
+import { ResultData, Grade } from '../data/resultModel';
 import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
 
 
@@ -107,7 +108,7 @@ export default class ResultView implements View{
 		this.grade_text = new Konva.Text({
 			x: this.stage_width*0.01,
 			y: this.stage_height*0.24,
-			text: "A",  // hard-coded mock data
+			text: "", 
 			fontFamily: this.SILKSCREEN,
 			width: this.stage_width*0.4,
 			fontSize: this.stage_height*0.18,
@@ -135,7 +136,7 @@ export default class ResultView implements View{
 		this.result_text_2 = new Konva.Text({
 			x: this.stage_width*0.32,
 			y: this.stage_height*0.32,
-			text: "PERCENTAGE EXPERT!",  // hard-coded mock data
+			text: "",
 			fontFamily: this.SILKSCREEN,
 			width: this.stage_width*0.5,
 			fontSize: this.stage_height*0.06,
@@ -147,7 +148,7 @@ export default class ResultView implements View{
 		this.result_text_3 = new Konva.Text({
 			x: this.stage_width*0.32,
 			y: this.stage_height*0.42,
-			text: "Budgeted like a pro, great job! Keep practicing to stay sharp.",  // hard-coded mock data
+			text: "", 
 			fontFamily: this.ROBOTO,
 			width: this.stage_width*0.5,
 			fontSize: this.stage_height*0.03,
@@ -181,7 +182,7 @@ export default class ResultView implements View{
 		this.percent_data = new Konva.Text({
 			x: this.stage_width*0.06,
 			y: this.stage_height*0.62,
-			text: "95%",  // hard-coded mock data
+			text: "", 
 			fontFamily: this.SILKSCREEN,
 			width: this.stage_width*0.4,
 			fontSize: this.stage_height*0.05,
@@ -219,7 +220,7 @@ export default class ResultView implements View{
 		this.wrong_data = new Konva.Text({
 			x: this.stage_width*0.31,
 			y: this.stage_height*0.62,
-			text: "3",  // hard-coded mock data
+			text: "", 
 			fontFamily: this.SILKSCREEN,
 			width: this.stage_width*0.4,
 			fontSize: this.stage_height*0.05,
@@ -257,7 +258,7 @@ export default class ResultView implements View{
 		this.hints_data = new Konva.Text({
 			x: this.stage_width*0.56,
 			y: this.stage_height*0.62,
-			text: "8",  // hard-coded mock data
+			text: "",
 			fontFamily: this.SILKSCREEN,
 			width: this.stage_width*0.4,
 			fontSize: this.stage_height*0.05,
@@ -392,6 +393,19 @@ export default class ResultView implements View{
 		this.group.add(this.again_button);
 	}	
 
+	/**
+	 * Update the final score display
+	 */
+	updateResults(results: ResultData, grade: Grade) {
+		this.grade_text.text(grade.letter);
+		this.result_text_2.text(grade.title);
+		this.result_text_3.text(grade.message);
+		this.percent_data.text(`${results.percent}%`);
+		this.wrong_data.text(`${results.wrongAnswers}`);
+		this.hints_data.text(`${results.hintsUsed}`);
+		this.group.getLayer()?.draw();
+	}
+	
 	async loadFonts() {
 		await document.fonts.ready;
 		await Promise.all([
