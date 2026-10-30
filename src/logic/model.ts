@@ -1,3 +1,6 @@
+import Question from './question';
+import { generateTrip } from './QuestionGenerator';
+
 export default class GameModel {
     STARTSTATE = 'start page';
     MINIGAME = 'minigame';
@@ -8,17 +11,32 @@ export default class GameModel {
     gameState: string;
     playerName: string;
     currentScore: number;
+    questions: Question[];
+    questionIndex: number;
 
     constructor() {
         this.gameState = this.STARTSTATE;
         this.playerName = '';
         this.currentScore = 0;
+        this.questions = generateTrip();
+        this.questionIndex = 0;
     }
 
     beginGame() {
         this.gameState = this.QUESTION;
-        //question
-        //update score and question number
+        this.questions = generateTrip();
+        this.questionIndex = 0;
+    }
+
+    getCurrentQuestion() {
+        return this.questions[this.questionIndex];
+    }
+
+    nextQuestion() {
+        if (this.questionIndex < this.questions.length - 1) {
+            this.questionIndex += 1;
+        }
+        return this.getCurrentQuestion();
     }
 
     setPlayer(playerName: string) {
