@@ -264,10 +264,13 @@ export default class QuestionView implements View{
 	}
 
 	getPlayerAnswer() {
-		const text = this.answer_input.value.trim();
-		const value = Number(text);
-		if (text === "" || Number.isNaN(value)) return null;
-		return value;
+    	const text = this.answer_input.value
+        	.trim()
+        	.replace(/^\$/, "")   // allow one leading $
+        	.replace(/,/g, "");   // allow 1,200
+    	// whole number or up to 2 decimal places, e.g. 15, 15.5, 15.50, .50
+    	if (!/^(\d+(\.\d{1,2})?|\.\d{1,2})$/.test(text)) return null;
+    	return Number(text);
 	}
 
 	showQuestion(question: Question) {
