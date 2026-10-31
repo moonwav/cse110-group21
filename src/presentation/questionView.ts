@@ -106,7 +106,7 @@ export default class QuestionView implements View{
 		this.question_text = new Konva.Text ({
 			x: this.stage_width*0.06,
 			y: this.stage_height*0.35,
-			text: `Your name is ${this.question.getQuestion()}`,
+			text: `${this.question.getQuestion()}`,
 			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.05,
 			width: this.stage_width*0.9,
@@ -241,7 +241,7 @@ export default class QuestionView implements View{
 		this.title.text(`Question ${this.question.getQuestionNumber()} of 10`);
 		this.score.text(`Score ${this.score_number}%`);
 		this.question_location.text(`${this.question.location}`);
-		this.question_text.text(`Your name is ${this.question.getQuestion()}`);
+		this.question_text.text(`${this.question.getQuestion()}`);
 		this.group.getLayer()?.draw();
 	}
 
