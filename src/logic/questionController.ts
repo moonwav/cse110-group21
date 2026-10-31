@@ -18,7 +18,10 @@ export default class QuestionController extends Controller{
         this.screenSwitcher = screenSwitcher;
     }
     handleSubmitClick() {
-        this.model.submitAnswer(this.view.getPlayerAnswer());
+        const answer = this.view.getPlayerAnswer();
+        this.model.submitAnswer(answer);
+        if (answer === null) this.view.showInvalid();
+        else this.view.clearInvalid();
     }
 
     handleHintClick() {
