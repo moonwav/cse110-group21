@@ -18,9 +18,7 @@ export default class QuestionController extends Controller{
         this.screenSwitcher = screenSwitcher;
     }
     handleSubmitClick() {
-        //tell model to check submission?
-        //display if the answer is correct or not
-        //
+        this.model.submitAnswer(this.view.getPlayerAnswer());
     }
 
     handleHintClick() {
