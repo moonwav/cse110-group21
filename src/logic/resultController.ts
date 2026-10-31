@@ -31,7 +31,7 @@ export default class ResultController extends Controller{
     }
 
     handlePlayAgainClick() {
-        this.screenSwitcher.switchToScreen({type: "menu"});;
+        this.screenSwitcher.switchToScreen({type: "question"});;
     }
 
     show(data?: ResultData) {
