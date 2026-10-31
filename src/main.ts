@@ -5,6 +5,7 @@ import MainMenuController from './logic/mainMenuController';
 import QuestionController from './logic/questionController';
 import InfoController from './logic/infoController';
 import ResultController from './logic/resultController';
+import AnswerController from './logic/answerController';
 import MinigameController from './logic/minigameController';
 import type { ScreenSwitcher, Screen } from "./types.ts";
 
@@ -29,7 +30,8 @@ class Game implements ScreenSwitcher {
 	private questionController: QuestionController;
 	private infoController: InfoController;
 	//private minigameController: MinigameController;
-	//private resultsController: ResultController;
+	private resultController: ResultController;
+    private answerController: AnswerController;
 
 	private model: GameModel;
 
@@ -54,20 +56,23 @@ class Game implements ScreenSwitcher {
 		this.menuController = new MainMenuController(this.model, this, this.stage_width, this.stage_height);
 		this.infoController = new InfoController(this.model, this, this.stage_width, this.stage_height);
 		this.questionController = new QuestionController(this.model, this, this.stage_width, this.stage_height);
-		//this.resultsController = new ResultController(this.model, this);
+		this.resultController = new ResultController(this.model, this, this.stage_width, this.stage_height);
+        this.answerController = new AnswerController(this.model, this, this.stage_width, this.stage_height);
 		//this.minigameController = new MinigameController(this.model, this);
 
 		// Add all screen groups to the layer
 		// All screens exist simultaneously but only one is visible at a time
 		this.layer.add(this.menuController.getView().getGroup());
 		this.layer.add(this.questionController.getView().getGroup());
-		//this.layer.add(this.resultsController.getView().getGroup());
+		this.layer.add(this.resultController.getView().getGroup());
 		this.layer.add(this.infoController.getView().getGroup());
+        this.layer.add(this.answerController.getView().getGroup());
 		//this.layer.add(this.minigameController.getView().getGroup());
 		// Draw the layer (render everything to the canvas)
 
 		// Start with menu screen visible
-		this.menuController.getView().show();
+		// this.switchToScreen({ type: "menu" })
+		this.switchToScreen({ type: "result", data: { percent: 72, wrongAnswers: 4, hintsUsed: 2 } });
 		this.layer.draw();
 	}
 
@@ -85,7 +90,8 @@ class Game implements ScreenSwitcher {
 		this.menuController.hide();
 		this.questionController.hide();
 		this.infoController.hide();
-		//this.resultsController.hide();
+		this.resultController.hide();
+        this.answerController.hide();
 
 		// Show the requested screen based on the screen type
 		switch (screen.type) {
@@ -98,13 +104,17 @@ class Game implements ScreenSwitcher {
 				this.questionController.show();
 				break;
 
-			//case "result":
-				// Show results with the final score
-				//this.resultsController.showResults(screen.score);
-				//break;
+			case "result":
+				// Show results with the final data
+				this.resultController.show(screen.data);
+				break;
 
 			case "info":
 				this.infoController.show();
+				break;
+
+            case "answer":
+				this.answerController.show();
 				break;
 
 			//case "minigame":
