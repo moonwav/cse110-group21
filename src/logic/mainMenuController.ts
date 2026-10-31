@@ -23,19 +23,16 @@ export default class MainMenuController extends Controller{
         this.view.enterName();
         //this.hide();
         console.log(this.model.getPlayer());
-        this.model.setStateQuestion();
         //this.screenSwitcher.switchToScreen({type: "question"});
     }
 
     handleInfoClick() {
         this.hide();
-        this.model.setStateInfo();
         this.screenSwitcher.switchToScreen({type: "info"});
     }
 
     handleMinigameClick() {
         this.hide();
-        this.model.setStateMinigame();
         this.screenSwitcher.switchToScreen({type: "minigame"});
     }
     

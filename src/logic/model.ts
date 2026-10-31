@@ -3,13 +3,6 @@ import { generateTrip } from './QuestionGenerator';
 import { ResultData } from '../data/resultModel';
 
 export default class GameModel {
-    // STARTSTATE = 'start page';
-    // MINIGAME = 'minigame';
-    // QUESTION = 'question state';
-    // RECAP = 'game over';
-    // INFO = 'How to play';
-    
-    // gameState: string;
     playerName: string;
     currentScore: number;
     playerAnswer: number | null;
@@ -88,29 +81,5 @@ export default class GameModel {
     incrementWrongAnswer() {
         this.wrongAnswers++;
     }
-
-    // setStateMinigame() {
-    //     this.gameState = this.MINIGAME;
-    // }
-
-    // setStateInfo() {
-    //     this.gameState = this.INFO
-    // }
-
-    // setStateQuestion() {
-    //     this.gameState = this.QUESTION;
-    // }
-
-    // setStateStart() {
-    //     this.gameState = this.STARTSTATE;
-    // }
-
-    // setStateRecap() {
-    //     this.gameState = this.RECAP;
-    // }
-
-    // getState() {
-    //     return this.gameState;
-    // }
 
 }
