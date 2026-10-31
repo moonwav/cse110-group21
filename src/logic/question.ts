@@ -1,3 +1,9 @@
+export function parsePlayerAnswer(text: string): number | null {
+    const cleaned = text.trim().replace(/^\$/, "").replace(/,/g, "");
+    if (!/^(\d+(\.\d{1,2})?|\.\d{1,2})$/.test(cleaned)) return null;
+    return Number(cleaned);
+}
+
 export default class Question {
     question_number: number;
     location: string;
