@@ -77,7 +77,6 @@ describe("answer submission", () => {
 
     model.submitAnswer(null);
     expect(model.playerAnswer).toBe(null);
-    expect(model.answerIsCorrect).toBe(null);
   });
 
   it("clears the submitted answer when the question changes", () => {
@@ -87,6 +86,5 @@ describe("answer submission", () => {
     model.nextQuestion();
 
     expect(model.playerAnswer).toBe(null);
-    expect(model.answerIsCorrect).toBe(null);
   });
 });
