@@ -23,15 +23,16 @@ export default class ResultController extends Controller{
     }
 
     handleAnswerKeyClick() {
-        this.screenSwitcher.switchToScreen({type: "answer"});;
+        this.screenSwitcher.switchToScreen({type: "answer"});
     }
 
     handleLeaderboardClick() {
+        // show leaderboard
         return;
     }
 
     handlePlayAgainClick() {
-        this.screenSwitcher.switchToScreen({type: "question"});;
+        this.screenSwitcher.switchToScreen({type: "question"});
     }
 
     show(data?: ResultData) {

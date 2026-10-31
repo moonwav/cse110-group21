@@ -72,7 +72,6 @@ class Game implements ScreenSwitcher {
 
 		// Start with menu screen visible
 		this.switchToScreen({ type: "question" })
-		// this.switchToScreen({ type: "result", data: { percent: 72, wrongAnswers: 4, hintsUsed: 2 } });
 		this.layer.draw();
 	}
 
