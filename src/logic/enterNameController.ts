@@ -18,7 +18,6 @@ export default class EnterNameController extends Controller{
     
 
     handleReady() {
-        this.model.setStateQuestion();
         this.screenSwitcher.switchToScreen({type: "question"});
     }
 
