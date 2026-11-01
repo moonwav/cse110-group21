@@ -24,13 +24,10 @@ export default class MainMenuController extends Controller{
     }
 
     handleInfoClick() {
-        this.model.setStateInfo();
         this.screenSwitcher.switchToScreen({type: "info"});
     }
 
     handleMinigameClick() {
-        this.hide();
-        this.model.setStateMinigame();
         this.screenSwitcher.switchToScreen({type: "minigame"});
     }
     
