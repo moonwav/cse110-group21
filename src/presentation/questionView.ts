@@ -27,6 +27,7 @@ export default class QuestionView implements View{
 
 	answer_header: Konva.Text;
 	answer_bubble: Konva.Rect;
+	answer_input: HTMLInputElement;
 
 	submit_button_shape: Konva.Rect;
 	submit_button_text: Konva.Text;

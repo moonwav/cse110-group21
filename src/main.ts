@@ -55,12 +55,24 @@ class Game implements ScreenSwitcher {
 		this.model = new GameModel();
 		// Initialize all screen controllers
 		// Each controller manages a Model, View, and handles user interactions
-		this.menuController = new MainMenuController(this.model, this, this.stage_width, this.stage_height);
-		this.infoController = new InfoController(this.model, this, this.stage_width, this.stage_height);
-		this.enterNameController = new EnterNameController(this.model, this, this.stage_width, this.stage_height);
-		this.questionController = new QuestionController(this.model, this, this.stage_width, this.stage_height);
-		this.resultController = new ResultController(this.model, this, this.stage_width, this.stage_height);
-        this.answerController = new AnswerController(this.model, this, this.stage_width, this.stage_height);
+		this.menuController = new MainMenuController(this.model, this, 
+													this.stage_width, 
+													this.stage_height);
+		this.infoController = new InfoController(this.model, this, 
+												this.stage_width, 
+												this.stage_height);
+		this.enterNameController = new EnterNameController(this.model, this, 
+														this.stage_width, 
+														this.stage_height);
+		this.questionController = new QuestionController(this.model, this, 
+														this.stage_width, 
+														this.stage_height);
+		this.resultController = new ResultController(this.model, this, 
+													this.stage_width, 
+													this.stage_height);
+        this.answerController = new AnswerController(this.model, this, 
+													this.stage_width, 
+													this.stage_height);
 		//this.minigameController = new MinigameController(this.model, this);
 
 		// Add all screen groups to the layer
@@ -75,7 +87,7 @@ class Game implements ScreenSwitcher {
 		// Draw the layer (render everything to the canvas)
 
 		// Start with menu screen visible
-		this.switchToScreen({ type: "question" })
+		this.switchToScreen({type: "menu"});
 
 		this.layer.draw();
 	}
@@ -96,6 +108,7 @@ class Game implements ScreenSwitcher {
 		this.questionController.hide();
 		this.enterNameController.hide();
         this.answerController.hide();
+		this.resultController.hide();
 
 		// Show the requested screen based on the screen type
 		switch (screen.type) {

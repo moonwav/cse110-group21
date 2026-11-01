@@ -17,6 +17,7 @@ export default class QuestionController extends Controller{
                     () => this.handleRevealClick(), stage_width, stage_height);
         this.screenSwitcher = screenSwitcher;
     }
+
     handleSubmitClick() {
         const answer = this.view.getPlayerAnswer();
         this.model.submitAnswer(answer);
@@ -48,7 +49,8 @@ export default class QuestionController extends Controller{
     }
 
     endGame() {
-        this.screenSwitcher.switchToScreen({ type: "result", data: this.model.getResults() });
+        this.screenSwitcher.switchToScreen({ type: "result", 
+                                             data: this.model.getResults() });
     }
 
     show() {
