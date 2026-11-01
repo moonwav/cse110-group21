@@ -112,7 +112,7 @@ export default class EnterNameView implements View {
         return await this.waitForUsername(this.input);
     }
 
-    async displayWelcomeMessage(onReady: () => void){
+    async displayWelcomeMessage(onReadyClick: () => void){
         this.name_entry_text.remove();
         this.name_box.remove();
         const welcome_message = new Konva.Text({
@@ -126,28 +126,37 @@ export default class EnterNameView implements View {
             verticalAlign: 'center',
             fill: 'white',
         });
-        const ready_instructions = new Konva.Text({
-            x: this.stage_width*0.2,
-            y: this.stage_height*0.75,
-            text: `Press any key to begin`,
+
+        const ready_button_shape = new Konva.Rect({
+            x: this.stage_width*0.3,
+            y: this.stage_height*0.6,
+            width: this.stage_width*0.4,
+            height: this.stage_height*0.09,
+            cornerRadius: 25,
+            fill: BUTTON_COLOR,
+        });
+        
+        const ready_button_text = new Konva.Text({
+            x: this.stage_width*0.3,
+            y: this.stage_height*0.605,
+            text: "ready?",
             fontFamily: this.SILKSCREEN,
-            width: this.stage_width*0.6,
-            fontSize: this.stage_height*0.05,
+            width: this.stage_width*0.4,
+            fontSize: this.stage_height*0.068,
             align: 'center',
             verticalAlign: 'center',
-            fill: 'white',
+            fill: 'Black',
         });
+        
+        const ready_button = new Konva.Group();
+    
+        ready_button.add(ready_button_shape);
+        ready_button.add(ready_button_text);
+        ready_button.on('click', onReadyClick);
         this.group.add(welcome_message);
-        this.group.add(ready_instructions);
+        this.group.add(ready_button);
+
         this.group.getLayer()?.draw();
-        const stage = this.group.getStage();
-        if (stage != null) {
-            stage.container().tabIndex = 1;
-            stage.container().focus();
-            stage.container().addEventListener('keydown', (e) => {
-                onReady();
-            });
-        };
     }
 
 

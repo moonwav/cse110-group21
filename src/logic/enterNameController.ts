@@ -17,7 +17,7 @@ export default class EnterNameController extends Controller{
     }
     
 
-    handleReady() {
+    handleReadyClick() {
         this.screenSwitcher.switchToScreen({type: "question"});
     }
 
@@ -25,7 +25,7 @@ export default class EnterNameController extends Controller{
     async show() {
         this.view.show();
         this.model.setPlayer(await this.view.getUsername());
-        await this.view.displayWelcomeMessage(() => this.handleReady());3
+        await this.view.displayWelcomeMessage(() => this.handleReadyClick());
     }
 
     hide() {
