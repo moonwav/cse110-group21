@@ -20,13 +20,22 @@ export default class QuestionController extends Controller{
     handleSubmitClick() {
         const answer = this.view.getPlayerAnswer();
         this.model.submitAnswer(answer);
-        if (answer === null) this.view.showInvalid();
-        else this.view.clearInvalid();
+        if (answer === null) {
+            this.view.showInvalid();
+            return;
+        }
+        this.view.clearInvalid();
+        if (this.model.isLastQuestion()) {
+            this.endGame();
+        } else {
+            this.newQuestion();
+        }
     }
 
     handleHintClick() {
         //tell view to show hint
         //tell model to update score
+        this.model.incrementHintsUsed();
     }
 
     handleRevealClick() {
@@ -38,7 +47,12 @@ export default class QuestionController extends Controller{
         this.view.showQuestion(this.model.nextQuestion());
     }
 
+    endGame() {
+        this.screenSwitcher.switchToScreen({ type: "result", data: this.model.getResults() });
+    }
+
     show() {
+        this.model.beginGame();
         this.view.showQuestion(this.model.getCurrentQuestion());
         this.view.show();
     }
