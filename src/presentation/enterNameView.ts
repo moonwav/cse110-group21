@@ -1,15 +1,12 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
 import { View } from '../types';
-import { PRIMARY_COLOR, SECONDARY_COLOR, 
-        BUTTON_COLOR, loadFonts } from './viewConstants';
+import { PRIMARY_COLOR, BUTTON_COLOR, loadFonts } from './viewConstants';
 import GameModel from '../logic/model';
 
 
 //Defines the MainMenuView class
 export default class EnterNameView implements View {
-
-    NO_NAME = 'No name entered';
     
     SILKSCREEN = 'Silkscreen';
 
@@ -21,6 +18,8 @@ export default class EnterNameView implements View {
     name_card: Konva.Rect;
     name_entry_text: Konva.Text;
     name_box: Konva.Rect;
+
+    invalid_msg: Konva.Text;
 
     input: HTMLInputElement;
 
@@ -75,6 +74,18 @@ export default class EnterNameView implements View {
         this.input = document.createElement('input');
         document.body.appendChild(this.input);
 
+        this.invalid_msg = new Konva.Text({
+            x: this.stage_width*0.2,
+            y: this.stage_height*0.75,
+            text: 'Please enter a valid username',
+            fontFamily: this.SILKSCREEN,
+            width: this.stage_width*0.6,
+            fontSize: this.stage_height*0.05,
+            align: 'center',
+            verticalAlign: 'center',
+            fill: 'Black',
+        });
+            
         loadFonts();
         this.group = new Konva.Group();
         this.group.add(this.background_blur);
@@ -96,6 +107,9 @@ export default class EnterNameView implements View {
     }
 
     async getUsername(): Promise<string> {
+        this.input = document.createElement('input');
+        document.body.appendChild(this.input);
+
         const areaPosition = {
             x: this.stage_width*0.33,
             y: this.stage_height*0.6
@@ -112,9 +126,16 @@ export default class EnterNameView implements View {
         return await this.waitForUsername(this.input);
     }
 
-    async displayWelcomeMessage(onReadyClick: () => void){
+    showInvalid(){
+        this.group.add(this.invalid_msg);
+        this.group.getLayer()?.draw();
+    }
+
+    displayWelcomeMessage(onReadyClick: () => void){
         this.name_entry_text.remove();
         this.name_box.remove();
+        this.invalid_msg.remove();
+
         const welcome_message = new Konva.Text({
             x: this.stage_width*0.2,
             y: this.stage_height*0.3,
@@ -129,7 +150,7 @@ export default class EnterNameView implements View {
 
         const ready_button_shape = new Konva.Rect({
             x: this.stage_width*0.3,
-            y: this.stage_height*0.6,
+            y: this.stage_height*0.72,
             width: this.stage_width*0.4,
             height: this.stage_height*0.09,
             cornerRadius: 25,
@@ -138,7 +159,7 @@ export default class EnterNameView implements View {
         
         const ready_button_text = new Konva.Text({
             x: this.stage_width*0.3,
-            y: this.stage_height*0.605,
+            y: this.stage_height*0.725,
             text: "ready?",
             fontFamily: this.SILKSCREEN,
             width: this.stage_width*0.4,

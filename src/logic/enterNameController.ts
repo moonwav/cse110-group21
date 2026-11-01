@@ -24,9 +24,21 @@ export default class EnterNameController extends Controller{
 
     async show() {
         this.view.show();
-        this.model.setPlayer(await this.view.getUsername());
-        await this.view.displayWelcomeMessage(() => this.handleReadyClick());
+        this.model.setPlayer(await this.getPlayerName());
+        this.view.displayWelcomeMessage(() => this.handleReadyClick());
     }
+
+    async getPlayerName(): Promise<string> {
+        let name = await this.view.getUsername();
+        if (name ===  "" || name === null) {
+            this.view.showInvalid();
+            return this.getPlayerName();
+        }
+        else {
+            return name;
+        }
+    }
+
 
     hide() {
         this.view.hide();
