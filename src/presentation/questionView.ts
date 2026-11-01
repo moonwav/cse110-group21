@@ -1,7 +1,7 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
 import GameModel from '../logic/model';
-import Question from '../logic/question';
+import Question, { parsePlayerAnswer } from '../logic/question';
 import { View } from '../types';
 import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
 
@@ -264,13 +264,7 @@ export default class QuestionView implements View{
 	}
 
 	getPlayerAnswer() {
-		const text = this.answer_input.value
-			.trim()
-			.replace(/^\$/, "")   // allow one leading $
-			.replace(/,/g, "");   // allow 1,200
-		// whole number or up to 2 decimal places, e.g. 15, 15.5, 15.50, .50
-		if (!/^(\d+(\.\d{1,2})?|\.\d{1,2})$/.test(text)) return null;
-		return Number(text);
+		return parsePlayerAnswer(this.answer_input.value);
 	}
 
 	showQuestion(question: Question) {
