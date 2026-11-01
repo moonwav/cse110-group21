@@ -32,8 +32,4 @@ export default class Question {
     getAnswer() {
         return this.answer;
     }
-
-    matches(answer: number) {
-        return Math.round(answer * 100) === Math.round(this.answer * 100);
-    }
 }

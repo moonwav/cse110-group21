@@ -6,7 +6,6 @@ export default class GameModel {
     playerName: string;
     currentScore: number;
     playerAnswer: number | null;
-    answerIsCorrect: boolean | null;
     questions: Question[];
     questionIndex: number;
     wrongAnswers: number;
@@ -17,7 +16,6 @@ export default class GameModel {
         this.playerName = '';
         this.currentScore = 0;
         this.playerAnswer = null;
-        this.answerIsCorrect = null;
         this.questions = generateTrip();
         this.questionIndex = 0;
         this.wrongAnswers = 0;
@@ -29,7 +27,6 @@ export default class GameModel {
         this.questions = generateTrip();
         this.questionIndex = 0;
         this.playerAnswer = null;
-        this.answerIsCorrect = null;
         this.currentScore = 0;
         this.wrongAnswers = 0;
         this.hintsUsed = 0;
@@ -37,8 +34,6 @@ export default class GameModel {
 
     submitAnswer(answer: number | null) {
         this.playerAnswer = answer;
-        this.answerIsCorrect =
-            answer === null ? null : this.getCurrentQuestion().matches(answer);
     }
 
     getCurrentQuestion(): Question {
@@ -50,7 +45,6 @@ export default class GameModel {
             this.questionIndex += 1;
         }
         this.playerAnswer = null;
-        this.answerIsCorrect = null;
         return this.getCurrentQuestion();
     }
 
