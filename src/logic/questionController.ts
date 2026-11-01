@@ -1,8 +1,6 @@
 import QuestionView from '../presentation/questionView';
 import GameModel from './model';
 import { ScreenSwitcher, Controller } from "../types";
-import Question from './question';
-
 //will define the MainMenuController
 export default class QuestionController extends Controller{
     model: GameModel;
@@ -13,18 +11,14 @@ export default class QuestionController extends Controller{
                 stage_width: number, stage_height: number) {
         super();
         this.model = model;
-        this.view = new QuestionView(this.model, new Question(3, 
-                    'Souvenir Shop', 'a really good question here', 15), 
-                    20, () => this.handleSubmitClick(), 
+        this.view = new QuestionView(this.model, this.model.getCurrentQuestion(), 
+                    this.model.currentScore, () => this.handleSubmitClick(), 
                     () => this.handleHintClick(), 
                     () => this.handleRevealClick(), stage_width, stage_height);
         this.screenSwitcher = screenSwitcher;
     }
-
     handleSubmitClick() {
-        //tell model to check submission?
-        //display if the answer is correct or not
-        //
+        this.model.submitAnswer(this.view.getPlayerAnswer());
     }
 
     handleHintClick() {
@@ -38,14 +32,12 @@ export default class QuestionController extends Controller{
     }
     
     newQuestion() {
-        //tell model to make new question instance?
-        //update current question.
-        this.show();
+        this.view.showQuestion(this.model.nextQuestion());
     }
 
     show() {
+        this.view.showQuestion(this.model.getCurrentQuestion());
         this.view.show();
-        this.view.displayQuestion();
     }
 
     hide() {

@@ -26,4 +26,11 @@ export default class Question {
     getAnswer() {
         return this.answer;
     }
+<<<<<<< HEAD
+=======
+
+    matches(answer: number) {
+        return Math.round(answer * 100) === Math.round(this.answer * 100);
+    }
+>>>>>>> e6f8cb43442b60a166c5a042af603d10f4ffaeab
 }

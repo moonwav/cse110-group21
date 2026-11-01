@@ -29,6 +29,7 @@ export default class MainMenuController extends Controller{
     }
 
     handleMinigameClick() {
+        this.hide();
         this.model.setStateMinigame();
         this.screenSwitcher.switchToScreen({type: "minigame"});
     }

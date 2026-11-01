@@ -134,6 +134,14 @@ export default class QuestionView implements View{
 			fill: 'White',
 		});
 
+		this.answer_input = document.createElement("input");
+		this.answer_input.className = "answer-field";
+		this.answer_input.inputMode = "decimal";
+		this.answer_input.autocomplete = "off";
+		this.answer_input.setAttribute("aria-label", "Your answer");
+		this.placeAnswerInput();
+		document.getElementById("container")?.append(this.answer_input);
+
 		this.submit_button_shape = new Konva.Rect({
 			x: this.stage_width*0.375,
 			y: this.stage_height*0.83,
@@ -253,18 +261,45 @@ export default class QuestionView implements View{
 		return this.group;
 	}
 
+	placeAnswerInput() {
+		const box = this.answer_bubble;
+		this.answer_input.style.left = `${box.x() + 24}px`;
+		this.answer_input.style.top = `${box.y() + box.height() / 2 - 20}px`;
+		this.answer_input.style.width = `${box.width() - 48}px`;
+		this.answer_input.style.height = "40px";
+		this.answer_input.style.fontSize = "32px";
+	}
+
+	getPlayerAnswer() {
+    	const text = this.answer_input.value
+        	.trim()
+        	.replace(/^\$/, "")   // allow one leading $
+        	.replace(/,/g, "");   // allow 1,200
+    	// whole number or up to 2 decimal places, e.g. 15, 15.5, 15.50, .50
+    	if (!/^(\d+(\.\d{1,2})?|\.\d{1,2})$/.test(text)) return null;
+    	return Number(text);
+	}
+
+	showQuestion(question: Question) {
+		this.question = question;
+		this.title.text(`Question ${question.getQuestionNumber()} of 10`);
+		this.question_location.text(question.getLocation());
+		this.question_text.text(question.getQuestion());
+		this.answer_input.value = "";
+	}
+
 	showHint() {
 		//code to show hint and add reveal button
 	}
 
 	hide() {
 		this.group.visible(false);
-		this.group.getLayer()?.draw();
+		this.answer_input.style.display = "none";
 	}
 
 	show() {
 		this.group.visible(true);
-		this.group.getLayer()?.draw();
+		this.answer_input.style.display = "block";
 	}
 
 }

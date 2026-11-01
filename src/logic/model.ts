@@ -1,22 +1,56 @@
+import Question from './question';
+import { generateTrip } from './QuestionGenerator';
+
 export default class GameModel {
-    private STARTSTATE = 'start page';
-    private MINIGAME = 'minigame';
-    private QUESTION = 'question state';
-    private RECAP = 'game over';
-    private INFO = 'How to play';
+    STARTSTATE = 'start page';
+    MINIGAME = 'minigame';
+    QUESTION = 'question state';
+    RECAP = 'game over';
+    INFO = 'How to play';
     
-    private gameState: string;
-    private playerName: string;
-    private currentScore: number;
+    gameState: string;
+    playerName: string;
+    currentScore: number;
+    playerAnswer: number | null;
+    answerIsCorrect: boolean | null;
+    questions: Question[];
+    questionIndex: number;
 
     constructor() {
         this.gameState = this.STARTSTATE;
         this.playerName = '';
         this.currentScore = 0;
+        this.playerAnswer = null;
+        this.answerIsCorrect = null;
+        this.questions = generateTrip();
+        this.questionIndex = 0;
     }
 
-    newQuestion() {
-        
+    beginGame() {
+        this.gameState = this.QUESTION;
+        this.questions = generateTrip();
+        this.questionIndex = 0;
+        this.playerAnswer = null;
+        this.answerIsCorrect = null;
+    }
+
+    submitAnswer(answer: number | null) {
+        this.playerAnswer = answer;
+        this.answerIsCorrect =
+            answer !== null && this.getCurrentQuestion().matches(answer);
+    }
+
+    getCurrentQuestion() {
+        return this.questions[this.questionIndex];
+    }
+
+    nextQuestion() {
+        if (this.questionIndex < this.questions.length - 1) {
+            this.questionIndex += 1;
+        }
+        this.playerAnswer = null;
+        this.answerIsCorrect = null;
+        return this.getCurrentQuestion();
     }
 
     setPlayer(playerName: string) {
@@ -50,4 +84,5 @@ export default class GameModel {
     getState() {
         return this.gameState;
     }
+
 }
