@@ -1,6 +1,8 @@
 import Question from './question';
 import { generateTrip } from './QuestionGenerator';
 import { ResultData } from '../data/resultModel';
+import { DatabaseSync } from 'node:sqlite';
+import { findInDatabase, isInDatabase, openDatabase, addToDatabase, PlayerRow } from '../data/database';
 
 export default class GameModel {
     playerName: string;
@@ -10,7 +12,6 @@ export default class GameModel {
     questionIndex: number;
     wrongAnswers: number;
     hintsUsed: number;
-    
 
     constructor() {
         this.playerName = '';
@@ -74,4 +75,5 @@ export default class GameModel {
     incrementWrongAnswer() {
         this.wrongAnswers++;
     }
+
 }

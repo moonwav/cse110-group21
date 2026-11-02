@@ -9,6 +9,7 @@ import AnswerController from './logic/answerController';
 import MinigameController from './logic/minigameController';
 import EnterNameController from './logic/enterNameController';
 import type { ScreenSwitcher, Screen } from "./types.ts";
+import { DatabaseSync } from 'node:sqlite';
 
 
 /**

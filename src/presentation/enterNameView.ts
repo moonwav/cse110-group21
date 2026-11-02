@@ -3,7 +3,6 @@ import { View } from '../types';
 import { PRIMARY_COLOR, BUTTON_COLOR, loadFonts } from './viewConstants';
 import GameModel from '../logic/model';
 
-
 //Defines the MainMenuView class
 export default class EnterNameView implements View {
     
@@ -128,7 +127,7 @@ export default class EnterNameView implements View {
         this.group.getLayer()?.draw();
     }
 
-    displayWelcomeMessage(onReadyClick: () => void){
+    displayWelcomeMessage(onReadyClick: () => void, msgModifier: string){
         this.name_entry_text.remove();
         this.name_box.remove();
         this.invalid_msg.remove();
@@ -136,7 +135,7 @@ export default class EnterNameView implements View {
         const welcome_message = new Konva.Text({
             x: this.stage_width*0.2,
             y: this.stage_height*0.3,
-            text: `Hello ${this.model.getPlayer()}!\nWelcome to Percentage City!`,
+            text: `Hello ${this.model.getPlayer()}!\nWelcome${msgModifier} to Percentage City!`,
             fontFamily: this.SILKSCREEN,
             width: this.stage_width*0.6,
             fontSize: this.stage_height*0.068,
