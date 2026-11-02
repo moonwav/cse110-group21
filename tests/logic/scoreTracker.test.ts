@@ -68,3 +68,98 @@ describe("ScoreTracker: answers", () => {
     expect(ScoreTracker.currentScore(model)).toBe(100);
   });
 });
+
+describe("ScoreTracker: hints and reveals", () => {
+  it("takes 2 off the shown score as soon as a hint is used", () => {
+    const model = makeModel();
+    ScoreTracker.applyHint(model);
+    expect(ScoreTracker.currentScore(model)).toBe(98);
+    expect(ScoreTracker.finalScore(model)).toBe(0);
+  });
+
+  it("earns the question's points minus 2 after a hint", () => {
+    const model = makeModel();
+    ScoreTracker.applyHint(model);
+    ScoreTracker.recordCorrect(model);
+    expect(ScoreTracker.finalScore(model)).toBe(5);
+    expect(ScoreTracker.currentScore(model)).toBe(98);
+  });
+
+  it("charges a hint only once per question", () => {
+    const model = makeModel();
+    ScoreTracker.applyHint(model);
+    ScoreTracker.applyHint(model);
+    expect(ScoreTracker.currentScore(model)).toBe(98);
+  });
+
+  it("ignores a hint after the question is answered", () => {
+    const model = makeModel();
+    ScoreTracker.recordCorrect(model);
+    ScoreTracker.applyHint(model);
+    expect(model.getCurrentRecord().hintUsed).toBe(false);
+    expect(ScoreTracker.finalScore(model)).toBe(7);
+  });
+
+  it("ignores a reveal before a hint", () => {
+    const model = makeModel();
+    ScoreTracker.applyReveal(model);
+    expect(model.getCurrentRecord().revealed).toBe(false);
+    expect(ScoreTracker.currentScore(model)).toBe(100);
+  });
+
+  it("makes a revealed question earn 0 with no extra penalty", () => {
+    const model = makeModel();
+    ScoreTracker.applyHint(model);
+    ScoreTracker.applyReveal(model);
+    ScoreTracker.applyReveal(model);
+    expect(ScoreTracker.currentScore(model)).toBe(93);
+    expect(ScoreTracker.finalScore(model)).toBe(0);
+  });
+
+  it("ignores a correct answer after a reveal", () => {
+    const model = makeModel();
+    ScoreTracker.applyHint(model);
+    ScoreTracker.applyReveal(model);
+    ScoreTracker.recordCorrect(model);
+    expect(ScoreTracker.finalScore(model)).toBe(0);
+  });
+
+  it("adds up the points lost across questions", () => {
+    const model = makeModel();
+    ScoreTracker.applyHint(model);
+    ScoreTracker.recordCorrect(model);
+    model.nextQuestion();
+    ScoreTracker.recordCorrect(model);
+    model.nextQuestion();
+    ScoreTracker.applyHint(model);
+    ScoreTracker.applyReveal(model);
+    expect(ScoreTracker.currentScore(model)).toBe(100 - 2 - 14);
+    expect(ScoreTracker.finalScore(model)).toBe(5 + 10 + 0);
+  });
+
+  it("ends a full trip with the shown score equal to the final score", () => {
+    const model = new GameModel();
+    model.setQuestions(generateTrip(() => 0));
+    for (let i = 0; i < model.questions.length; i++) {
+      if (i === 0) ScoreTracker.applyHint(model);
+      if (i === model.questions.length - 1) {
+        ScoreTracker.applyHint(model);
+        ScoreTracker.applyReveal(model);
+      }
+      ScoreTracker.recordCorrect(model);
+      model.nextQuestion();
+    }
+    // Hint on the first (easy) question, reveal on the last (hard) one.
+    expect(ScoreTracker.finalScore(model)).toBe(100 - 2 - 14);
+    expect(ScoreTracker.currentScore(model)).toBe(ScoreTracker.finalScore(model));
+  });
+
+  it("counts a hint followed by a reveal as one hint", () => {
+    const model = makeModel();
+    ScoreTracker.applyHint(model);
+    ScoreTracker.applyReveal(model);
+    model.nextQuestion();
+    ScoreTracker.applyHint(model);
+    expect(ScoreTracker.hintsUsed(model)).toBe(2);
+  });
+});

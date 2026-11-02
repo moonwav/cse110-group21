@@ -6,8 +6,11 @@ import Question from './question';
  *
  * Each question earns its own points (easy 7, medium 10, hard 14; 100 in total).
  * Wrong tries are counted but cost nothing.
+ * A hint costs 2 points from that question; a reveal (only after a hint) makes it earn 0.
  * The score shown during play is 100 minus the points lost so far.
  */
+
+export const HINT_PENALTY = 2;
 
 /** A question is finished once it is answered correctly or revealed. */
 export function isFinished(record: QuestionRecord): boolean {
@@ -16,7 +19,8 @@ export function isFinished(record: QuestionRecord): boolean {
 
 /** Points this question can no longer earn. */
 export function pointsLost(question: Question, record: QuestionRecord): number {
-    // Nothing costs points yet; hints and reveals are added in #50.
+    if (record.revealed) return question.getPoints();
+    if (record.hintUsed) return HINT_PENALTY;
     return 0;
 }
 
@@ -54,4 +58,21 @@ export function recordWrongTry(model: GameModel) {
     const record = model.getCurrentRecord();
     if (isFinished(record)) return;
     record.wrongTries += 1;
+}
+
+export function applyHint(model: GameModel) {
+    const record = model.getCurrentRecord();
+    if (isFinished(record) || record.hintUsed) return;
+    record.hintUsed = true;
+}
+
+export function applyReveal(model: GameModel) {
+    const record = model.getCurrentRecord();
+    if (isFinished(record) || !record.hintUsed) return;
+    record.revealed = true;
+}
+
+/** Questions where a hint was used. A hint followed by a reveal counts once. */
+export function hintsUsed(model: GameModel): number {
+    return model.records.filter((record) => record.hintUsed).length;
 }
