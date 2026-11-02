@@ -3,7 +3,7 @@ import Question from "../../src/logic/question";
 import { checkAnswer } from "../../src/logic/answerChecker";
 
 function check(input: string, answer: number) {
-  const question = new Question(1, "Shop", "What do you pay?", answer);
+  const question = new Question(1, "Shop", "What do you pay?", answer, 7);
   return checkAnswer(input, question);
 }
 
