@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1110" viewBox="0 0 1500 1110"><title>Static view (modules)</title><defs><marker id="arrow" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto"><path d="M1,1 L11,6 L1,11" fill="none" stroke="#000" stroke-width="1.6"/></marker></defs>
+<rect width="1500" height="1110" fill="#fff"/>
+<text x="30" y="42" font-family="Helvetica, Arial, sans-serif" font-size="24" text-anchor="start" font-weight="bold"  fill="#000">Static view: modules</text>
+<rect x="760" y="18" width="715" height="122" fill="#fff" stroke="#000" stroke-width="1"/>
+<text x="772" y="40" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="start" font-weight="bold"  fill="#000">Key</text>
+<polyline points="780,70 830,70" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<text x="840" y="75" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="start" font-weight="normal"  fill="#000">A uses B (imports and calls)</text>
+<polyline points="780,104 830,104" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="3 4" marker-end="url(#arrow)"/>
+<text x="840" y="109" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="start" font-weight="normal"  fill="#000">A calls B over HTTP</text>
+<rect x="1090" y="56" width="90" height="24" fill="#fff" stroke="#000" stroke-width="1.6"/>
+<text x="1135" y="73" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal"  fill="#000">module</text>
+<text x="1192" y="73" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="start" font-weight="normal"  fill="#000">one class or file</text>
+<rect x="1090" y="84" width="90" height="24" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1135" y="101" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal"  fill="#000">planned</text>
+<text x="1192" y="101" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="start" font-weight="normal"  fill="#000">not built yet</text>
+<rect x="1090" y="112" width="90" height="24" fill="none" stroke="#000" stroke-width="2.2"/>
+<text x="1135" y="129" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal"  fill="#000">layer</text>
+<text x="1192" y="129" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="start" font-weight="normal"  fill="#000">folder (dashed: server)</text>
+<rect x="40" y="170" width="320" height="750" fill="none" stroke="#000" stroke-width="2.2" />
+<text x="52" y="198" font-family="Helvetica, Arial, sans-serif" font-size="22" text-anchor="start" font-weight="bold"  fill="#000">View</text>
+<text x="52" y="218" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/presentation/</text>
+<rect x="530" y="170" width="360" height="750" fill="none" stroke="#000" stroke-width="2.2" />
+<text x="542" y="198" font-family="Helvetica, Arial, sans-serif" font-size="22" text-anchor="start" font-weight="bold"  fill="#000">Controller</text>
+<text x="542" y="218" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/logic/*Controller.ts</text>
+<rect x="70" y="245" width="260" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="200.0" y="275.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">MainMenuView</text>
+<rect x="560" y="245" width="300" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="710.0" y="275.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">MainMenuController</text>
+<polyline points="560,270.0 330,270.0" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<rect x="70" y="319" width="260" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="200.0" y="349.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">InfoView</text>
+<rect x="560" y="319" width="300" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="710.0" y="349.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">InfoController</text>
+<polyline points="560,344.0 330,344.0" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<rect x="70" y="393" width="260" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="200.0" y="423.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">StoryView</text>
+<rect x="560" y="393" width="300" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="710.0" y="423.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">StoryController</text>
+<polyline points="560,418.0 330,418.0" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<rect x="70" y="467" width="260" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="200.0" y="497.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">QuestionView</text>
+<rect x="560" y="467" width="300" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="710.0" y="497.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">QuestionController</text>
+<polyline points="560,492.0 330,492.0" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<rect x="70" y="541" width="260" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="200.0" y="571.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">ResultView</text>
+<rect x="560" y="541" width="300" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="710.0" y="571.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">ResultController</text>
+<polyline points="560,566.0 330,566.0" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<rect x="70" y="615" width="260" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="200.0" y="645.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">AnswerKeyView</text>
+<rect x="560" y="615" width="300" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="710.0" y="645.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">AnswerKeyController</text>
+<polyline points="560,640.0 330,640.0" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<rect x="70" y="689" width="260" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="200.0" y="719.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">MinigameView</text>
+<rect x="560" y="689" width="300" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="710.0" y="719.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">MinigameController</text>
+<polyline points="560,714.0 330,714.0" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<rect x="70" y="769" width="260" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="200.0" y="791.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">viewConstants</text>
+<text x="200.0" y="810.0" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#000">colors shared by all views</text>
+<rect x="60" y="990" width="290" height="80" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="205.0" y="1027.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="normal"  fill="#000">types.ts</text>
+<text x="205.0" y="1046.0" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#000">View · Controller · Screen · ScreenSwitcher</text>
+<rect x="470" y="990" width="360" height="80" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="650.0" y="1027.0" font-family="Helvetica, Arial, sans-serif" font-size="18" text-anchor="middle" font-weight="normal"  fill="#000">Game</text>
+<text x="650.0" y="1046.0" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#000">main.ts · implements ScreenSwitcher</text>
+<polyline points="200,920 200,990" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<text x="210" y="960" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="start" font-weight="normal" font-style="italic" fill="#000">implement View</text>
+<polyline points="600,920 600,945 330,945 330,990" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<text x="465" y="938" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="normal" font-style="italic" fill="#000">extend Controller, call ScreenSwitcher</text>
+<polyline points="700,990 700,920" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<text x="710" y="960" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="start" font-weight="normal" font-style="italic" fill="#000">creates</text>
+<polyline points="470,1030 350,1030" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<polyline points="830,1030 960,1030" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<text x="895" y="1020" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="normal" font-style="italic" fill="#000">creates GameModel</text>
+<rect x="960" y="170" width="515" height="925" fill="none" stroke="#000" stroke-width="2.2" />
+<text x="972" y="198" font-family="Helvetica, Arial, sans-serif" font-size="22" text-anchor="start" font-weight="bold"  fill="#000">Model</text>
+<polyline points="890,330 960,330" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<text x="925" y="320" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="normal" font-style="italic" fill="#000">uses</text>
+<rect x="975" y="215" width="485" height="470" fill="none" stroke="#000" stroke-width="2.2" />
+<text x="987" y="238" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold"  fill="#000">Game logic</text>
+<text x="987" y="258" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/logic/</text>
+<rect x="990" y="270" width="210" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1095.0" y="300.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">ScoreTracker</text>
+<rect x="990" y="350" width="210" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1095.0" y="380.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">QuestionGenerator</text>
+<rect x="990" y="430" width="210" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1095.0" y="460.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">AnswerChecker</text>
+<rect x="990" y="510" width="210" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1095.0" y="540.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">HintProvider</text>
+<rect x="990" y="615" width="210" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1095.0" y="645.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">MinigameModel</text>
+<rect x="1245" y="270" width="200" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="1345.0" y="300.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">GameModel</text>
+<rect x="1245" y="380" width="200" height="160" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="1345.0" y="465.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">Question</text>
+<rect x="1245" y="615" width="200" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1345.0" y="645.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">ApiClient</text>
+<polyline points="1200,295 1245,295" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<polyline points="1345.0,320 1345.0,380" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<polyline points="1200,375 1245,395" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<polyline points="1200,455 1245,455" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<polyline points="1200,535 1245,525" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<rect x="975" y="700" width="250" height="100" fill="none" stroke="#000" stroke-width="2.2" />
+<text x="987" y="723" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold"  fill="#000">Data</text>
+<text x="987" y="743" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/data/</text>
+<rect x="1000" y="752" width="200" height="40" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="1100.0" y="776.9" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="normal"  fill="#000">QuestionTemplate</text>
+<polyline points="990,375 982,375 982,772 1000,772" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<rect x="975" y="815" width="485" height="265" fill="none" stroke="#000" stroke-width="2.2" stroke-dasharray="8 5"/>
+<text x="987" y="838" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold"  fill="#000">Backend (server)</text>
+<text x="987" y="858" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/backend/</text>
+<rect x="1290" y="905" width="155" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1367.5" y="935.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">ApiRouter</text>
+<rect x="1110" y="880" width="140" height="44" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1180.0" y="906.9" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="normal"  fill="#000">Accounts</text>
+<rect x="1110" y="965" width="140" height="44" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
+<text x="1180.0" y="991.9" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="normal"  fill="#000">ScoreHolder</text>
+<rect x="990" y="920" width="95" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
+<text x="1037.5" y="949.9" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="normal"  fill="#000">Database</text>
+<polyline points="1345,665 1345,905" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="3 4" marker-end="url(#arrow)"/>
+<text x="1355" y="760" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="start" font-weight="normal" font-style="italic" fill="#000">HTTP</text>
+<polyline points="1290,920 1250,902" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<polyline points="1290,940 1250,987" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<polyline points="1110,902 1085,935" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+<polyline points="1110,987 1085,955" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
+</svg>
