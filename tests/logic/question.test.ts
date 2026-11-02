@@ -67,7 +67,7 @@ describe("input validation", () => {
 describe("answer submission", () => {
   function modelWith(answer: number) {
     const model = new GameModel();
-    model.questions = [new Question(1, "Shop", "What do you pay?", answer)];
+    model.questions = [new Question(1, "Shop", "What do you pay?", answer, 7)];
     model.questionIndex = 0;
     return model;
   }
