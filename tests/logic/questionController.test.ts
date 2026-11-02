@@ -43,6 +43,13 @@ describe("QuestionController submit", () => {
     expect(model.questionCompleted).toBe(false);
   });
 
+  it("clears the previous result message on invalid input", () => {
+    mocks.checkAnswer.mockReturnValue({ status: "invalid", message: "x" });
+    const { controller } = setup();
+    controller.handleSubmitClick("abc");
+    expect(mocks.view.showResult).toHaveBeenCalledWith("");
+  });
+
   it("wrong answer shows retry message and stays unlocked", () => {
     mocks.checkAnswer.mockReturnValue({ status: "incorrect" });
     const { model, controller } = setup();

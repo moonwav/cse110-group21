@@ -28,6 +28,7 @@ export default class QuestionController extends Controller{
         if (this.model.questionCompleted) return;
         const result = checkAnswer(answerText, this.model.getCurrentQuestion());
         if (result.status === "invalid") {
+            this.view.showResult("");
             this.view.showInvalid();
             return;
         }

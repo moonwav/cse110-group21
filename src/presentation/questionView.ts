@@ -342,6 +342,7 @@ export default class QuestionView implements View{
 	}
 
 	showNext() {
+		this.answer_input.disabled = true;
 		this.submit_button.visible(false);
 		this.hint_button.visible(false);
 		this.next_button.visible(true);
@@ -349,6 +350,7 @@ export default class QuestionView implements View{
 	}
 
 	hideNext() {
+		this.answer_input.disabled = false;
 		this.next_button.visible(false);
 		this.submit_button.visible(true);
 		this.hint_button.visible(true);
