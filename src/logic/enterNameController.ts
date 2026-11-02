@@ -29,7 +29,7 @@ export default class EnterNameController extends Controller{
     }
 
     async getPlayerName(): Promise<string> {
-        let name = await this.view.getUsername();
+        let name = (await this.view.getUsername()).trim();
         if (name ===  "" || name === null) {
             this.view.showInvalid();
             return this.getPlayerName();

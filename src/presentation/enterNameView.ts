@@ -1,5 +1,4 @@
 import Konva from 'konva';
-//import { loadFont } from './fonts';
 import { View } from '../types';
 import { PRIMARY_COLOR, BUTTON_COLOR, loadFonts } from './viewConstants';
 import GameModel from '../logic/model';
@@ -72,7 +71,6 @@ export default class EnterNameView implements View {
         });
         
         this.input = document.createElement('input');
-        document.body.appendChild(this.input);
 
         this.invalid_msg = new Konva.Text({
             x: this.stage_width*0.2,
@@ -107,7 +105,6 @@ export default class EnterNameView implements View {
     }
 
     async getUsername(): Promise<string> {
-        this.input = document.createElement('input');
         document.body.appendChild(this.input);
 
         const areaPosition = {
@@ -174,6 +171,7 @@ export default class EnterNameView implements View {
         ready_button.add(ready_button_shape);
         ready_button.add(ready_button_text);
         ready_button.on('click', onReadyClick);
+
         this.group.add(welcome_message);
         this.group.add(ready_button);
 
