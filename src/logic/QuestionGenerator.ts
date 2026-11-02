@@ -29,6 +29,7 @@ export function generateQuestion(
     template.scenario,
     prompt,
     money(formulas[template.formula](numbers)),
+    template.points,
   );
 }
 

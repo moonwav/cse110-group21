@@ -1,6 +1,7 @@
 import QuestionView from '../presentation/questionView';
 import GameModel from './model';
 import { ScreenSwitcher, Controller } from "../types";
+import { checkAnswer } from './answerChecker';
 //will define the MainMenuController
 export default class QuestionController extends Controller{
     model: GameModel;
@@ -19,13 +20,14 @@ export default class QuestionController extends Controller{
     }
 
     handleSubmitClick() {
-        const answer = this.view.getPlayerAnswer();
-        this.model.submitAnswer(answer);
-        if (answer === null) {
+        const result = checkAnswer(this.view.answer_input.value, this.model.getCurrentQuestion());
+        if (result.status === "invalid") {
             this.view.showInvalid();
             return;
         }
         this.view.clearInvalid();
+        this.model.submitAnswer(this.view.getPlayerAnswer());
+        this.view.showResult(result.status === "correct" ? "Correct" : "Incorrect");
         if (this.model.isLastQuestion()) {
             this.endGame();
         } else {
