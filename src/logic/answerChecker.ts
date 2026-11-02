@@ -1,4 +1,3 @@
-import { cValues } from "konva/lib/BezierFunctions";
 import Question from "./question";
 
 export type CheckResult = 
