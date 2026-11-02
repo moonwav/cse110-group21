@@ -10,6 +10,7 @@ export default class GameModel {
     questionIndex: number;
     wrongAnswers: number;
     hintsUsed: number;
+    
 
     constructor() {
         this.playerName = '';
@@ -73,5 +74,4 @@ export default class GameModel {
     incrementWrongAnswer() {
         this.wrongAnswers++;
     }
-
 }

@@ -215,14 +215,6 @@ export default class QuestionView implements View{
 			verticalAlign: 'center',
 			fill: 'Black',
 		});
-		/*
-		loadFont(this.SILKSCREEN, 'normal', '400').then(() => {
-  		this.title.fontFamily(this.SILKSCREEN);
-		});
-		loadFont(this.ROBOTO, 'normal', '400').then(() => {
-  		this.question_text.fontFamily(this.ROBOTO);
-		});
-		*/
 
 		loadFonts(); 
 		this.reveal_button = new Konva.Group();
