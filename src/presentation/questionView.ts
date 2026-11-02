@@ -34,6 +34,7 @@ export default class QuestionView implements View{
 	reveal_button_shape: Konva.Rect;
 	reveal_button_text: Konva.Text;
 	reveal_button: Konva.Group;
+	result_text: Konva.Text;
     group: Konva.Group;
 
 
@@ -216,6 +217,16 @@ export default class QuestionView implements View{
   		this.question_text.fontFamily(this.ROBOTO);
 		});
 		*/
+		this.result_text = new Konva.Text ({
+			x: this.stage_width*0.06,
+			y: this.stage_height*0.69,
+			width: this.stage_width*0.9,
+			fill: 'Black',
+			fontFamily: this.ROBOTO,
+			fontSize: stage_height * 0.035,
+			text: '',
+		});
+
 
 		this.loadFonts(); 
 		this.reveal_button = new Konva.Group();
@@ -234,6 +245,7 @@ export default class QuestionView implements View{
 		this.group.add(this.answer_header);
 		this.group.add(this.submit_button);
 		this.group.add(this.hint_button);
+		this.group.add(this.result_text);
 
 		this.hide();
 	}
@@ -278,6 +290,11 @@ export default class QuestionView implements View{
 
 	showInvalid() {
 		this.answer_header.text("Enter a number.");
+	}
+
+	showResult(message: string) {
+		this.result_text.text(message);
+		this.result_text.getLayer()?.batchDraw();
 	}
 
 	clearInvalid() {

@@ -1,29 +1,16 @@
-import Question from "./question";
+import Question, { parsePlayerAnswer } from "./question";
 
 export type CheckResult = 
     | { status: "correct" }
     | { status: "incorrect" }
     | { status: "invalid"; message: string };
 
-export class AnswerChecker {
-    /** Returns input as a number or null */
-    parse(input: string): number | null {
-        const trimmedInput = input.trim();
-        if (trimmedInput === "") {
-            return null;
-        }
-        const answer = Number(trimmedInput);
-        return Number.isNaN(answer) ? null : answer;
+// Compare player's answer w/ question's answer
+export function checkAnswer(input: string, question: Question): CheckResult {
+    const value = parsePlayerAnswer(input);
+    if (value === null) {
+        return { status: "invalid", message: "Enter a number."};
     }
-
-    check(input: string, question: Question): CheckResult {
-        const value = this.parse(input);
-        if (value === null) {
-            return { status: "invalid", message: "Please enter a valid number!"};
-        }
-        if (value === question.getAnswer()) {
-            return { status: "correct" };
-        }
-        return { status: "incorrect" };
-    }
+    return Math.round(value * 100) === Math.round(question.getAnswer() * 100) ?
+        { status: "correct"} : { status: "incorrect" };
 }
