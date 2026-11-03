@@ -7,6 +7,7 @@ import InfoController from './logic/infoController';
 import ResultController from './logic/resultController';
 import AnswerController from './logic/answerController';
 import MinigameController from './logic/minigameController';
+import EnterNameController from './logic/enterNameController';
 import type { ScreenSwitcher, Screen } from "./types.ts";
 
 
@@ -29,6 +30,7 @@ class Game implements ScreenSwitcher {
 	private menuController: MainMenuController;
 	private questionController: QuestionController;
 	private infoController: InfoController;
+	private enterNameController: EnterNameController;
 	//private minigameController: MinigameController;
 	private resultController: ResultController;
     private answerController: AnswerController;
@@ -53,25 +55,40 @@ class Game implements ScreenSwitcher {
 		this.model = new GameModel();
 		// Initialize all screen controllers
 		// Each controller manages a Model, View, and handles user interactions
-		this.menuController = new MainMenuController(this.model, this, this.stage_width, this.stage_height);
-		this.infoController = new InfoController(this.model, this, this.stage_width, this.stage_height);
-		this.questionController = new QuestionController(this.model, this, this.stage_width, this.stage_height);
-		this.resultController = new ResultController(this.model, this, this.stage_width, this.stage_height);
-        this.answerController = new AnswerController(this.model, this, this.stage_width, this.stage_height);
+		this.menuController = new MainMenuController(this.model, this, 
+													this.stage_width, 
+													this.stage_height);
+		this.infoController = new InfoController(this.model, this, 
+												this.stage_width, 
+												this.stage_height);
+		this.enterNameController = new EnterNameController(this.model, this, 
+														this.stage_width, 
+														this.stage_height);
+		this.questionController = new QuestionController(this.model, this, 
+														this.stage_width, 
+														this.stage_height);
+		this.resultController = new ResultController(this.model, this, 
+													this.stage_width, 
+													this.stage_height);
+        this.answerController = new AnswerController(this.model, this, 
+													this.stage_width, 
+													this.stage_height);
 		//this.minigameController = new MinigameController(this.model, this);
 
 		// Add all screen groups to the layer
 		// All screens exist simultaneously but only one is visible at a time
 		this.layer.add(this.menuController.getView().getGroup());
+		this.layer.add(this.infoController.getView().getGroup());
+		this.layer.add(this.enterNameController.getView().getGroup());
 		this.layer.add(this.questionController.getView().getGroup());
 		this.layer.add(this.resultController.getView().getGroup());
-		this.layer.add(this.infoController.getView().getGroup());
-        this.layer.add(this.answerController.getView().getGroup());
+		this.layer.add(this.answerController.getView().getGroup());
 		//this.layer.add(this.minigameController.getView().getGroup());
 		// Draw the layer (render everything to the canvas)
 
 		// Start with menu screen visible
-		this.switchToScreen({ type: "question" })
+		this.switchToScreen({type: "menu"});
+
 		this.layer.draw();
 	}
 
@@ -87,10 +104,11 @@ class Game implements ScreenSwitcher {
 	switchToScreen(screen: Screen): void {
 		// Hide all screens first by setting their Groups to invisible
 		this.menuController.hide();
-		this.questionController.hide();
 		this.infoController.hide();
-		this.resultController.hide();
+		this.questionController.hide();
+		this.enterNameController.hide();
         this.answerController.hide();
+		this.resultController.hide();
 
 		// Show the requested screen based on the screen type
 		switch (screen.type) {
@@ -98,18 +116,22 @@ class Game implements ScreenSwitcher {
 				this.menuController.show();
 				break;
 
+			case "info":
+				this.infoController.show();
+				break;
+
+			case "enter name":
+				this.menuController.show();
+				this.enterNameController.show();
+				break;
+			
 			case "question":
-				// Start the game (which also shows the game screen)
 				this.questionController.show();
 				break;
 
 			case "result":
 				// Show results with the final data
 				this.resultController.show(screen.data);
-				break;
-
-			case "info":
-				this.infoController.show();
 				break;
 
             case "answer":

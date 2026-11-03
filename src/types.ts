@@ -23,6 +23,7 @@ export type Screen =
 	| { type: "question" }
 	| { type: "result"; data?: ResultData }
     | { type: "minigame" }
+	| { type: "enter name"}
     | { type: "info" }
 	| { type: "answer" };
 

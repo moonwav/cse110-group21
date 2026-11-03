@@ -3,7 +3,7 @@ import Konva from 'konva';
 import GameModel from '../logic/model';
 import Question, { parsePlayerAnswer } from '../logic/question';
 import { View } from '../types';
-import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from './viewConstants';
 
 
 //Will define the QuestionView class, very unfinished
@@ -16,21 +16,27 @@ export default class QuestionView implements View{
     stage_height: number;
     background: Konva.Rect;
     main_card: Konva.Rect;
+
 	question: Question;
 	question_location: Konva.Text;
 	question_text: Konva.Text;
+
 	title: Konva.Text;
 	score: Konva.Text;
 	score_number: number;
+
 	answer_header: Konva.Text;
 	answer_bubble: Konva.Rect;
 	answer_input: HTMLInputElement;
+
 	submit_button_shape: Konva.Rect;
 	submit_button_text: Konva.Text;
 	submit_button: Konva.Group;
+
 	hint_button_shape: Konva.Rect;
 	hint_button_text: Konva.Text;
 	hint_button: Konva.Group;
+
 	reveal_button_shape: Konva.Rect;
 	reveal_button_text: Konva.Text;
 	reveal_button: Konva.Group;
@@ -260,7 +266,7 @@ export default class QuestionView implements View{
 		});
 
 
-		this.loadFonts(); 
+		loadFonts(); 
 		this.reveal_button = new Konva.Group();
 		this.reveal_button.add(this.reveal_button_shape);
 		this.reveal_button.add(this.reveal_button_text);
@@ -283,16 +289,17 @@ export default class QuestionView implements View{
 		this.hide();
 	}
 
-	async loadFonts() {
-  		await document.fonts.ready;
-  		await Promise.all([
-   			document.fonts.load("700 48px Silkscreen"),
-    		document.fonts.load("400 36px Silkscreen"),
-    		document.fonts.load("400 40px Roboto"),
-    		document.fonts.load("400 36px Roboto"),
-    		document.fonts.load("400 24px Roboto"),
-    		document.fonts.load("400 22px Roboto"),
-  		]);
+	//updates text displayed on screen based on the current question
+	displayQuestion() {
+		this.title.text(`Question ${this.question.getQuestionNumber()} of 10`);
+		this.score.text(`Score ${this.score_number}%`);
+		this.question_location.text(`${this.question.location}`);
+		this.question_text.text(`${this.question.getQuestion()}`);
+		this.group.getLayer()?.draw();
+	}
+
+	startGame(){
+		
 	}
 
 	getGroup(){
