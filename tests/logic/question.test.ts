@@ -59,6 +59,9 @@ describe("input validation", () => {
     ["$12.50", 12.5],
     ["1,200", 1200],
     ["$1,200.50", 1200.5],
+    ["0", 0],
+    [" 12 ", 12],
+    ["12.", null],
   ])("parses %j as %s", (text, parsed) => {
     expect(parsePlayerAnswer(text)).toBe(parsed);
   });
@@ -71,6 +74,14 @@ describe("answer submission", () => {
     model.questionIndex = 0;
     return model;
   }
+
+  it("stores a submitted number", () => {
+    const model = modelWith(20);
+
+    model.submitAnswer(20);
+
+    expect(model.playerAnswer).toBe(20);
+  });
 
   it("leaves an invalid answer unchecked", () => {
     const model = modelWith(20);
