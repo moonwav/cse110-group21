@@ -41,12 +41,18 @@ export default class QuestionView implements View{
 	reveal_button_text: Konva.Text;
 	reveal_button: Konva.Group;
 	result_text: Konva.Text;
+	next_button_shape: Konva.Rect;
+	next_button_text: Konva.Text;
+	next_button: Konva.Group;
     group: Konva.Group;
 
 
     constructor(model: GameModel, question: Question, score: number, 
-				onSubmitClick: () => void, onHintClick: () => void, 
-				onRevealClick: () => void, stage_width: number, stage_height: number) {
+				onSubmitClick: (answerText: string) => void,
+				onHintClick: () => void,
+				onRevealClick: () => void,
+				onNextClick: () => void,
+				stage_width: number, stage_height: number) {
         this.model = model;
 		this.question = question;
 		this.score_number = score;
@@ -167,7 +173,33 @@ export default class QuestionView implements View{
 		this.submit_button = new Konva.Group();
 		this.submit_button.add(this.submit_button_shape);
 		this.submit_button.add(this.submit_button_text);
-		this.submit_button.on('click', onSubmitClick);
+		this.submit_button.on('click', () => onSubmitClick(this.answer_input.value));
+
+		this.next_button_shape = new Konva.Rect({
+			x: this.stage_width*0.375,
+			y: this.stage_height*0.83,
+			width: this.stage_width*0.25,
+			height: this.stage_height*0.09,
+			cornerRadius: 25,
+			fill: BUTTON_COLOR,
+		});
+
+		this.next_button_text = new Konva.Text({
+			x: this.stage_width*0.05,
+			y: this.stage_height*0.835,
+			text: 'Next',
+			fontFamily: this.SILKSCREEN,
+			width: this.stage_width*0.9,
+			fontSize: this.stage_height*0.068,
+			align: 'center',
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+
+		this.next_button = new Konva.Group({ visible: false });
+		this.next_button.add(this.next_button_shape);
+		this.next_button.add(this.next_button_text);
+		this.next_button.on('click', onNextClick);
 
 		this.hint_button_shape = new Konva.Rect({
 			x: this.stage_width*0.785,
@@ -250,6 +282,7 @@ export default class QuestionView implements View{
 		this.group.add(this.answer_bubble);
 		this.group.add(this.answer_header);
 		this.group.add(this.submit_button);
+		this.group.add(this.next_button);
 		this.group.add(this.hint_button);
 		this.group.add(this.result_text);
 
@@ -282,6 +315,7 @@ export default class QuestionView implements View{
 		this.answer_input.style.fontSize = "32px";
 	}
 
+	// unused now
 	getPlayerAnswer() {
 		return parsePlayerAnswer(this.answer_input.value);
 	}
@@ -293,6 +327,8 @@ export default class QuestionView implements View{
 		this.question_text.text(question.getQuestion());
 		this.answer_header.text("Type answer below");
 		this.answer_input.value = "";
+		this.result_text.text("");
+		this.hideNext();
 	}
 
 	showInvalid() {
@@ -310,6 +346,22 @@ export default class QuestionView implements View{
 
 	showHint() {
 		//code to show hint and add reveal button
+	}
+
+	showNext() {
+		this.answer_input.disabled = true;
+		this.submit_button.visible(false);
+		this.hint_button.visible(false);
+		this.next_button.visible(true);
+		this.group.getLayer()?.batchDraw();
+	}
+
+	hideNext() {
+		this.answer_input.disabled = false;
+		this.next_button.visible(false);
+		this.submit_button.visible(true);
+		this.hint_button.visible(true);
+		this.group.getLayer()?.batchDraw();
 	}
 
 	hide() {

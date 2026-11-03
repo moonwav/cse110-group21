@@ -2,6 +2,7 @@ import QuestionView from '../presentation/questionView';
 import GameModel from './model';
 import { ScreenSwitcher, Controller } from "../types";
 import { checkAnswer } from './answerChecker';
+import { parsePlayerAnswer } from './question';
 //will define the MainMenuController
 export default class QuestionController extends Controller{
     model: GameModel;
@@ -13,21 +14,36 @@ export default class QuestionController extends Controller{
         super();
         this.model = model;
         this.view = new QuestionView(this.model, this.model.getCurrentQuestion(), 
-                    this.model.currentScore, () => this.handleSubmitClick(), 
+                    this.model.currentScore, 
+                    (answerText) => this.handleSubmitClick(answerText), 
                     () => this.handleHintClick(), 
-                    () => this.handleRevealClick(), stage_width, stage_height);
+                    () => this.handleRevealClick(),
+                    () => this.handleNextClick(),
+                    stage_width, stage_height);
+
         this.screenSwitcher = screenSwitcher;
     }
 
-    handleSubmitClick() {
-        const result = checkAnswer(this.view.answer_input.value, this.model.getCurrentQuestion());
+    handleSubmitClick(answerText: string) {
+        if (this.model.questionCompleted) return;
+        const result = checkAnswer(answerText, this.model.getCurrentQuestion());
         if (result.status === "invalid") {
+            this.view.showResult("");
             this.view.showInvalid();
             return;
         }
         this.view.clearInvalid();
-        this.model.submitAnswer(this.view.getPlayerAnswer());
-        this.view.showResult(result.status === "correct" ? "Correct" : "Incorrect");
+        this.model.submitAnswer(parsePlayerAnswer(answerText));
+        if (result.status === "correct") {
+            this.model.questionCompleted = true;
+            this.view.showResult("Correct");
+            this.view.showNext();
+        } else {
+            this.view.showResult("Incorrect, try again.");
+        }                                        
+    }
+
+    handleNextClick() {
         if (this.model.isLastQuestion()) {
             this.endGame();
         } else {

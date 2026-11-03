@@ -18,7 +18,7 @@ export default class GameModel {
     questionIndex: number;
     wrongAnswers: number;
     hintsUsed: number;
-    
+    questionCompleted: boolean;
 
     constructor() {
         this.playerName = '';
@@ -29,6 +29,7 @@ export default class GameModel {
         this.questionIndex = 0;
         this.wrongAnswers = 0;
         this.hintsUsed = 0;
+        this.questionCompleted = false;
         this.setQuestions(generateTrip());
     }
 
@@ -39,6 +40,7 @@ export default class GameModel {
         this.currentScore = 0;
         this.wrongAnswers = 0;
         this.hintsUsed = 0;
+        this.questionCompleted = false;
     }
 
     /**
@@ -69,6 +71,7 @@ export default class GameModel {
             this.questionIndex += 1;
         }
         this.playerAnswer = null;
+        this.questionCompleted = false;
         return this.getCurrentQuestion();
     }
 
