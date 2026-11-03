@@ -51,7 +51,8 @@ export default class QuestionController extends Controller{
     }
 
     endGame() {
-        this.screenSwitcher.switchToScreen({ type: "result", data: this.model.getResults() });
+        this.screenSwitcher.switchToScreen({ type: "result", 
+                                             data: this.model.getResults() });
     }
 
     show() {

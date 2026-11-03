@@ -18,9 +18,9 @@ export default class GameModel {
     questionIndex: number;
     wrongAnswers: number;
     hintsUsed: number;
+    
 
     constructor() {
-        // this.gameState = this.STARTSTATE;
         this.playerName = '';
         this.currentScore = 0;
         this.playerAnswer = null;
