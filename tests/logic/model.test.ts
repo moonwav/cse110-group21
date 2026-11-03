@@ -1,22 +1,25 @@
 import { describe, it, expect } from "vitest";
 import GameModel from "../../src/logic/model";
+import * as ScoreTracker from "../../src/logic/scoreTracker";
 
-describe("GameModel.questionCompleted", () => {
-  it("starts false", () => {
-    expect(new GameModel().questionCompleted).toBe(false);
+const finished = (model: GameModel) => ScoreTracker.isFinished(model.getCurrentRecord());
+
+describe("GameModel question completion", () => {
+  it("starts with the question not finished", () => {
+    expect(finished(new GameModel())).toBe(false);
   });
 
-  it("resets on nextQuestion", () => {
+  it("is not finished on the next question", () => {
     const model = new GameModel();
-    model.questionCompleted = true;
+    ScoreTracker.recordCorrect(model);
     model.nextQuestion();
-    expect(model.questionCompleted).toBe(false);
+    expect(finished(model)).toBe(false);
   });
 
-  it("resets on beginGame", () => {
+  it("is not finished after beginGame", () => {
     const model = new GameModel();
-    model.questionCompleted = true;
+    ScoreTracker.recordCorrect(model);
     model.beginGame();
-    expect(model.questionCompleted).toBe(false);
+    expect(finished(model)).toBe(false);
   });
 });

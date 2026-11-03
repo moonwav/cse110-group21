@@ -322,7 +322,6 @@ export default class QuestionView implements View{
 
 	showQuestion(question: Question) {
 		this.question = question;
-		this.title.text(`Question ${question.getQuestionNumber()} of 10`);
 		this.question_location.text(question.getLocation());
 		this.question_text.text(question.getQuestion());
 		this.answer_header.text("Type answer below");
@@ -338,6 +337,15 @@ export default class QuestionView implements View{
 	showResult(message: string) {
 		this.result_text.text(message);
 		this.result_text.getLayer()?.batchDraw();
+	}
+
+	/**
+	 * Shows the score and which question the player is on.
+	 * The controller calls this whenever either one changes.
+	 */
+	updateScoreAndProgress(score: number, questionNumber: number, totalQuestions: number) {
+		this.title.text(`Question ${questionNumber} of ${totalQuestions}`);
+		this.score.text(`Score ${score}%`);
 	}
 
 	clearInvalid() {

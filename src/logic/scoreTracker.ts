@@ -1,5 +1,6 @@
 import GameModel, { QuestionRecord } from './model';
 import Question from './question';
+import { ResultData } from '../data/resultModel';
 
 /**
  * ScoreTracker: every scoring rule lives here.
@@ -75,4 +76,16 @@ export function applyReveal(model: GameModel) {
 /** Questions where a hint was used. A hint followed by a reveal counts once. */
 export function hintsUsed(model: GameModel): number {
     return model.records.filter((record) => record.hintUsed).length;
+}
+/** Everything the results screen shows. */
+export function getResults(model: GameModel): ResultData {
+    let wrongAnswers = 0;
+    model.records.forEach((record) => {
+        wrongAnswers += record.wrongTries;
+    });
+    return {
+        percent: finalScore(model),
+        wrongAnswers,
+        hintsUsed: hintsUsed(model),
+    };
 }
