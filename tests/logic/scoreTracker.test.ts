@@ -163,3 +163,31 @@ describe("ScoreTracker: hints and reveals", () => {
     expect(ScoreTracker.hintsUsed(model)).toBe(2);
   });
 });
+
+
+describe("ScoreTracker: results", () => {
+  it("gives the results screen the final score, wrong tries, and hints", () => {
+    const model = makeModel();
+    ScoreTracker.recordWrongTry(model);
+    ScoreTracker.recordCorrect(model);
+    model.nextQuestion();
+    ScoreTracker.applyHint(model);
+    ScoreTracker.recordWrongTry(model);
+    ScoreTracker.recordWrongTry(model);
+    ScoreTracker.recordCorrect(model);
+    expect(ScoreTracker.getResults(model)).toEqual({
+      percent: 7 + 8,
+      wrongAnswers: 3,
+      hintsUsed: 1,
+    });
+  });
+
+  it("starts a new trip with a clean slate", () => {
+    const model = makeModel();
+    ScoreTracker.applyHint(model);
+    ScoreTracker.recordWrongTry(model);
+    model.beginGame();
+    expect(ScoreTracker.getResults(model)).toEqual({ percent: 0, wrongAnswers: 0, hintsUsed: 0 });
+    expect(ScoreTracker.currentScore(model)).toBe(100);
+  });
+});

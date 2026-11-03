@@ -1,5 +1,6 @@
 import QuestionView from '../presentation/questionView';
 import GameModel from './model';
+import * as ScoreTracker from './scoreTracker';
 import { ScreenSwitcher, Controller } from "../types";
 import { checkAnswer } from './answerChecker';
 import { parsePlayerAnswer } from './question';
@@ -14,7 +15,7 @@ export default class QuestionController extends Controller{
         super();
         this.model = model;
         this.view = new QuestionView(this.model, this.model.getCurrentQuestion(), 
-                    this.model.currentScore, 
+                    ScoreTracker.currentScore(this.model), 
                     (answerText) => this.handleSubmitClick(answerText), 
                     () => this.handleHintClick(), 
                     () => this.handleRevealClick(),
@@ -25,7 +26,7 @@ export default class QuestionController extends Controller{
     }
 
     handleSubmitClick(answerText: string) {
-        if (this.model.questionCompleted) return;
+        if (ScoreTracker.isFinished(this.model.getCurrentRecord())) return;
         const result = checkAnswer(answerText, this.model.getCurrentQuestion());
         if (result.status === "invalid") {
             this.view.showResult("");
@@ -35,12 +36,13 @@ export default class QuestionController extends Controller{
         this.view.clearInvalid();
         this.model.submitAnswer(parsePlayerAnswer(answerText));
         if (result.status === "correct") {
-            this.model.questionCompleted = true;
+            ScoreTracker.recordCorrect(this.model);
             this.view.showResult("Correct");
             this.view.showNext();
         } else {
+            ScoreTracker.recordWrongTry(this.model);
             this.view.showResult("Incorrect, try again.");
-        }                                        
+        }
     }
 
     handleNextClick() {
@@ -53,27 +55,40 @@ export default class QuestionController extends Controller{
 
     handleHintClick() {
         //tell view to show hint
-        //tell model to update score
-        this.model.incrementHintsUsed();
+        ScoreTracker.applyHint(this.model);
+        this.refreshScoreAndProgress();
     }
 
     handleRevealClick() {
         //tell view to reveal
-        //tell model to update score
+        ScoreTracker.applyReveal(this.model);
+        this.refreshScoreAndProgress();
     }
     
     newQuestion() {
         this.view.showQuestion(this.model.nextQuestion());
+        this.refreshScoreAndProgress();
+    }
+    
+
+    /** Gives the view the current score and question number. */
+    refreshScoreAndProgress() {
+        this.view.updateScoreAndProgress(
+            ScoreTracker.currentScore(this.model),
+            this.model.questionIndex + 1,
+            this.model.questions.length,
+        );
     }
 
     endGame() {
         this.screenSwitcher.switchToScreen({ type: "result", 
-                                             data: this.model.getResults() });
+                                             data: ScoreTracker.getResults(this.model) });
     }
 
     show() {
         this.model.beginGame();
         this.view.showQuestion(this.model.getCurrentQuestion());
+        this.refreshScoreAndProgress();
         this.view.show();
     }
 

@@ -1,6 +1,5 @@
 import Question from './question';
 import { generateTrip } from './QuestionGenerator';
-import { ResultData } from '../data/resultModel';
 
 export type QuestionRecord = {
     hintUsed: boolean;
@@ -11,25 +10,17 @@ export type QuestionRecord = {
 
 export default class GameModel {
     playerName: string;
-    currentScore: number;
     playerAnswer: number | null;
     questions: Question[];
     records: QuestionRecord[];
     questionIndex: number;
-    wrongAnswers: number;
-    hintsUsed: number;
-    questionCompleted: boolean;
 
     constructor() {
         this.playerName = '';
-        this.currentScore = 0;
         this.playerAnswer = null;
         this.questions = [];
         this.records = [];
         this.questionIndex = 0;
-        this.wrongAnswers = 0;
-        this.hintsUsed = 0;
-        this.questionCompleted = false;
         this.setQuestions(generateTrip());
     }
 
@@ -37,10 +28,6 @@ export default class GameModel {
         // this.gameState = this.QUESTION;
         this.setQuestions(generateTrip());
         this.playerAnswer = null;
-        this.currentScore = 0;
-        this.wrongAnswers = 0;
-        this.hintsUsed = 0;
-        this.questionCompleted = false;
     }
 
     /**
@@ -71,20 +58,11 @@ export default class GameModel {
             this.questionIndex += 1;
         }
         this.playerAnswer = null;
-        this.questionCompleted = false;
         return this.getCurrentQuestion();
     }
 
     isLastQuestion(): boolean {
         return this.questionIndex >= this.questions.length - 1;
-    }
-
-    getResults(): ResultData {
-        return {
-            percent: this.currentScore,
-            wrongAnswers: this.wrongAnswers,
-            hintsUsed: this.hintsUsed,
-        };
     }
 
     setPlayer(playerName: string) {
@@ -95,13 +73,6 @@ export default class GameModel {
         return this.playerName;
     }
 
-    incrementHintsUsed() {
-        this.hintsUsed++;
-    }
-
-    incrementWrongAnswer() {
-        this.wrongAnswers++;
-    }
     getCurrentRecord(): QuestionRecord {
         return this.records[this.questionIndex];
     }

@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({
     showResult: vi.fn(),
     showNext: vi.fn(),
     showQuestion: vi.fn(),
+    updateScoreAndProgress: vi.fn(),
     show: vi.fn(),
     hide: vi.fn(),
   },
@@ -24,6 +25,7 @@ vi.mock("../../src/logic/answerChecker", () => ({ checkAnswer: mocks.checkAnswer
 
 import QuestionController from "../../src/logic/questionController";
 import GameModel from "../../src/logic/model";
+import * as ScoreTracker from "../../src/logic/scoreTracker";
 
 function setup() {
   const model = new GameModel();
@@ -40,7 +42,7 @@ describe("QuestionController submit", () => {
     const { model, controller } = setup();
     controller.handleSubmitClick("abc");
     expect(mocks.view.showInvalid).toHaveBeenCalled();
-    expect(model.questionCompleted).toBe(false);
+    expect(ScoreTracker.isFinished(model.getCurrentRecord())).toBe(false);
   });
 
   it("clears the previous result message on invalid input", () => {
@@ -56,7 +58,7 @@ describe("QuestionController submit", () => {
     controller.handleSubmitClick("1");
     expect(mocks.view.showResult).toHaveBeenCalledWith("Incorrect, try again.");
     expect(mocks.view.showNext).not.toHaveBeenCalled();
-    expect(model.questionCompleted).toBe(false);
+    expect(ScoreTracker.isFinished(model.getCurrentRecord())).toBe(false);
   });
 
   it("allows retry after a wrong answer", () => {
@@ -80,7 +82,7 @@ describe("QuestionController submit", () => {
     controller.handleSubmitClick("5");
     expect(mocks.view.showResult).toHaveBeenCalledWith("Correct");
     expect(mocks.view.showNext).toHaveBeenCalled();
-    expect(model.questionCompleted).toBe(true);
+    expect(ScoreTracker.isFinished(model.getCurrentRecord())).toBe(true);
   });
 
   it("ignores submits after the question is completed", () => {
@@ -103,7 +105,7 @@ describe("QuestionController next", () => {
     controller.handleNextClick();
     expect(mocks.view.showQuestion).toHaveBeenCalled();
     expect(model.questionIndex).toBe(1);
-    expect(model.questionCompleted).toBe(false);
+    expect(ScoreTracker.isFinished(model.getCurrentRecord())).toBe(false);
     expect(screenSwitcher.switchToScreen).not.toHaveBeenCalled();
   });
 
@@ -112,6 +114,26 @@ describe("QuestionController next", () => {
     model.questionIndex = model.questions.length - 1;
     controller.handleNextClick();
     expect(screenSwitcher.switchToScreen).toHaveBeenCalledWith(
-      { type: "result", data: model.getResults() });
+      { type: "result", data: ScoreTracker.getResults(model) });
+  });
+});
+
+
+describe("QuestionController scoring", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("counts a wrong try without changing the score", () => {
+    mocks.checkAnswer.mockReturnValue({ status: "incorrect" });
+    const { model, controller } = setup();
+    controller.handleSubmitClick("1");
+    expect(model.getCurrentRecord().wrongTries).toBe(1);
+    expect(ScoreTracker.currentScore(model)).toBe(100);
+  });
+
+  it("shows the new score after a hint", () => {
+    const { model, controller } = setup();
+    controller.handleHintClick();
+    expect(mocks.view.updateScoreAndProgress).toHaveBeenLastCalledWith(
+      98, 1, model.questions.length);
   });
 });
