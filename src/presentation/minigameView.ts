@@ -16,11 +16,18 @@ export default class MinigameView implements View{
 
     background: Konva.Rect;
     main_card: Konva.Rect;
+    
+    title_text: Konva.Text;
 
-    a_header: Konva.Rect;
+    time: Konva.Text;
+    time_text: Konva.Text;
+
+    a_header: Konva.Group;
+    a_header_shape: Konva.Rect;
     a_header_text: Konva.Text;
     
-    b_header: Konva.Rect;
+    b_header: Konva.Group;
+    b_header_shape: Konva.Rect;
     b_header_text: Konva.Text;
 
     a_card_1_shape: Konva.Rect;
@@ -94,34 +101,105 @@ export default class MinigameView implements View{
             cornerRadius: 25,
             fill: SECONDARY_COLOR,
         });
+
+        this.title_text = new Konva.Text({
+            x: card_padding_side * 1.99,
+            y: this.stage_height * 0.08,
+            text: `Matching Game`,
+			fontFamily: 'Silkscreen',
+            fontStyle: 'bold',
+			fontSize: this.stage_height*0.035,
+			align: 'center',
+			verticalAlign: 'middle',
+			fill: 'Black',
+        });
+
+
+        const time_width = this.stage_width * 0.08;
+        this.time = new Konva.Text({
+            x: this.stage_width - (card_padding_side * 1.99) - time_width,
+            y: this.stage_height * 0.08,
+            width: time_width,
+            text: `0:00`,
+			fontFamily: 'Silkscreen',
+            fontStyle: 'bold',
+			fontSize: this.stage_height*0.035,
+			align: 'right',
+			fill: 'Black',
+        });
+
+        this.time_text = new Konva.Text({
+            y: this.stage_height * 0.08,
+            text: `Time Left:`,
+			fontFamily: 'Silkscreen',
+            fontStyle: 'bold',
+			fontSize: this.stage_height*0.035,
+			fill: 'Black',
+        });
+        this.time_text.x(this.time.x() - card_padding_side * 0.5 - this.time_text.width());
         
         const header_width = this.stage_width*0.28;
         const header_height = this.stage_height*0.086;
         const card_width = (this.main_card.width() - 3*card_padding_side)/2;
         const card_height = header_height;
 
-        this.a_header = new Konva.Rect({
+        this.a_header_shape = new Konva.Rect({
             x: (card_width-header_width)/2 + 2*card_padding_side,
             y: this.main_card.y()+ this.stage_height*0.15,
             align: 'center',
             width:  header_width,
             height: header_height,
             cornerRadius: 25,
-            fill: BUTTON_COLOR,
+            fill: 'grey',
         });
 
-        this.b_header = new Konva.Rect({
+        this.a_header_text = new Konva.Text({
+            x: this.a_header_shape.x(),
+            y: this.a_header_shape.y(),
+			width: header_width,
+            height: header_height,
+            text: `Questions`,
+			fontFamily: 'Silkscreen',
+			fontSize: this.stage_height*0.035,
+			align: 'center',
+			verticalAlign: 'middle',
+            fill: 'black',
+        });
+
+        this.a_header = new Konva.Group();
+        this.a_header.add(this.a_header_shape);
+        this.a_header.add(this.a_header_text);
+
+        this.b_header_shape = new Konva.Rect({
             x: this.stage_width - ((card_width-header_width)/2 + 2*card_padding_side + header_width),
             y: this.main_card.y()+ this.stage_height*0.15,
+            align: 'center',
             width:  header_width,
             height: header_height,
             cornerRadius: 25,
-            fill: BUTTON_COLOR,
+            fill: 'grey',
         });
+
+        this.b_header_text = new Konva.Text({
+            x: this.b_header_shape.x(),
+            y: this.b_header_shape.y(),
+			width: header_width,
+            height: header_height,
+            text: `Answers`,
+			fontFamily: 'Silkscreen',
+			fontSize: this.stage_height*0.035,
+			align: 'center',
+			verticalAlign: 'middle',
+			fill: 'Black',
+        });
+
+        this.b_header = new Konva.Group();
+        this.b_header.add(this.b_header_shape);
+        this.b_header.add(this.b_header_text);
 
         this.a_card_1_shape = new Konva.Rect({
             x: 2*card_padding_side,
-            y: this.a_header.y()+ header_height + card_padding_top,
+            y: this.a_header_shape.y()+ header_height + card_padding_top,
             width: card_width,
             height: card_height,
             cornerRadius: 25,
@@ -139,7 +217,6 @@ export default class MinigameView implements View{
 			align: 'center',
 			verticalAlign: 'middle',
 			fill: 'Black',
-
         });
 
         this.a_card_1 = new Konva.Group();
@@ -363,8 +440,23 @@ export default class MinigameView implements View{
             fill: 'white',
         });
 
+        
+        this.b_card_5_text = new Konva.Text({
+            x: this.b_card_5_shape.x(),
+            y: this.b_card_5_shape.y(),
+			width: card_width,
+            height: card_height,
+            text: `Needs an answer`,
+			fontFamily: 'Silkscreen',
+			fontSize: this.stage_height*0.035,
+			align: 'center',
+			verticalAlign: 'middle',
+			fill: 'Black',
+        });
+
         this.b_card_5 = new Konva.Group();
         this.b_card_5.add(this.b_card_5_shape);
+        this.b_card_5.add(this.b_card_5_text)
 
         this.submit_button_shape = new Konva.Rect({
             x: this.stage_width/2,
@@ -376,12 +468,30 @@ export default class MinigameView implements View{
             offsetX: header_width/2,
         });
 
+        this.submit_button_text = new Konva.Text({
+            x: this.submit_button_shape.x(),
+            y: this.submit_button_shape.y(),
+			width: header_width,
+            height: card_height,
+            text: `Submit Answers`,
+			fontFamily: 'Silkscreen',
+			fontSize: this.stage_height*0.035,
+			align: 'center',
+			verticalAlign: 'middle',
+			fill: 'Black',
+            offsetX: header_width/2,
+        });
+
         this.submit_button = new Konva.Group();
-        this.submit_button.add(this.submit_button_shape)
+        this.submit_button.add(this.submit_button_shape);
+        this.submit_button.add(this.submit_button_text);
 
         this.group = new Konva.Group();
         this.group.add(this.background);
         this.group.add(this.main_card);
+        this.group.add(this.title_text);
+        this.group.add(this.time_text);
+        this.group.add(this.time);
         this.group.add(this.a_header);
         this.group.add(this.b_header);
         this.group.add(this.a_card_1);
