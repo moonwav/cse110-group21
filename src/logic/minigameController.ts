@@ -12,7 +12,7 @@ export default class MinigameController extends Controller{
                 stage_width: number, stage_height: number) {
         super();
         this.model = model;
-        this.view = new MinigameView(model, stage_width, stage_height);
+        this.view = new MinigameView(/*model, stage_width, stage_height*/);
         this.screenSwitcher = screenSwitcher;
     }
     
