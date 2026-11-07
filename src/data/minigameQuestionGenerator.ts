@@ -1,5 +1,5 @@
 
-export type MinigameQuestion = {question: string, answer: number, answerPercent: boolean};
+export type MinigameQuestion = {question: string, answer: string};
 
 export type MinigameQuestionNumbers = {percent:number, multiplier: number, product: number};
 
@@ -20,14 +20,14 @@ export function numberGenerator(): MinigameQuestionNumbers {
 export function minigameQuestionGenerator(numbers: MinigameQuestionNumbers): MinigameQuestion{
     switch(Math.floor(Math.random()*3)) {
         case 0:
-            return{question: `What is ${numbers.percent}% of ${numbers.multiplier}?`, answer: numbers.product, answerPercent: false};
+            return{question: `What is ${numbers.percent}% of ${numbers.multiplier}?`, answer: `${numbers.product}`};
 
         case 1:
-            return {question: `${numbers.product} is ${numbers.percent}% of what?`, answer: numbers.multiplier, answerPercent: false};
+            return {question: `${numbers.product} is ${numbers.percent}% of what?`, answer: `${numbers.multiplier}`};
 
         case 2:
-            return {question: `${numbers.product} is what percent of ${numbers.multiplier}?`, answer: numbers.percent, answerPercent: true};
+            return {question: `${numbers.product} is what percent of ${numbers.multiplier}?`, answer: `${numbers.percent}%`};
         default:
-            return {question: `Something went wrong`, answer: 0, answerPercent: false};
+            return {question: `Something went wrong`, answer: 'Something went wrong'};
     }
 }

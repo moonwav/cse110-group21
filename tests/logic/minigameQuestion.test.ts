@@ -59,14 +59,11 @@ describe("minigame question generator", () => {
 
         const allowedSet = new Set([
             {question: `What is ${numbers.percent}% of ${numbers.multiplier}?`, 
-            answer: numbers.product, 
-            answerPercent: false},
+            answer: `${numbers.product}`},
             {question: `${numbers.product} is ${numbers.percent}% of what?`, 
-            answer: numbers.multiplier, 
-            answerPercent: false},
+            answer: `${numbers.multiplier}`},
             {question: `${numbers.product} is what percent of ${numbers.multiplier}?`, 
-            answer: numbers.percent, 
-            answerPercent: true}
+            answer: `${numbers.percent}%`},
         ]);
 
         expect(question1).toBeOneOf(allowedSet);
