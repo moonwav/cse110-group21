@@ -1,5 +1,5 @@
 
-export type MinigameQuestion = {question: string, answer: string};
+export type MinigameQuestionAnswer = {question: string, answer: string};
 
 export type MinigameQuestionNumbers = {percent:number, multiplier: number, product: number};
 
@@ -17,7 +17,7 @@ export function numberGenerator(): MinigameQuestionNumbers {
 }
 
 
-export function minigameQuestionGenerator(numbers: MinigameQuestionNumbers): MinigameQuestion{
+export function minigameQuestionGenerator(numbers: MinigameQuestionNumbers): MinigameQuestionAnswer {
     switch(Math.floor(Math.random()*3)) {
         case 0:
             return{question: `What is ${numbers.percent}% of ${numbers.multiplier}?`, answer: `${numbers.product}`};
