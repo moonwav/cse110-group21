@@ -72,11 +72,6 @@ export class MinigameModel {
 		return solns;
 	}
 
-	submitAnswer(selected: {q: number, a: number}) {
-		this.player_answers[this.amount_answered] = selected;
-		this.amount_answered++;
-	}
-
     checkAnswers(): boolean{
         for (let i: number = 0; i < 5; i++) {
             if(this.questions[this.player_answers[i].q].id !== this.answers[this.player_answers[i].a].id)
@@ -144,9 +139,10 @@ export class MinigameModel {
 				return;
 			}
 		}
-		for(let i: number = 0; i < this.amount_answered; i++) {
+		for(let i: number = 0; i < this.NUMBER_OF_QUESTIONS; i++) {
 			if (this.player_answers[i].q == index) {
 				this.player_answers.splice(i,1);
+				break;
 			}
 		}
 		this.player_answers.push({q: 5, a:5});
@@ -162,9 +158,10 @@ export class MinigameModel {
 				return;
 			}
 		}
-		for(let i: number = 0; i < this.amount_answered; i++) {
+		for(let i: number = 0; i < this.NUMBER_OF_QUESTIONS; i++) {
 			if (this.player_answers[i].a == index) {
 				this.player_answers.splice(i,1);
+				break;
 			}
 		}
 		this.player_answers.push({q: 5, a:5});

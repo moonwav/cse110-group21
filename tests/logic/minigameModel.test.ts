@@ -124,7 +124,7 @@ describe('Minigame Model', () => {
         expect(minigameModel.amount_answered).toBe(5);
 
     })
-})
+
     describe('deselect questions/answers', () => {
         const minigameModel2 = new MinigameModel();
 
@@ -291,6 +291,33 @@ describe('Minigame Model', () => {
         })
     
     })
+
+    describe('should check solutions', () => {
+        const minigame_model = new MinigameModel();
+        const solns = minigame_model.getSolutions();
+        it('and return true when they are all correct', ()=> {
+            for(let i: number = 0; i<minigame_model.NUMBER_OF_QUESTIONS; i++){
+                minigame_model.selectQuestion(solns[i].q);
+                minigame_model.selectAnswer(solns[i].a);
+            }
+            expect(minigame_model.checkAnswers()).toBe(true);
+        })
+
+        it('and return false if one or more are incorrect', () =>{
+            minigame_model.deselectQuestion(solns[1].q);
+            minigame_model.deselectQuestion(solns[3].q);
+
+            minigame_model.selectQuestion(solns[1].q);
+            minigame_model.selectAnswer(solns[3].a);
+            minigame_model.selectQuestion(solns[3].q);
+            minigame_model.selectAnswer(solns[1].a);
+
+            expect(minigame_model.checkAnswers()).toBe(false);
+            
+        });
+        
+    })
+})
 
 
 
