@@ -9,10 +9,8 @@ export class MinigameModel {
 
     questions: MinigameQuestion[];
     answers: MinigameAnswer[];
-    amount_incorrect: number;
 	amount_answered: number;
 	player_answers: {q:number, a:number}[];
-	waiting_for_second: boolean;
 	currently_selected: string | null;
 
     constructor() {
@@ -33,7 +31,6 @@ export class MinigameModel {
             this.answers[i]. answer = q.answer;
         }
 
-        this.amount_incorrect = 5;
 		this.amount_answered = 0;
 
         this.questions = this.shuffle(this.questions);
@@ -41,7 +38,6 @@ export class MinigameModel {
 
 		this.player_answers = [{q:5, a:5}, {q:5, a:5}, {q:5, a:5}, {q:5, a:5}, {q:5, a:5}];
 
-		this.waiting_for_second = false;
 		this.currently_selected = null;
     }
 
@@ -51,10 +47,6 @@ export class MinigameModel {
 
 	getAnswers() {
         return this.answers;
-    }
-
-    getAmountInorrect(){
-    	return this.amount_incorrect;
     }
 
 	getSolutions() {
@@ -95,46 +87,39 @@ export class MinigameModel {
     }
 
 	selectQuestion(index: number){
-		if(!this.waiting_for_second) {
+		if(this.currently_selected == null) {
 			this.currently_selected = 'question';
 			this.player_answers[this.amount_answered].q = index;
-			this.waiting_for_second = !this.waiting_for_second;
-		} else { 
-			if(this.currently_selected == 'question'){
-				this.player_answers[this.amount_answered].q = index;
-			}
-			else {
-				this.player_answers[this.amount_answered].q = index;
-				this.waiting_for_second = !this.waiting_for_second;
-				this.currently_selected = null;
-				this.amount_answered++;
-			}
+		} 
+		else if (this.currently_selected == 'question'){
+			this.player_answers[this.amount_answered].q = index;
+		}
+		else {
+			this.player_answers[this.amount_answered].q = index;
+			this.currently_selected = null;
+			this.amount_answered++;	
 		}
 	}
 
 	selectAnswer(index: number){
-		if(!this.waiting_for_second) {
+		if(this.currently_selected == null) {
 			this.currently_selected = 'answer';
 			this.player_answers[this.amount_answered].a = index;
-			this.waiting_for_second = !this.waiting_for_second;
-		} else { 
-			if(this.currently_selected == 'answer'){
-				this.player_answers[this.amount_answered].a = index;
-			}
-			else {
-				this.player_answers[this.amount_answered].a = index;
-				this.waiting_for_second = !this.waiting_for_second;
-				this.currently_selected = null;
-				this.amount_answered++;
-			}
+		} 
+		else if (this.currently_selected == 'answer'){
+			this.player_answers[this.amount_answered].a = index;
+		}
+		else {
+			this.player_answers[this.amount_answered].a = index;
+			this.currently_selected = null;
+			this.amount_answered++;	
 		}
 	}
 
 	deselectQuestion(index: number) {
-		if(this.waiting_for_second && this.currently_selected == 'question' && this.amount_answered < 5) {
+		if(this.currently_selected == 'question') {
 			if (this.player_answers[this.amount_answered].q == index) {
 				this.player_answers[this.amount_answered].q = 5;
-				this.waiting_for_second = false;
 				this.currently_selected = null;
 				return;
 			}
@@ -150,10 +135,9 @@ export class MinigameModel {
 	}
 
 	deselectAnswer(index: number) {
-		if(this.waiting_for_second && this.currently_selected == 'answer') {
+		if(this.currently_selected == 'answer') {
 			if (this.player_answers[this.amount_answered].a == index) {
 				this.player_answers[this.amount_answered].a = 5;
-				this.waiting_for_second = false;
 				this.currently_selected = null;
 				return;
 			}

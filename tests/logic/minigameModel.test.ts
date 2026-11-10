@@ -26,7 +26,6 @@ describe('Minigame Model', () => {
     });
 
     it('should keep track of selected questions/answers', () => {
-        expect(minigameModel.waiting_for_second).toBe(false);
         expect(minigameModel.currently_selected).toBe(null);
         expect(minigameModel.player_answers).toEqual(
             expect.arrayContaining([
@@ -38,53 +37,45 @@ describe('Minigame Model', () => {
         );
         expect(minigameModel.amount_answered).toBe(0);
         minigameModel.selectQuestion(2);
-        expect(minigameModel.waiting_for_second).toBe(true);
         expect(minigameModel.currently_selected).toBe('question');
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 5});
         expect(minigameModel.amount_answered).toBe(0);
         minigameModel.selectAnswer(3);
-        expect(minigameModel.waiting_for_second).toBe(false);
         expect(minigameModel.currently_selected).toBe(null);
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 5, a: 5});
         expect(minigameModel.amount_answered).toBe(1);
         minigameModel.selectQuestion(4);
-        expect(minigameModel.waiting_for_second).toBe(true);
         expect(minigameModel.currently_selected).toBe('question');
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 5});
         expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
         expect(minigameModel.amount_answered).toBe(1);
         minigameModel.selectQuestion(3);
-        expect(minigameModel.waiting_for_second).toBe(true);
         expect(minigameModel.currently_selected).toBe('question');
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 5});
         expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
         expect(minigameModel.amount_answered).toBe(1);
         minigameModel.selectAnswer(4);
-        expect(minigameModel.waiting_for_second).toBe(false);
         expect(minigameModel.currently_selected).toBe(null);
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
         expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
         expect(minigameModel.amount_answered).toBe(2);
         minigameModel.selectAnswer(1);
-        expect(minigameModel.waiting_for_second).toBe(true);
         expect(minigameModel.currently_selected).toBe('answer');
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
         expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 1});
         expect(minigameModel.amount_answered).toBe(2);
         minigameModel.selectAnswer(2);
-        expect(minigameModel.waiting_for_second).toBe(true);
         expect(minigameModel.currently_selected).toBe('answer');
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
         expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 2});
         expect(minigameModel.amount_answered).toBe(2);
         minigameModel.selectQuestion(0);
-        expect(minigameModel.waiting_for_second).toBe(false);
         expect(minigameModel.currently_selected).toBe(null);
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
@@ -94,7 +85,6 @@ describe('Minigame Model', () => {
 
         minigameModel.selectQuestion(1);
         minigameModel.selectAnswer(1);
-        expect(minigameModel.waiting_for_second).toBe(false);
         expect(minigameModel.currently_selected).toBe(null);
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
@@ -104,7 +94,6 @@ describe('Minigame Model', () => {
         expect(minigameModel.amount_answered).toBe(4);
 
         minigameModel.selectAnswer(0);
-        expect(minigameModel.waiting_for_second).toBe(true);
         expect(minigameModel.currently_selected).toBe('answer');
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
@@ -114,7 +103,6 @@ describe('Minigame Model', () => {
         expect(minigameModel.amount_answered).toBe(4);
 
         minigameModel.selectQuestion(4);
-        expect(minigameModel.waiting_for_second).toBe(false);
         expect(minigameModel.currently_selected).toBe(null);
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
@@ -161,7 +149,6 @@ describe('Minigame Model', () => {
 
             minigameModel2.selectQuestion(0);
             expect(minigameModel2.currently_selected).toBe('question');
-            expect(minigameModel2.waiting_for_second).toBe(true);
             expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
             expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
             expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 5});
@@ -197,7 +184,6 @@ describe('Minigame Model', () => {
 
             minigameModel2.deselectQuestion(1);
             expect(minigameModel2.currently_selected).toBe('question');
-            expect(minigameModel2.waiting_for_second).toBe(true);
             expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
             expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
             expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 2});
@@ -211,7 +197,6 @@ describe('Minigame Model', () => {
 
             minigameModel2.deselectAnswer(0);
             expect(minigameModel2.currently_selected).toBe('question');
-            expect(minigameModel2.waiting_for_second).toBe(true);
             expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
             expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
             expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 2});
@@ -228,7 +213,6 @@ describe('Minigame Model', () => {
 
             minigameModel2.deselectAnswer(1);
             expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.waiting_for_second).toBe(false);
             expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
             expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
             expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 2});
@@ -241,7 +225,6 @@ describe('Minigame Model', () => {
 
             minigameModel2.deselectQuestion(4);
             expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.waiting_for_second).toBe(false);
             expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
             expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
             expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 2});
@@ -251,7 +234,6 @@ describe('Minigame Model', () => {
 
             minigameModel2.deselectQuestion(2);
             expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.waiting_for_second).toBe(false);
             expect(minigameModel2.player_answers[0]).toStrictEqual({q: 3, a: 4});
             expect(minigameModel2.player_answers[1]).toStrictEqual({q: 0, a: 2});
             expect(minigameModel2.player_answers[2]).toStrictEqual({q: 1, a: 0});
@@ -261,7 +243,6 @@ describe('Minigame Model', () => {
 
             minigameModel2.deselectAnswer(4);
             expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.waiting_for_second).toBe(false);
             expect(minigameModel2.player_answers[0]).toStrictEqual({q: 0, a: 2});
             expect(minigameModel2.player_answers[1]).toStrictEqual({q: 1, a: 0});
             expect(minigameModel2.player_answers[2]).toStrictEqual({q: 5, a: 5});
@@ -271,7 +252,6 @@ describe('Minigame Model', () => {
 
             minigameModel2.deselectAnswer(0);
             expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.waiting_for_second).toBe(false);
             expect(minigameModel2.player_answers[0]).toStrictEqual({q: 0, a: 2});
             expect(minigameModel2.player_answers[1]).toStrictEqual({q: 5, a: 5});
             expect(minigameModel2.player_answers[2]).toStrictEqual({q: 5, a: 5});
@@ -281,7 +261,6 @@ describe('Minigame Model', () => {
 
             minigameModel2.deselectQuestion(0);
             expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.waiting_for_second).toBe(false);
             expect(minigameModel2.player_answers[0]).toStrictEqual({q: 5, a: 5});
             expect(minigameModel2.player_answers[1]).toStrictEqual({q: 5, a: 5});
             expect(minigameModel2.player_answers[2]).toStrictEqual({q: 5, a: 5});
