@@ -6,13 +6,14 @@ export type MinigameQuestionNumbers = {percent:number, multiplier: number, produ
 export function numberGenerator(): MinigameQuestionNumbers {
     let percent =  Math.floor(Math.random()*(99))+1;
     let multiplier = Math.floor(Math.random()*200-3)+4;
+    let product = (percent/100)*multiplier;
 
-    while (percent <= 0 || (percent/100)*multiplier < 1) {
+    while (percent <= 0 || product < 1 || (product*100 != Math.floor(product*100))) {
         percent = Math.floor(Math.random()*(99))+1;
         multiplier = Math.floor(Math.random()*200-3)+4;
+        product = (percent/100)*multiplier;
     }
-
-    let product = (percent/100)*multiplier;
+    product = Math.floor(product*100)/100;
     return {percent, multiplier, product};
 }
 

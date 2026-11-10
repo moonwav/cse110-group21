@@ -40,10 +40,10 @@ describe("Minigame question number generator", () => {
         expect(result3.product).toBeGreaterThanOrEqual(1);
     })
 
-    it("should generate percent, multiplier, and product such that (percent/100)*mulitplier = prodcut", () => {
-        expect((result1.percent/100)*result1.multiplier).toBe(result1.product);
-        expect((result2.percent/100)*result2.multiplier).toBe(result2.product);
-        expect((result3.percent/100)*result3.multiplier).toBe(result3.product);
+    it("should generate percent, multiplier, and product such that (percent/100)*mulitplier = product", () => {
+        expect(Math.floor(result1.percent*result1.multiplier)/100).toBe(result1.product);
+        expect(Math.floor(result2.percent*result2.multiplier)/100).toBe(result2.product);
+        expect(Math.floor(result3.percent*result3.multiplier)/100).toBe(result3.product);
     })
 })
 
