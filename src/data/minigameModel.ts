@@ -136,7 +136,7 @@ export class MinigameModel {
 	}
 
 	deselectQuestion(index: number) {
-		if(this.waiting_for_second && this.currently_selected == 'question') {
+		if(this.waiting_for_second && this.currently_selected == 'question' && this.amount_answered < 5) {
 			if (this.player_answers[this.amount_answered].q == index) {
 				this.player_answers[this.amount_answered].q = 5;
 				this.waiting_for_second = false;
@@ -145,13 +145,29 @@ export class MinigameModel {
 			}
 		}
 		for(let i: number = 0; i < this.amount_answered; i++) {
-				if (this.player_answers[i].q == index) {
-					for(let j: number = this.NUMBER_OF_QUESTIONS; j>i; j--) {
-						this.player_answers[j-1] = this.player_answers[j];
-					}
-				}
+			if (this.player_answers[i].q == index) {
+				this.player_answers.splice(i,1);
 			}
-		this.player_answers[this.NUMBER_OF_QUESTIONS-1] = {q: 5, a:5};
+		}
+		this.player_answers.push({q: 5, a:5});
+		this.amount_answered -= 1;
+	}
+
+	deselectAnswer(index: number) {
+		if(this.waiting_for_second && this.currently_selected == 'answer') {
+			if (this.player_answers[this.amount_answered].a == index) {
+				this.player_answers[this.amount_answered].a = 5;
+				this.waiting_for_second = false;
+				this.currently_selected = null;
+				return;
+			}
+		}
+		for(let i: number = 0; i < this.amount_answered; i++) {
+			if (this.player_answers[i].a == index) {
+				this.player_answers.splice(i,1);
+			}
+		}
+		this.player_answers.push({q: 5, a:5});
 		this.amount_answered -= 1;
 	}
 }
