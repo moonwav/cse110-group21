@@ -9,6 +9,7 @@ import AnswerController from './logic/answerController';
 import MinigameController from './logic/minigameController';
 import EnterNameController from './logic/enterNameController';
 import type { ScreenSwitcher, Screen } from "./types.ts";
+import OptionsController from './logic/optionsController';
 
 
 /**
@@ -34,6 +35,7 @@ class Game implements ScreenSwitcher {
 	//private minigameController: MinigameController;
 	private resultController: ResultController;
     private answerController: AnswerController;
+	private optionsController: OptionsController;
 
 	private model: GameModel;
 
@@ -74,6 +76,9 @@ class Game implements ScreenSwitcher {
 													this.stage_width, 
 													this.stage_height);
 		//this.minigameController = new MinigameController(this.model, this);
+		this.optionsController = new OptionsController(this.model, this, 
+													this.stage_width, 
+													this.stage_height);
 
 		// Add all screen groups to the layer
 		// All screens exist simultaneously but only one is visible at a time
@@ -84,10 +89,11 @@ class Game implements ScreenSwitcher {
 		this.layer.add(this.resultController.getView().getGroup());
 		this.layer.add(this.answerController.getView().getGroup());
 		//this.layer.add(this.minigameController.getView().getGroup());
+		this.layer.add(this.optionsController.getView().getGroup());
 		// Draw the layer (render everything to the canvas)
 
 		// Start with menu screen visible
-		this.switchToScreen({type: "menu"});
+		this.switchToScreen({type: "options"});
 
 		this.layer.draw();
 	}
@@ -109,6 +115,7 @@ class Game implements ScreenSwitcher {
 		this.enterNameController.hide();
         this.answerController.hide();
 		this.resultController.hide();
+		this.optionsController.hide();
 
 		// Show the requested screen based on the screen type
 		switch (screen.type) {
@@ -140,6 +147,10 @@ class Game implements ScreenSwitcher {
 
 			//case "minigame":
 				//break;
+
+			case "options":
+				this.optionsController.show();
+				break;
 			
 		}
 	}
