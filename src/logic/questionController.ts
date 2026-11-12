@@ -86,7 +86,7 @@ export default class QuestionController extends Controller{
             method: "POST",
             headers: { "content-type": "application/json" },
             body: JSON.stringify({ name: this.model.getPlayer(), result }),
-        });
+        }).catch(() => {});
         this.screenSwitcher.switchToScreen({ type: "result", data: result });
     }
 
