@@ -2,7 +2,8 @@ import Konva from 'konva';
 //import { loadFont } from './fonts';
 import { View } from '../types';
 import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
-import GameModel from '../logic/model';
+import { MinigameModel,  MinigameQuestion, 
+                            MinigameAnswer } from "../data/minigameModel";
 
 //Defines the MinigameView class
 export default class MinigameView implements View{
@@ -10,9 +11,21 @@ export default class MinigameView implements View{
     SILKSCREEN = 'Silkscreen';
     ROBOTO = 'Roboto';
 
-    model: GameModel;
+    model: MinigameModel;
     stage_width: number;
     stage_height: number;
+
+    question_1: MinigameQuestion;
+    question_2: MinigameQuestion;
+    question_3: MinigameQuestion;
+    question_4: MinigameQuestion;
+    question_5: MinigameQuestion;
+
+    answer_1: MinigameAnswer;
+    answer_2: MinigameAnswer;
+    answer_3: MinigameAnswer;
+    answer_4: MinigameAnswer;
+    answer_5: MinigameAnswer;
 
     background: Konva.Rect;
     main_card: Konva.Rect;
@@ -77,10 +90,22 @@ export default class MinigameView implements View{
     group: Konva.Group;
 
 
-    constructor(model: GameModel, stage_width: number, stage_height: number) {
+    constructor(model: MinigameModel, stage_width: number, stage_height: number) {
         this.model = model;
         this.stage_height = stage_height;
         this.stage_width = stage_width;
+
+        this.question_1 = model.questions[0];
+        this.question_2 = model.questions[1];
+        this.question_3 = model.questions[2];
+        this.question_4 = model.questions[3];
+        this.question_5 = model.questions[4];
+
+        this.answer_1 = model.answers[0];
+        this.answer_2 = model.answers[1];
+        this.answer_3 = model.answers[2];
+        this.answer_4 = model.answers[3];
+        this.answer_5 = model.answers[4];
 
         this.background = new Konva.Rect({
             x: 0,           
@@ -106,7 +131,7 @@ export default class MinigameView implements View{
             x: card_padding_side * 1.99,
             y: this.stage_height * 0.08,
             text: `Matching Game`,
-			fontFamily: 'Silkscreen',
+			fontFamily: this.SILKSCREEN,
             fontStyle: 'bold',
 			fontSize: this.stage_height*0.035,
 			align: 'center',
@@ -121,7 +146,7 @@ export default class MinigameView implements View{
             y: this.stage_height * 0.08,
             width: time_width,
             text: `0:00`,
-			fontFamily: 'Silkscreen',
+			fontFamily:  this.SILKSCREEN,
             fontStyle: 'bold',
 			fontSize: this.stage_height*0.035,
 			align: 'right',
@@ -131,7 +156,7 @@ export default class MinigameView implements View{
         this.time_text = new Konva.Text({
             y: this.stage_height * 0.08,
             text: `Time Left:`,
-			fontFamily: 'Silkscreen',
+			fontFamily:  this.SILKSCREEN,
             fontStyle: 'bold',
 			fontSize: this.stage_height*0.035,
 			fill: 'Black',
@@ -159,7 +184,7 @@ export default class MinigameView implements View{
 			width: header_width,
             height: header_height,
             text: `Questions`,
-			fontFamily: 'Silkscreen',
+			fontFamily:  this.SILKSCREEN,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -186,7 +211,7 @@ export default class MinigameView implements View{
 			width: header_width,
             height: header_height,
             text: `Answers`,
-			fontFamily: 'Silkscreen',
+			fontFamily: this.SILKSCREEN,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -211,8 +236,8 @@ export default class MinigameView implements View{
             y: this.a_card_1_shape.y(),
 			width: card_width,
             height: card_height,
-            text: `Needs a question`,
-			fontFamily: 'Silkscreen',
+            text: this.question_1.question,
+			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -222,6 +247,16 @@ export default class MinigameView implements View{
         this.a_card_1 = new Konva.Group();
         this.a_card_1.add(this.a_card_1_shape);
         this.a_card_1.add(this.a_card_1_text);
+        this.a_card_1.id('q1');
+        
+        this.a_card_1.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.a_card_1.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
+
 
         this.b_card_1_shape = new Konva.Rect({
             x: this.a_card_1_shape.width() + 3*card_padding_side,
@@ -237,8 +272,8 @@ export default class MinigameView implements View{
             y: this.b_card_1_shape.y(),
 			width: card_width,
             height: card_height,
-            text: `Needs an answer`,
-			fontFamily: 'Silkscreen',
+            text: this.answer_1.answer,
+			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -248,6 +283,15 @@ export default class MinigameView implements View{
         this.b_card_1 = new Konva.Group();
         this.b_card_1.add(this.b_card_1_shape);
         this.b_card_1.add(this.b_card_1_text);
+        this.b_card_1.id('a1');
+
+        this.b_card_1.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.b_card_1.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
 
         this.a_card_2_shape = new Konva.Rect({
             x: this.a_card_1_shape.x(),
@@ -263,8 +307,8 @@ export default class MinigameView implements View{
             y: this.a_card_2_shape.y(),
 			width: card_width,
             height: card_height,
-            text: `Needs a question`,
-			fontFamily: 'Silkscreen',
+            text: this.question_2.question,
+			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -274,6 +318,15 @@ export default class MinigameView implements View{
         this.a_card_2 = new Konva.Group();
         this.a_card_2.add(this.a_card_2_shape);
         this.a_card_2.add(this.a_card_2_text);
+        this.a_card_2.id('q2');
+
+        this.a_card_2.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.a_card_2.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
 
         this.b_card_2_shape = new Konva.Rect({
             x: this.b_card_1_shape.x(),
@@ -289,8 +342,8 @@ export default class MinigameView implements View{
             y: this.b_card_2_shape.y(),
 			width: card_width,
             height: card_height,
-            text: `Needs an answer`,
-			fontFamily: 'Silkscreen',
+            text: this.answer_2.answer,
+			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -300,6 +353,7 @@ export default class MinigameView implements View{
         this.b_card_2 = new Konva.Group();
         this.b_card_2.add(this.b_card_2_shape);
         this.b_card_2.add(this.b_card_2_text);
+        this.b_card_2.id('a2');
 
         this.a_card_3_shape = new Konva.Rect({
             x: this.a_card_1_shape.x(),
@@ -315,17 +369,34 @@ export default class MinigameView implements View{
             y: this.a_card_3_shape.y(),
 			width: card_width,
             height: card_height,
-            text: `Needs a question`,
-			fontFamily: 'Silkscreen',
+            text: this.question_3.question,
+			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
 			fill: 'Black',
         });
 
+        this.b_card_2.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.b_card_2.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
+
         this.a_card_3 = new Konva.Group();
         this.a_card_3.add(this.a_card_3_shape);
         this.a_card_3.add(this.a_card_3_text);
+        this.a_card_3.id('q3');
+
+        this.a_card_3.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.a_card_3.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
 
         this.b_card_3_shape = new Konva.Rect({
             x: this.b_card_1_shape.x(),
@@ -341,8 +412,8 @@ export default class MinigameView implements View{
             y: this.b_card_3_shape.y(),
 			width: card_width,
             height: card_height,
-            text: `Needs an answer`,
-			fontFamily: 'Silkscreen',
+            text: this.answer_3.answer,
+			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -352,6 +423,15 @@ export default class MinigameView implements View{
         this.b_card_3 = new Konva.Group();
         this.b_card_3.add(this.b_card_3_shape);
         this.b_card_3.add(this.b_card_3_text);
+        this.b_card_3.id('a3');
+
+        this.b_card_3.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.b_card_3.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
 
         this.a_card_4_shape = new Konva.Rect({
             x: this.a_card_1_shape.x(),
@@ -367,8 +447,8 @@ export default class MinigameView implements View{
             y: this.a_card_4_shape.y(),
 			width: card_width,
             height: card_height,
-            text: `Needs a question`,
-			fontFamily: 'Silkscreen',
+            text: this.question_4.question,
+			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -378,6 +458,15 @@ export default class MinigameView implements View{
         this.a_card_4 = new Konva.Group();
         this.a_card_4.add(this.a_card_4_shape);
         this.a_card_4.add(this.a_card_4_text);
+        this.a_card_4.id('q4');
+
+        this.a_card_4.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.a_card_4.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
 
         this.b_card_4_shape = new Konva.Rect({
             x: this.b_card_1_shape.x(),
@@ -393,8 +482,8 @@ export default class MinigameView implements View{
             y: this.b_card_4_shape.y(),
 			width: card_width,
             height: card_height,
-            text: `Needs an answer`,
-			fontFamily: 'Silkscreen',
+            text: this.answer_4.answer,
+			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -404,6 +493,15 @@ export default class MinigameView implements View{
         this.b_card_4 = new Konva.Group();
         this.b_card_4.add(this.b_card_4_shape);
         this.b_card_4.add(this.b_card_4_text);
+        this.b_card_4.id('a4');
+
+        this.b_card_4.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.b_card_4.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
 
         this.a_card_5_shape = new Konva.Rect({
             x: this.a_card_1_shape.x(),
@@ -419,8 +517,8 @@ export default class MinigameView implements View{
             y: this.a_card_5_shape.y(),
 			width: card_width,
             height: card_height,
-            text: `Needs a question`,
-			fontFamily: 'Silkscreen',
+            text: this.question_5.question,
+			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -430,6 +528,15 @@ export default class MinigameView implements View{
         this.a_card_5 = new Konva.Group();
         this.a_card_5.add(this.a_card_5_shape);
         this.a_card_5.add(this.a_card_5_text);
+        this.a_card_5.id('q5');
+
+        this.a_card_5.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.a_card_5.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
 
         this.b_card_5_shape = new Konva.Rect({
             x: this.b_card_1_shape.x(),
@@ -446,8 +553,8 @@ export default class MinigameView implements View{
             y: this.b_card_5_shape.y(),
 			width: card_width,
             height: card_height,
-            text: `Needs an answer`,
-			fontFamily: 'Silkscreen',
+            text: this.answer_5.answer,
+			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -456,7 +563,16 @@ export default class MinigameView implements View{
 
         this.b_card_5 = new Konva.Group();
         this.b_card_5.add(this.b_card_5_shape);
-        this.b_card_5.add(this.b_card_5_text)
+        this.b_card_5.add(this.b_card_5_text);
+        this.b_card_5.id('q5');
+
+        this.b_card_5.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.b_card_5.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
 
         this.submit_button_shape = new Konva.Rect({
             x: this.stage_width/2,
@@ -474,7 +590,7 @@ export default class MinigameView implements View{
 			width: header_width,
             height: card_height,
             text: `Submit Answers`,
-			fontFamily: 'Silkscreen',
+			fontFamily: this.SILKSCREEN,
 			fontSize: this.stage_height*0.035,
 			align: 'center',
 			verticalAlign: 'middle',
@@ -485,6 +601,17 @@ export default class MinigameView implements View{
         this.submit_button = new Konva.Group();
         this.submit_button.add(this.submit_button_shape);
         this.submit_button.add(this.submit_button_text);
+
+
+        this.submit_button.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.submit_button.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
+
+
 
         this.group = new Konva.Group();
         this.group.add(this.background);
@@ -514,11 +641,9 @@ export default class MinigameView implements View{
     
     hide() {
         this.group.visible(false);
-        this.group.getLayer()?.draw();
     }
 
     show() {
         this.group.visible(true);
-        this.group.getLayer()?.draw();
     }
 }
