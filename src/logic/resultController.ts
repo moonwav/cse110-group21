@@ -26,9 +26,11 @@ export default class ResultController extends Controller{
         this.screenSwitcher.switchToScreen({type: "answer"});
     }
 
-    handleLeaderboardClick() {
-        // show leaderboard
-        return;
+    async handleLeaderboardClick() {
+        const name = encodeURIComponent(this.model.getPlayer());
+        const response = await fetch(`/api/scores?name=${name}`);
+        const scores = await response.json() as { percent: number; playedAt: string }[];
+        this.view.showLeaderboard(scores);
     }
 
     handlePlayAgainClick() {

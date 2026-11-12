@@ -52,6 +52,7 @@ export default class ResultView implements View{
 	leaderboard_button_shape: Konva.Rect;
 	leaderboard_button_text: Konva.Text;
 	leaderboard_button: Konva.Group;
+	leaderboard_text: Konva.Text;
 
 	again_button_shape: Konva.Rect;
 	again_button_text: Konva.Text;
@@ -372,6 +373,17 @@ export default class ResultView implements View{
 			document.body.style.cursor = 'default';
 		});
 
+		this.leaderboard_text = new Konva.Text({
+			x: this.stage_width * 0.15,
+			y: this.stage_height * 0.25,
+			width: this.stage_width * 0.7,
+			text: "",
+			fontFamily: this.ROBOTO,
+			fontSize: this.stage_height * 0.035,
+			lineHeight: 1.6,
+			fill: "Black",
+			visible: false,
+		});
 
 		this.loadFonts();
 		this.group = new Konva.Group();
@@ -391,6 +403,7 @@ export default class ResultView implements View{
 		this.group.add(this.answer_button);
 		this.group.add(this.leaderboard_button);
 		this.group.add(this.again_button);
+		this.group.add(this.leaderboard_text);
 	}	
 
 	/**
@@ -403,6 +416,33 @@ export default class ResultView implements View{
 		this.percent_data.text(`${results.percent}%`);
 		this.wrong_data.text(`${results.wrongAnswers}`);
 		this.hints_data.text(`${results.hintsUsed}`);
+		this.leaderboard_text.visible(false);
+		this.grade_display.visible(true);
+		this.result_text_1.visible(true);
+		this.result_text_2.visible(true);
+		this.result_text_3.visible(true);
+		this.percent_display.visible(true);
+		this.wrong_display.visible(true);
+		this.hints_display.visible(true);
+		this.group.getLayer()?.draw();
+	}
+
+	showLeaderboard(scores: { percent: number; playedAt: string }[]) {
+		const lines = scores.length === 0
+			? "No saved scores yet."
+			: scores.map((score, index) => {
+				const when = new Date(score.playedAt).toLocaleString();
+				return `${index + 1}. ${score.percent}%    ${when}`;
+			}).join("\n");
+		this.grade_display.visible(false);
+		this.result_text_1.visible(false);
+		this.result_text_2.visible(false);
+		this.result_text_3.visible(false);
+		this.percent_display.visible(false);
+		this.wrong_display.visible(false);
+		this.hints_display.visible(false);
+		this.leaderboard_text.text(lines);
+		this.leaderboard_text.visible(true);
 		this.group.getLayer()?.draw();
 	}
 	
