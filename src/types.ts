@@ -17,6 +17,7 @@ export interface View {
  * - "info": The how to play instructions screen
  * - "minigame": The minigame screen
  * - "answer": The answer key screen
+ * - "options": The options screen in between questions for story progression
  */
 export type Screen =
 	| { type: "menu" }
@@ -25,7 +26,8 @@ export type Screen =
     | { type: "minigame" }
 	| { type: "enter name"}
     | { type: "info" }
-	| { type: "answer" };
+	| { type: "answer" }
+	| { type: "options" };
 
 export abstract class Controller {
 	abstract getView(): View;
