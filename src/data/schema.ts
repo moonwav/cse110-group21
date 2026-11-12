@@ -11,4 +11,5 @@ export const scores = sqliteTable("scores", {
   percent: real("percent").notNull(),
   wrongAnswers: integer("wrong_answers").notNull(),
   hintsUsed: integer("hints_used").notNull(),
+  playedAt: text("played_at").notNull().default(""),
 });

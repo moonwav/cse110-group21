@@ -1,0 +1,1 @@
+ALTER TABLE `scores` ADD `played_at` text DEFAULT '' NOT NULL;
