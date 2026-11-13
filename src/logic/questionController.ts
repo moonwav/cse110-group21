@@ -81,8 +81,13 @@ export default class QuestionController extends Controller{
     }
 
     endGame() {
-        this.screenSwitcher.switchToScreen({ type: "result", 
-                                             data: ScoreTracker.getResults(this.model) });
+        const result = ScoreTracker.getResults(this.model);
+        void fetch("/api/scores", {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ name: this.model.getPlayer(), result }),
+        }).catch(() => {});
+        this.screenSwitcher.switchToScreen({ type: "result", data: result });
     }
 
     show() {
