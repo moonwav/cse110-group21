@@ -95,7 +95,7 @@ class Game implements ScreenSwitcher {
 		// Draw the layer (render everything to the canvas)
 
 		// Start with menu screen visible
-		this.switchToScreen({type: "options"});
+		this.switchToScreen({type: "menu"});
 
 		this.layer.draw();
 	}

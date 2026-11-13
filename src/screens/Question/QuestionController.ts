@@ -93,7 +93,6 @@ export default class QuestionController extends Controller{
     }
 
     show() {
-        this.model.beginGame();
         this.view.showQuestion(this.model.getCurrentQuestion());
         this.refreshScoreAndProgress();
         this.view.show();

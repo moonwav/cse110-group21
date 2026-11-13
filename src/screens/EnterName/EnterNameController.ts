@@ -18,7 +18,8 @@ export default class EnterNameController extends Controller{
     
 
     handleReadyClick() {
-        this.screenSwitcher.switchToScreen({type: "question"});
+        this.model.beginGame();
+        this.screenSwitcher.switchToScreen({type: "options"});
     }
 
 
