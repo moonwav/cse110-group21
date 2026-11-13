@@ -1,6 +1,6 @@
-import GameModel, { QuestionRecord } from './model';
-import Question from './question';
-import { ResultData } from '../data/resultModel';
+import GameModel, { QuestionRecord } from './GameModel';
+import Question from './Question';
+import { ResultData } from '../screens/Result/ResultModel';
 
 /**
  * ScoreTracker: every scoring rule lives here.

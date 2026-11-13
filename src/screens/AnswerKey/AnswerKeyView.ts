@@ -1,8 +1,8 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
-import { View } from '../types';
-import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
-import Question from '../logic/question';
+import { View } from '../../types';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from '../../constants';
+import Question from '../../model/Question';
 
 
 //Defines the AnswerView class

@@ -1,6 +1,6 @@
 import { defineConfig, type ViteDevServer } from "vite";
-import { saveCompletedGame, topScoresForPlayer } from "./src/data/database";
-import type { ResultData } from "./src/data/resultModel";
+import { saveCompletedGame, topScoresForPlayer } from "./src/backend/database";
+import type { ResultData } from "./src/screens/Result/ResultModel";
 
 export default defineConfig({
   plugins: [

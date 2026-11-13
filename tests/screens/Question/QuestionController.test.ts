@@ -14,18 +14,18 @@ const mocks = vi.hoisted(() => ({
   checkAnswer: vi.fn(),
 }));
 
-vi.mock("../../src/presentation/questionView", () => ({
+vi.mock("../../../src/screens/Question/QuestionView", () => ({
   default: class {
     constructor() {
       return mocks.view;
     }
   },
 }));
-vi.mock("../../src/logic/answerChecker", () => ({ checkAnswer: mocks.checkAnswer }));
+vi.mock("../../../src/model/answerChecker", () => ({ checkAnswer: mocks.checkAnswer }));
 
-import QuestionController from "../../src/logic/questionController";
-import GameModel from "../../src/logic/model";
-import * as ScoreTracker from "../../src/logic/scoreTracker";
+import QuestionController from "../../../src/screens/Question/QuestionController";
+import GameModel from "../../../src/model/GameModel";
+import * as ScoreTracker from "../../../src/model/scoreTracker";
 
 function setup() {
   const model = new GameModel();

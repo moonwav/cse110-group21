@@ -3,8 +3,8 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { eq } from "drizzle-orm";
-import { openDatabase, saveCompletedGame, saveScore, scoresForPlayer, topScoresForPlayer } from "../../src/data/database";
-import { players, scores } from "../../src/data/schema";
+import { openDatabase, saveCompletedGame, saveScore, scoresForPlayer, topScoresForPlayer } from "../../src/backend/database";
+import { players, scores } from "../../src/backend/schema";
 
 describe("saveScore", () => {
   it("stores a finished game for a player", () => {

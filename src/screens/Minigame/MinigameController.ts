@@ -1,7 +1,7 @@
-import MinigameView from '../presentation/minigameView';
-import GameModel from './model';
-import { ScreenSwitcher, Controller } from "../types";
-import { MinigameModel } from '../data/minigameModel';
+import MinigameView from './MinigameView';
+import GameModel from '../../model/GameModel';
+import { ScreenSwitcher, Controller } from "../../types";
+import { MinigameModel } from './MinigameModel';
 
 //will define the MinigameController
 export default class MinigameController extends Controller{

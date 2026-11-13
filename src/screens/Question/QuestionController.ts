@@ -1,9 +1,9 @@
-import QuestionView from '../presentation/questionView';
-import GameModel from './model';
-import * as ScoreTracker from './scoreTracker';
-import { ScreenSwitcher, Controller } from "../types";
-import { checkAnswer } from './answerChecker';
-import { parsePlayerAnswer } from './question';
+import QuestionView from './QuestionView';
+import GameModel from '../../model/GameModel';
+import * as ScoreTracker from '../../model/scoreTracker';
+import { ScreenSwitcher, Controller } from "../../types";
+import { checkAnswer } from '../../model/answerChecker';
+import { parsePlayerAnswer } from '../../model/Question';
 //will define the MainMenuController
 export default class QuestionController extends Controller{
     model: GameModel;

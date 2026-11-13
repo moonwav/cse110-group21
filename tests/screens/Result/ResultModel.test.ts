@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { ResultModel, ResultData } from "../../src/data/resultModel";
+import { ResultModel, ResultData } from "../../../src/screens/Result/ResultModel";
 
 function makeResults(percent: number): ResultData { 
     return { percent, wrongAnswers: 0, hintsUsed: 0 }

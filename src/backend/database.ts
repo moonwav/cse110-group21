@@ -2,7 +2,7 @@ import { desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-sqlite";
 import { migrate } from "drizzle-orm/node-sqlite/migrator";
 import { DatabaseSync } from "node:sqlite";
-import type { ResultData } from "./resultModel";
+import type { ResultData } from "../screens/Result/ResultModel";
 import * as schema from "./schema";
 
 export function openDatabase(path = "game.sqlite") {

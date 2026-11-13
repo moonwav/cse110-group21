@@ -1,6 +1,6 @@
-import AnswerView from '../presentation/answerView';
-import GameModel from './model';
-import { ScreenSwitcher, Controller } from "../types";
+import AnswerView from './AnswerKeyView';
+import GameModel from '../../model/GameModel';
+import { ScreenSwitcher, Controller } from "../../types";
 
 //will define the AnswerController
 export default class AnswerController extends Controller{

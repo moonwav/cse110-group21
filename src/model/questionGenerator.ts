@@ -1,7 +1,7 @@
-import type { QuestionTemplate } from "../data/questionTemplates";
-import { questionTemplates } from "../data/questionTemplates";
+import type { QuestionTemplate } from "./questionTemplates";
+import { questionTemplates } from "./questionTemplates";
 import { formulas } from "./formulas";
-import Question from "./question";
+import Question from "./Question";
 
 const money = (value: number) => Math.round(value * 100) / 100;
 

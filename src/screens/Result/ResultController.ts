@@ -1,7 +1,7 @@
-import ResultView from '../presentation/resultView';
-import GameModel from './model';
-import { ResultData, ResultModel } from '../data/resultModel';
-import { ScreenSwitcher, Controller } from "../types";
+import ResultView from './ResultView';
+import GameModel from '../../model/GameModel';
+import { ResultData, ResultModel } from './ResultModel';
+import { ScreenSwitcher, Controller } from "../../types";
 
 //will define the ResultsController
 export default class ResultController extends Controller{

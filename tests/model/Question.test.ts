@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
-import { questionTemplates } from "../../src/data/questionTemplates";
-import { generateQuestion, generateTrip } from "../../src/logic/QuestionGenerator";
-import GameModel from "../../src/logic/model";
-import Question, { parsePlayerAnswer } from "../../src/logic/question";
+import { questionTemplates } from "../../src/model/questionTemplates";
+import { generateQuestion, generateTrip } from "../../src/model/questionGenerator";
+import GameModel from "../../src/model/GameModel";
+import Question, { parsePlayerAnswer } from "../../src/model/Question";
 
 describe("question generation", () => {
   it("builds a 10-question trip from the first value of each template", () => {

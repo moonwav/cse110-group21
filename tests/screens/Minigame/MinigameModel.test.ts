@@ -1,5 +1,5 @@
 import { describe, it, test, expect } from "vitest";
-import { MinigameQuestion, MinigameAnswer, MinigameModel } from '../../src/data/minigameModel'
+import { MinigameQuestion, MinigameAnswer, MinigameModel } from '../../../src/screens/Minigame/MinigameModel'
 
 
 describe('Minigame Model', () => {

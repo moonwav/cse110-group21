@@ -1,8 +1,8 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
-import { View } from '../types';
-import { ResultData, Grade } from '../data/resultModel';
-import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
+import { View } from '../../types';
+import { ResultData, Grade } from './ResultModel';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from '../../constants';
 
 
 //Defines the resultView class

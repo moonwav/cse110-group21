@@ -1,5 +1,5 @@
-import Question from './question';
-import { generateTrip } from './QuestionGenerator';
+import Question from './Question';
+import { generateTrip } from './questionGenerator';
 
 export type QuestionRecord = {
     hintUsed: boolean;

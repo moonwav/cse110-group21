@@ -1,4 +1,4 @@
-import Question, { parsePlayerAnswer } from "./question";
+import Question, { parsePlayerAnswer } from "./Question";
 
 export type CheckResult = 
     | { status: "correct" }

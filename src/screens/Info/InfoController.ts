@@ -1,6 +1,6 @@
-import InfoView from '../presentation/infoView';
-import GameModel from './model';
-import { ScreenSwitcher, Controller } from "../types";
+import InfoView from './InfoView';
+import GameModel from '../../model/GameModel';
+import { ScreenSwitcher, Controller } from "../../types";
 
 //will define the InfoController
 export default class InfoController extends Controller{

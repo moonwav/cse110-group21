@@ -1,7 +1,7 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
-import { View } from '../types';
-import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from './viewConstants';
+import { View } from '../../types';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from '../../constants';
 
 
 //Defines the InfoView class

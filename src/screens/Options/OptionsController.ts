@@ -1,6 +1,6 @@
-import OptionsView from '../presentation/optionsView';
-import GameModel from './model';
-import { ScreenSwitcher, Controller } from "../types";
+import OptionsView from './OptionsView';
+import GameModel from '../../model/GameModel';
+import { ScreenSwitcher, Controller } from "../../types";
 
 //will define the OptionsController
 export default class OptionsController extends Controller{

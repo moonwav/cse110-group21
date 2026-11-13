@@ -1,9 +1,9 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
-import { View } from '../types';
-import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from './viewConstants';
+import { View } from '../../types';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from '../../constants';
 import { MinigameModel,  MinigameQuestion, 
-                            MinigameAnswer } from "../data/minigameModel";
+                            MinigameAnswer } from "./MinigameModel";
 
 //Defines the MinigameView class
 export default class MinigameView implements View{

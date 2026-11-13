@@ -1,6 +1,6 @@
-import EnterNameView from '../presentation/enterNameView';
-import GameModel from './model';
-import { ScreenSwitcher, Controller } from "../types";
+import EnterNameView from './EnterNameView';
+import GameModel from '../../model/GameModel';
+import { ScreenSwitcher, Controller } from "../../types";
 
 //Defines the EnterNameController
 export default class EnterNameController extends Controller{

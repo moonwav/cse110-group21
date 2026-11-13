@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
-import GameModel from "../../src/logic/model";
-import * as ScoreTracker from "../../src/logic/scoreTracker";
+import GameModel from "../../src/model/GameModel";
+import * as ScoreTracker from "../../src/model/scoreTracker";
 
 const finished = (model: GameModel) => ScoreTracker.isFinished(model.getCurrentRecord());
 

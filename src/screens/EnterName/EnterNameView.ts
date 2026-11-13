@@ -1,7 +1,7 @@
 import Konva from 'konva';
-import { View } from '../types';
-import { PRIMARY_COLOR, BUTTON_COLOR, loadFonts } from './viewConstants';
-import GameModel from '../logic/model';
+import { View } from '../../types';
+import { PRIMARY_COLOR, BUTTON_COLOR, loadFonts } from '../../constants';
+import GameModel from '../../model/GameModel';
 
 
 //Defines the MainMenuView class

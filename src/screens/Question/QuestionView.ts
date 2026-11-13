@@ -1,9 +1,9 @@
 import Konva from 'konva';
 //import { loadFont } from './fonts';
-import GameModel from '../logic/model';
-import Question, { parsePlayerAnswer } from '../logic/question';
-import { View } from '../types';
-import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from './viewConstants';
+import GameModel from '../../model/GameModel';
+import Question, { parsePlayerAnswer } from '../../model/Question';
+import { View } from '../../types';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from '../../constants';
 
 
 //Will define the QuestionView class, very unfinished

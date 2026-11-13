@@ -1,6 +1,6 @@
-import MainMenuView from '../presentation/mainMenuView';
-import GameModel from './model';
-import { ScreenSwitcher, Controller } from "../types";
+import MainMenuView from './MainMenuView';
+import GameModel from '../../model/GameModel';
+import { ScreenSwitcher, Controller } from "../../types";
 
 //will define the MainMenuController
 export default class MainMenuController extends Controller{

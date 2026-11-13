@@ -1,4 +1,4 @@
-import type { Formula } from "../data/questionTemplates";
+import type { Formula } from "./questionTemplates";
 
 export type Numbers = Record<string, number>;
 

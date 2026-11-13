@@ -1,8 +1,8 @@
 import { describe, it, expect } from "vitest";
-import GameModel from "../../src/logic/model";
-import Question from "../../src/logic/question";
-import { generateTrip } from "../../src/logic/QuestionGenerator";
-import * as ScoreTracker from "../../src/logic/scoreTracker";
+import GameModel from "../../src/model/GameModel";
+import Question from "../../src/model/Question";
+import { generateTrip } from "../../src/model/questionGenerator";
+import * as ScoreTracker from "../../src/model/scoreTracker";
 
 // A trip with fixed questions: easy (7), medium (10), hard (14).
 function makeModel(): GameModel {
