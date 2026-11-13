@@ -5,8 +5,7 @@ import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from '../../c
 
 //Defines the OptionsView class
 export default class OptionsView implements View {
-    TITLE = 'WELCOME TO PERCENTAGE CITY!\nWhat would you like to do first?';
-   
+
     SILKSCREEN = 'Silkscreen';
 
     stage_width: number;
@@ -65,7 +64,7 @@ export default class OptionsView implements View {
         this.title = new Konva.Text({
             x: this.stage_width*0.05,
             y: this.stage_height*0.05,
-            text: this.TITLE,
+            text: '',
             fontFamily: this.SILKSCREEN,
             width: this.stage_width*0.9,
             fontSize: this.stage_height*0.068,
@@ -85,7 +84,7 @@ export default class OptionsView implements View {
 
         this.choice1_button_text = new Konva.Text({
             x: this.choice1_button_shape.x(),
-            y: this.choice1_button_shape.y() + this.choice1_button_shape.height()*0.22,
+            y: this.choice1_button_shape.y() + this.choice1_button_shape.height()*0.33,
             text: "",
             listening: false,
             fontFamily: this.SILKSCREEN,
@@ -119,7 +118,7 @@ export default class OptionsView implements View {
 
         this.choice2_button_text = new Konva.Text({
             x: this.choice2_button_shape.x(),
-            y: this.choice2_button_shape.y() + this.choice2_button_shape.height()*0.22,
+            y: this.choice2_button_shape.y() + this.choice2_button_shape.height()*0.33,
             text: "",
             listening: false,
             fontFamily: this.SILKSCREEN,
@@ -153,7 +152,7 @@ export default class OptionsView implements View {
 
         this.choice3_button_text = new Konva.Text({
             x: this.choice3_button_shape.x(),
-            y: this.choice3_button_shape.y() + this.choice3_button_shape.height()*0.22,
+            y: this.choice3_button_shape.y() + this.choice3_button_shape.height()*0.33,
             text: "",
             listening: false,
             fontFamily: this.SILKSCREEN,
@@ -187,7 +186,7 @@ export default class OptionsView implements View {
 
         this.choice4_button_text = new Konva.Text({
             x: this.choice4_button_shape.x(),
-            y: this.choice4_button_shape.y() + this.choice4_button_shape.height()*0.22,
+            y: this.choice4_button_shape.y() + this.choice4_button_shape.height()*0.33,
             text: "",
             listening: false,
             fontFamily: this.SILKSCREEN,
@@ -224,9 +223,9 @@ export default class OptionsView implements View {
 
     setTitle(stop: number, total: number) {
         if (stop === 1) {
-            this.title.text(this.TITLE);
+            this.title.text('WELCOME TO PERCENTAGE CITY!\nWhere would you like to go first?');
         } else {
-            this.title.text("Where would you like to go next?")
+            this.title.text(`Stop ${stop} of ${total}\nWhere would you like to go next?`)
         }
     }
 
