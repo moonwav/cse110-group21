@@ -38,3 +38,21 @@ export function generateTrip(random: () => number = Math.random) {
     generateQuestion(template, index + 1, random),
   );
 }
+
+/**
+ * Pick options to display from the remaining questions
+ */
+export function pickOptions(
+  questions: Question[],
+  count: number,
+  random: () => number = Math.random,
+): Question[] {
+  const remaining = questions.slice();  // makes a copy of the array
+  const picked: Question[] = [];
+  while(picked.length < count && remaining.length > 0) {
+    const index = Math.floor(random() * remaining.length);
+    picked.push(remaining[index]);
+    remaining.splice(index, 1);  // remove one item at index (prevents duplicates)
+  }
+  return picked;
+}
