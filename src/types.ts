@@ -1,5 +1,5 @@
 import type { Group } from "konva/lib/Group";
-import { ResultData } from "./data/resultModel";
+import { ResultData } from "./screens/Result/ResultModel";
 
 export interface View {
 	getGroup(): Group;
