@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { questionTemplates } from "../../src/model/questionTemplates";
-import { generateQuestion, generateTrip } from "../../src/model/questionGenerator";
+import { generateQuestion, generateTrip, pickOptions } from "../../src/model/questionGenerator";
 import GameModel from "../../src/model/GameModel";
 import Question, { parsePlayerAnswer } from "../../src/model/Question";
 
@@ -39,6 +39,18 @@ describe("question generation", () => {
     expect(question.getAnswer()).toBe(50);
     expect(question.getQuestion()).toContain("$100");
     expect(question.getQuestion()).toContain("50%");
+  });
+});
+
+describe("picking options", () => {
+  it("keeps the order when the random value never swaps", () => {
+    const trip = generateTrip(() => 0);
+    expect(pickOptions(trip, 4, () => 0)).toEqual(trip.slice(0, 4));
+  });
+
+  it("returns fewer options when fewer questions are left", () => {
+    const trip = generateTrip(() => 0);
+    expect(pickOptions(trip.slice(8), 4)).toHaveLength(2);
   });
 });
 

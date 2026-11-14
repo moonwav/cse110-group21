@@ -5,12 +5,7 @@ import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from '../../c
 
 //Defines the OptionsView class
 export default class OptionsView implements View {
-    TITLE = 'WELCOME TO PERCENTAGE CITY!\nWhat would you like to do first?';
-    CHOICE1 = 'GO TO THE BEACH';
-    CHOICE2 = 'GO SHOPPING';
-    CHOICE3 = 'GET SOMETHING TO EAT';
-    CHOICE4 = 'GO TO THE THEME PARK';
-    
+
     SILKSCREEN = 'Silkscreen';
 
     stage_width: number;
@@ -69,7 +64,7 @@ export default class OptionsView implements View {
         this.title = new Konva.Text({
             x: this.stage_width*0.05,
             y: this.stage_height*0.05,
-            text: this.TITLE,
+            text: '',
             fontFamily: this.SILKSCREEN,
             width: this.stage_width*0.9,
             fontSize: this.stage_height*0.068,
@@ -89,8 +84,8 @@ export default class OptionsView implements View {
 
         this.choice1_button_text = new Konva.Text({
             x: this.choice1_button_shape.x(),
-            y: this.choice1_button_shape.y() + this.choice1_button_shape.height()*0.22,
-            text: this.CHOICE1,
+            y: this.choice1_button_shape.y() + this.choice1_button_shape.height()*0.33,
+            text: "",
             listening: false,
             fontFamily: this.SILKSCREEN,
             width: this.choice1_button_shape.width(),
@@ -123,8 +118,8 @@ export default class OptionsView implements View {
 
         this.choice2_button_text = new Konva.Text({
             x: this.choice2_button_shape.x(),
-            y: this.choice2_button_shape.y() + this.choice2_button_shape.height()*0.22,
-            text: this.CHOICE2,
+            y: this.choice2_button_shape.y() + this.choice2_button_shape.height()*0.33,
+            text: "",
             listening: false,
             fontFamily: this.SILKSCREEN,
             width: this.choice2_button_shape.width(),
@@ -157,8 +152,8 @@ export default class OptionsView implements View {
 
         this.choice3_button_text = new Konva.Text({
             x: this.choice3_button_shape.x(),
-            y: this.choice3_button_shape.y() + this.choice3_button_shape.height()*0.22,
-            text: this.CHOICE3,
+            y: this.choice3_button_shape.y() + this.choice3_button_shape.height()*0.33,
+            text: "",
             listening: false,
             fontFamily: this.SILKSCREEN,
             width: this.choice3_button_shape.width(),
@@ -191,8 +186,8 @@ export default class OptionsView implements View {
 
         this.choice4_button_text = new Konva.Text({
             x: this.choice4_button_shape.x(),
-            y: this.choice4_button_shape.y() + this.choice4_button_shape.height()*0.22,
-            text: this.CHOICE4,
+            y: this.choice4_button_shape.y() + this.choice4_button_shape.height()*0.33,
+            text: "",
             listening: false,
             fontFamily: this.SILKSCREEN,
             width: this.choice4_button_shape.width(),
@@ -224,7 +219,31 @@ export default class OptionsView implements View {
         this.group.add(this.choice2_button);
         this.group.add(this.choice3_button);
         this.group.add(this.choice4_button);
-    }	
+    }
+
+    setTitle(stop: number, total: number) {
+        if (stop === 1) {
+            this.title.text('WELCOME TO PERCENTAGE CITY!\nWhere would you like to go first?');
+        } else {
+            this.title.text(`Stop ${stop} of ${total}\nWhere would you like to go next?`)
+        }
+    }
+
+    setChoices(labels: string[]) {
+        const buttons = [this.choice1_button, this.choice2_button, 
+                         this.choice3_button, this.choice4_button]
+        const texts = [this.choice1_button_text, this.choice2_button_text,
+                       this.choice3_button_text, this.choice4_button_text]
+        buttons.forEach((button, i) => {
+            if (i < labels.length) {
+                button.visible(true);
+            } else {
+                button.visible(false);
+            }
+            texts[i].text(labels[i] ?? '')
+        });
+        this.group.getLayer()?.draw();
+    }
 
     getGroup() : Konva.Group {
         return this.group;
@@ -236,6 +255,7 @@ export default class OptionsView implements View {
     }
     
     hide() {
+        document.body.style.cursor = 'default';
         this.group.visible(false);
         this.group.getLayer()?.draw();
     }

@@ -78,22 +78,22 @@ export const questionTemplates: QuestionTemplate[] = [
     id: "lunch-drink",
     difficulty: "easy",
     category: "food",
-    scenario: "Lunch counter",
+    scenario: "Restaurant",
     prompt:
-      "Your lunch money is ${budget}. You spend {percent}% of it on a drink. What does the drink cost?",
+      "Your meal money is ${budget}. You spend {percent}% of it on a drink. What does the drink cost?",
     variables: {
       budget: { values: easyPrices },
       percent: { values: easyPercents },
     },
     formula: "percentOf",
     points: 7,
-    hint: "Multiply the lunch money by the percent, then divide by 100.",
+    hint: "Multiply the meal money by the percent, then divide by 100.",
   },
   {
     id: "jacket-discount",
     difficulty: "medium",
     category: "shopping",
-    scenario: "Clothing rack",
+    scenario: "Clothing shop",
     prompt: "A jacket costs ${price}. It is {percent}% off. What do you pay?",
     variables: {
       price: { values: mediumPrices },
@@ -122,7 +122,7 @@ export const questionTemplates: QuestionTemplate[] = [
     id: "ticket-tax",
     difficulty: "medium",
     category: "activities",
-    scenario: "Park tickets",
+    scenario: "Park",
     prompt:
       "Tickets cost ${price}. Tax is {percent}%. What do you pay in total?",
     variables: {
@@ -137,9 +137,9 @@ export const questionTemplates: QuestionTemplate[] = [
     id: "sticker-before-tax",
     difficulty: "hard",
     category: "shopping",
-    scenario: "Sticker price",
+    scenario: "Sticker shop",
     prompt:
-      "A souvenir costs ${price} after {percent}% tax. What was the price before tax?",
+      "A sticker costs ${price} after {percent}% tax. What was the price before tax?",
     variables: {
       price: { values: [10.8, 21.6, 32.4, 43.2, 54] },
       percent: { values: [8] },
@@ -152,7 +152,7 @@ export const questionTemplates: QuestionTemplate[] = [
     id: "cheaper-ride",
     difficulty: "hard",
     category: "activities",
-    scenario: "Ride tickets",
+    scenario: "Go on a ride",
     prompt:
       "Ride A is ${priceA} with {percentA}% off. Ride B is ${priceB} with {percentB}% off. What is the lower price?",
     variables: {
