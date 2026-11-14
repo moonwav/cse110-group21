@@ -35,8 +35,12 @@ export class MinigameModel {
         this.questions = this.shuffle(this.questions);
     	this.answers = this.shuffle(this.answers);
 
-		this.player_answers = [{q:5, a:5}, {q:5, a:5}, {q:5, a:5}, {q:5, a:5}, {q:5, a:5}];
-    }
+		this.player_answers = [{q:this.NUMBER_OF_QUESTIONS, a:this.NUMBER_OF_QUESTIONS}, 
+						{q:this.NUMBER_OF_QUESTIONS, a:this.NUMBER_OF_QUESTIONS}, 
+						{q:this.NUMBER_OF_QUESTIONS, a:this.NUMBER_OF_QUESTIONS}, 
+						{q:this.NUMBER_OF_QUESTIONS, a:this.NUMBER_OF_QUESTIONS}, 
+						{q:this.NUMBER_OF_QUESTIONS, a:this.NUMBER_OF_QUESTIONS}];
+	}
 
     getQuestions() {
         return this.questions;
@@ -47,11 +51,15 @@ export class MinigameModel {
     }
 
 	getSolutions() {
-		let solns = [{q:5, a:5}, {q:5, a:5}, {q:5, a:5}, {q:5, a:5}, {q:5, a:5}];
+		let solns = [{q:this.NUMBER_OF_QUESTIONS, a:this.NUMBER_OF_QUESTIONS}, 
+					{q:this.NUMBER_OF_QUESTIONS, a:this.NUMBER_OF_QUESTIONS}, 
+					{q:this.NUMBER_OF_QUESTIONS, a:this.NUMBER_OF_QUESTIONS}, 
+					{q:this.NUMBER_OF_QUESTIONS, a:this.NUMBER_OF_QUESTIONS}, 
+					{q:this.NUMBER_OF_QUESTIONS, a:this.NUMBER_OF_QUESTIONS}];
 		for(let i: number = 0; i < 5; i++) {
 			solns[i].q = i;
 			const id = this.questions[i].id;
-			for(let j: number = 0; j < 5; j++) {
+			for(let j: number = 0; j < this.NUMBER_OF_QUESTIONS; j++) {
 				if(this.answers[j].id == id) {
 					solns[i].a = j;
 					break;
@@ -62,7 +70,7 @@ export class MinigameModel {
 	}
 
     checkAnswers(): boolean{
-        for (let i: number = 0; i < 5; i++) {
+        for (let i: number = 0; i < this.NUMBER_OF_QUESTIONS; i++) {
             if(this.questions[this.player_answers[i].q].id !== this.answers[this.player_answers[i].a].id)
             return false;
         }
@@ -84,12 +92,16 @@ export class MinigameModel {
     }
 
 	addPair(q: number, a: number) {
+		if (this.amount_answered >= this.NUMBER_OF_QUESTIONS) {
+			return 1;
+		}
 		this.player_answers[this.amount_answered] = {q: q, a: a};
 		this.amount_answered++;
+		return 0;
 	}
 
 	removePairQ(index: number) {
-		let answer = 5;
+		let answer = this.NUMBER_OF_QUESTIONS;
 		for(let i: number = 0; i < this.NUMBER_OF_QUESTIONS; i++) {
 			if (this.player_answers[i].q == index) {
 				answer = this.player_answers[i].a
@@ -97,13 +109,14 @@ export class MinigameModel {
 				break;
 			}
 		}
-		this.player_answers.push({q: 5, a:5});
+		this.player_answers.push({q: this.NUMBER_OF_QUESTIONS, 
+									a:this.NUMBER_OF_QUESTIONS});
 		this.amount_answered--;
 		return answer;
 	}
 
 	removePairA(index: number) {
-		let question = 5;
+		let question = this.NUMBER_OF_QUESTIONS;
 		for(let i: number = 0; i < this.NUMBER_OF_QUESTIONS; i++) {
 			if (this.player_answers[i].a == index) {
 				question = this.player_answers[i].q
@@ -111,7 +124,8 @@ export class MinigameModel {
 				break;
 			}
 		}
-		this.player_answers.push({q: 5, a:5});
+		this.player_answers.push({q: this.NUMBER_OF_QUESTIONS, 
+									a: this.NUMBER_OF_QUESTIONS});
 		this.amount_answered--;
 		return question;
 	}

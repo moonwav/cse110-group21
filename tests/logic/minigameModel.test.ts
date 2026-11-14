@@ -25,8 +25,7 @@ describe('Minigame Model', () => {
         );
     });
 
-    it('should keep track of selected questions/answers', () => {
-        expect(minigameModel.currently_selected).toBe(null);
+    it('should add new question/answer pairs to its list', () => {
         expect(minigameModel.player_answers).toEqual(
             expect.arrayContaining([
                 expect.objectContaining({
@@ -36,260 +35,116 @@ describe('Minigame Model', () => {
             ])
         );
         expect(minigameModel.amount_answered).toBe(0);
-        minigameModel.selectQuestion(2);
-        expect(minigameModel.currently_selected).toBe('question');
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 5});
-        expect(minigameModel.amount_answered).toBe(0);
-        minigameModel.selectAnswer(3);
-        expect(minigameModel.currently_selected).toBe(null);
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
-        expect(minigameModel.player_answers[1]).toStrictEqual({q: 5, a: 5});
-        expect(minigameModel.amount_answered).toBe(1);
-        minigameModel.selectQuestion(4);
-        expect(minigameModel.currently_selected).toBe('question');
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
-        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 5});
-        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
-        expect(minigameModel.amount_answered).toBe(1);
-        minigameModel.selectQuestion(3);
-        expect(minigameModel.currently_selected).toBe('question');
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
-        expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 5});
-        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
-        expect(minigameModel.amount_answered).toBe(1);
-        minigameModel.selectAnswer(4);
-        expect(minigameModel.currently_selected).toBe(null);
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
-        expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
-        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
-        expect(minigameModel.amount_answered).toBe(2);
-        minigameModel.selectAnswer(1);
-        expect(minigameModel.currently_selected).toBe('answer');
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
-        expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
-        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 1});
-        expect(minigameModel.amount_answered).toBe(2);
-        minigameModel.selectAnswer(2);
-        expect(minigameModel.currently_selected).toBe('answer');
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
-        expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
-        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 2});
-        expect(minigameModel.amount_answered).toBe(2);
-        minigameModel.selectQuestion(0);
-        expect(minigameModel.currently_selected).toBe(null);
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
-        expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
-        expect(minigameModel.player_answers[2]).toStrictEqual({q: 0, a: 2});
-        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
-        expect(minigameModel.amount_answered).toBe(3);
 
-        minigameModel.selectQuestion(1);
-        minigameModel.selectAnswer(1);
-        expect(minigameModel.currently_selected).toBe(null);
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
-        expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
-        expect(minigameModel.player_answers[2]).toStrictEqual({q: 0, a: 2});
-        expect(minigameModel.player_answers[3]).toStrictEqual({q: 1, a: 1});
+        expect(minigameModel.addPair(1, 3)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(1);
+        expect(minigameModel.player_answers.length).toBe(5);
+
+        expect(minigameModel.addPair(4, 2)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 2});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(2);
+        expect(minigameModel.player_answers.length).toBe(5);
+
+        expect(minigameModel.addPair(2, 0)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 2});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(3);
+        expect(minigameModel.player_answers.length).toBe(5);
+
+        expect(minigameModel.addPair(0, 4)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 2});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 0, a: 4});
         expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
         expect(minigameModel.amount_answered).toBe(4);
+        expect(minigameModel.player_answers.length).toBe(5);
 
-        minigameModel.selectAnswer(0);
-        expect(minigameModel.currently_selected).toBe('answer');
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
-        expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
-        expect(minigameModel.player_answers[2]).toStrictEqual({q: 0, a: 2});
-        expect(minigameModel.player_answers[3]).toStrictEqual({q: 1, a: 1});
-        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 0});
-        expect(minigameModel.amount_answered).toBe(4);
-
-        minigameModel.selectQuestion(4);
-        expect(minigameModel.currently_selected).toBe(null);
-        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 3});
-        expect(minigameModel.player_answers[1]).toStrictEqual({q: 3, a: 4});
-        expect(minigameModel.player_answers[2]).toStrictEqual({q: 0, a: 2});
-        expect(minigameModel.player_answers[3]).toStrictEqual({q: 1, a: 1});
-        expect(minigameModel.player_answers[4]).toStrictEqual({q: 4, a: 0});
+        expect(minigameModel.addPair(3, 1)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 2});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 0, a: 4});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 3, a: 1});
         expect(minigameModel.amount_answered).toBe(5);
-
+        expect(minigameModel.player_answers.length).toBe(5);
     })
 
-    describe('deselect questions/answers', () => {
-        const minigameModel2 = new MinigameModel();
+    it('should remove question/answer pairs', () => {
+        expect(minigameModel.removePairQ(3)).toBe(1);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 2});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 0, a: 4});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(4);
+        expect(minigameModel.player_answers.length).toBe(5);
 
-        minigameModel2.selectQuestion(2);
-        minigameModel2.selectAnswer(3);
+        expect(minigameModel.removePairA(2)).toBe(4);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 0, a: 4});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(3);
+        expect(minigameModel.player_answers.length).toBe(5);
 
-        it('should remove the currently selected option', () =>{
-            minigameModel2.selectQuestion(4);
-            minigameModel2.deselectQuestion(4);
-            expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.player_answers).toStrictEqual([{q: 2, a: 3}, {q: 5, a: 5} , {q: 5, a: 5}, {q: 5, a: 5}, {q: 5, a: 5}]);
-            expect(minigameModel2.amount_answered).toBe(1);
+        expect(minigameModel.removePairA(3)).toBe(1);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 0, a: 4});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(2);
+        expect(minigameModel.player_answers.length).toBe(5);
 
-            minigameModel2.selectAnswer(1);
-            minigameModel2.deselectAnswer(1);
-            expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.player_answers).toStrictEqual([{q: 2, a: 3}, {q: 5, a: 5} , {q: 5, a: 5}, {q: 5, a: 5}, {q: 5, a: 5}]);
-            expect(minigameModel2.amount_answered).toBe(1);
-        })
+        expect(minigameModel.removePairQ(0)).toBe(4);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(1);
+        expect(minigameModel.player_answers.length).toBe(5);
 
-        it('should remove an option pair from the end with no option currently selected', ()=> {
-            minigameModel2.selectQuestion(3);
-            minigameModel2.selectAnswer(4);
-            minigameModel2.selectQuestion(0);
-            minigameModel2.selectAnswer(2);
-            minigameModel2.deselectAnswer(2);
-            expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.amount_answered).toBe(2);
-
-            minigameModel2.selectQuestion(0);
-            expect(minigameModel2.currently_selected).toBe('question');
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 5});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-            
-
-            minigameModel2.selectAnswer(2);
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 2});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-
-            minigameModel2.deselectQuestion(0);
-            expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.player_answers).toStrictEqual([{q: 2, a: 3}, {q: 3, a: 4}, {q: 5, a: 5}, {q: 5, a: 5}, {q: 5, a: 5}]);
-            expect(minigameModel2.amount_answered).toBe(2);
-
-        })
-
-        it('should remove the option pair right before the currently selected', ()=> {
-            minigameModel2.selectQuestion(0);
-            minigameModel2.selectAnswer(2);
-            minigameModel2.selectQuestion(1);
-            minigameModel2.selectAnswer(0);
-            minigameModel2.selectQuestion(4);
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 2});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 1, a: 0});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 4, a: 5});
-
-            minigameModel2.deselectQuestion(1);
-            expect(minigameModel2.currently_selected).toBe('question');
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 2});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 4, a: 5});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.amount_answered).toBe(3);
-
-            minigameModel2.selectQuestion(1);
-            minigameModel2.selectAnswer(0);
-            minigameModel2.selectQuestion(4);
-
-            minigameModel2.deselectAnswer(0);
-            expect(minigameModel2.currently_selected).toBe('question');
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 2});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 4, a: 5});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.amount_answered).toBe(3);
-        })
-        
-        it('should remove the option pair from the end and beginning and then remove all', ()=> {
-            minigameModel2.selectQuestion(1);
-            minigameModel2.selectAnswer(0);
-            minigameModel2.selectQuestion(4);
-            minigameModel2.selectAnswer(1);
-
-            minigameModel2.deselectAnswer(1);
-            expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 2});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 1, a: 0});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.amount_answered).toBe(4);
-
-            minigameModel2.selectQuestion(4);
-            minigameModel2.selectAnswer(1);
-
-            minigameModel2.deselectQuestion(4);
-            expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 2, a: 3});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 3, a: 4});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 0, a: 2});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 1, a: 0});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.amount_answered).toBe(4);
-
-            minigameModel2.deselectQuestion(2);
-            expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 3, a: 4});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 0, a: 2});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 1, a: 0});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.amount_answered).toBe(3);
-
-            minigameModel2.deselectAnswer(4);
-            expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 0, a: 2});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 1, a: 0});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.amount_answered).toBe(2);
-
-            minigameModel2.deselectAnswer(0);
-            expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 0, a: 2});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.amount_answered).toBe(1);
-
-            minigameModel2.deselectQuestion(0);
-            expect(minigameModel2.currently_selected).toBe(null);
-            expect(minigameModel2.player_answers[0]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[1]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[2]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[3]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.player_answers[4]).toStrictEqual({q: 5, a: 5});
-            expect(minigameModel2.amount_answered).toBe(0);
-        })
-    
+        expect(minigameModel.removePairQ(2)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(0);
+        expect(minigameModel.player_answers.length).toBe(5);
     })
 
     describe('should check solutions', () => {
         const minigame_model = new MinigameModel();
         const solns = minigame_model.getSolutions();
-        it('and return true when they are all correct', ()=> {
+        it('and returns true when they are all correct', ()=> {
             for(let i: number = 0; i<minigame_model.NUMBER_OF_QUESTIONS; i++){
-                minigame_model.selectQuestion(solns[i].q);
-                minigame_model.selectAnswer(solns[i].a);
+                minigame_model.addPair(solns[i].q, solns[i].a);
             }
             expect(minigame_model.checkAnswers()).toBe(true);
         })
 
-        it('and return false if one or more are incorrect', () =>{
-            minigame_model.deselectQuestion(solns[1].q);
-            minigame_model.deselectQuestion(solns[3].q);
+        it('and returns false if one or more are incorrect', () =>{
+            expect(minigame_model.removePairQ(solns[1].q)).toBe(solns[1].a);
+            expect(minigame_model.removePairQ(solns[3].q)).toBe(solns[3].a);
 
-            minigame_model.selectQuestion(solns[1].q);
-            minigame_model.selectAnswer(solns[3].a);
-            minigame_model.selectQuestion(solns[3].q);
-            minigame_model.selectAnswer(solns[1].a);
+            minigame_model.addPair(solns[1].q, solns[3].a);
+            minigame_model.addPair(solns[3].q, solns[1].a);
 
             expect(minigame_model.checkAnswers()).toBe(false);
             
