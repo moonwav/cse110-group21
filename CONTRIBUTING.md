@@ -64,20 +64,31 @@ faster.
 
 ## 5. Where code goes
 
-Follow the layers in the [module view](https://www.figma.com/design/QOx6lEtyU4C2QbAcc2jVZ7/Module-View-CSE110).
+The code follows Model-View-Controller, laid out like lab 4. See the
+[static view](docs/Architecture.md#3-static-view-modules) for the full picture.
 Dependencies point **downward only**.
 
-| Folder | Layer | May import from |
+| Folder | What goes there | May import from |
 |---|---|---|
-| `src/presentation/` | Screens (Konva) | `src/logic/` |
-| `src/logic/` | Game logic: `GameController`, `QuestionGenerator`, `AnswerChecker`, `ScoreTracker` | `src/data/` |
-| `src/data/` | Plain data: `QuestionTemplate`, `Question`, `GameState` | nothing |
-| `src/backend/` | Server: `ApiRouter`, `Accounts`, `ScoreHolder`, SQLite | Node only |
+| `src/main.ts` | `Game`: creates every controller and switches screens | controllers, `src/model/`, `src/types.ts` |
+| `src/screens/<Screen>/` | One folder per screen: `<Screen>View.ts` (Konva drawing), `<Screen>Controller.ts`, and any model only that screen uses (for example `MinigameModel.ts`) | `src/model/`, `src/types.ts`, `src/constants.ts`. A view imports only *types* from the Model. Screens never import other screens. |
+| `src/model/` | Shared game state and rules: `GameModel`, `Question`, `questionGenerator`, `questionTemplates`, `answerChecker`, `scoreTracker`, `formulas` | other `src/model/` files; *types* from a screen's model (`import type`) |
+| `src/backend/` | Node-only code: SQLite `database.ts`, `schema.ts` | *types* only from the rest of `src/`. Browser code never imports this folder. |
+| `src/types.ts`, `src/constants.ts` | Shared types; shared colors and fonts | *types* only (for example `ResultData`) |
+| `src/styles/` | CSS, linked from `index.html` | — |
+
+**File names:** a file that exports a class uses the class name in PascalCase
+(`GameModel` → `GameModel.ts`). A file of functions or data uses camelCase
+(`scoreTracker.ts`, `questionTemplates.ts`).
+
+**Adding a screen:** create `src/screens/<Screen>/` with `<Screen>View.ts` and
+`<Screen>Controller.ts`, add the screen to the `Screen` type in `src/types.ts`, and add a
+case for it in `Game.switchToScreen` in `src/main.ts`.
 
 Rules that keep the design consistent:
 
-- **Screens never do math or scoring.** They call `GameController`, which uses the logic
-  modules. This keeps scoring testable without the UI.
+- **Screens never do math or scoring.** Controllers call the Model modules
+  (`scoreTracker`, `answerChecker`, and so on). This keeps scoring testable without the UI.
 - **New question types are new templates.** Add them in the shared template format;
   don't special-case them in the UI or `AnswerChecker`.
 - **All score changes go through `ScoreTracker`**, including hint and reveal penalties.
@@ -90,8 +101,10 @@ Rules that keep the design consistent:
 
 ## 6. Tests
 
-- Tests live in `tests/`, mirroring `src/` (for example `src/logic/ScoreTracker.ts` →
-  `tests/logic/ScoreTracker.test.ts`).
+- Tests live in `tests/`, mirroring `src/` (for example `src/model/scoreTracker.ts` →
+  `tests/model/scoreTracker.test.ts`, and
+  `src/screens/Question/QuestionController.ts` →
+  `tests/screens/Question/QuestionController.test.ts`).
 - Every PR that adds or changes logic, data, or backend code adds or updates tests.
 - Test logic directly, without the UI and without randomness. Pass fixed numbers in
   instead of relying on the random question generator.

@@ -18,10 +18,10 @@
 <text x="1192" y="129" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="start" font-weight="normal"  fill="#000">folder (dashed: server)</text>
 <rect x="40" y="170" width="320" height="750" fill="none" stroke="#000" stroke-width="2.2" />
 <text x="52" y="198" font-family="Helvetica, Arial, sans-serif" font-size="22" text-anchor="start" font-weight="bold"  fill="#000">View</text>
-<text x="52" y="218" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/presentation/</text>
+<text x="52" y="218" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/screens/*/*View.ts</text>
 <rect x="530" y="170" width="360" height="750" fill="none" stroke="#000" stroke-width="2.2" />
 <text x="542" y="198" font-family="Helvetica, Arial, sans-serif" font-size="22" text-anchor="start" font-weight="bold"  fill="#000">Controller</text>
-<text x="542" y="218" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/logic/*Controller.ts</text>
+<text x="542" y="218" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/screens/*/*Controller.ts</text>
 <rect x="70" y="245" width="260" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
 <text x="200.0" y="275.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">MainMenuView</text>
 <rect x="560" y="245" width="300" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
@@ -58,7 +58,7 @@
 <text x="710.0" y="719.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">MinigameController</text>
 <polyline points="560,714.0 330,714.0" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
 <rect x="70" y="769" width="260" height="50" fill="#fff" stroke="#000" stroke-width="1.6" />
-<text x="200.0" y="791.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">viewConstants</text>
+<text x="200.0" y="791.0" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">constants</text>
 <text x="200.0" y="810.0" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal" font-style="italic" fill="#000">colors shared by all views</text>
 <rect x="60" y="990" width="290" height="80" fill="#fff" stroke="#000" stroke-width="1.6" />
 <text x="205.0" y="1027.0" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="normal"  fill="#000">types.ts</text>
@@ -81,7 +81,7 @@
 <text x="925" y="320" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="normal" font-style="italic" fill="#000">uses</text>
 <rect x="975" y="215" width="485" height="470" fill="none" stroke="#000" stroke-width="2.2" />
 <text x="987" y="238" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold"  fill="#000">Game logic</text>
-<text x="987" y="258" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/logic/</text>
+<text x="987" y="258" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/model/</text>
 <rect x="990" y="270" width="210" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
 <text x="1095.0" y="300.25" font-family="Helvetica, Arial, sans-serif" font-size="15" text-anchor="middle" font-weight="normal"  fill="#000">ScoreTracker</text>
 <rect x="990" y="350" width="210" height="50" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
@@ -105,7 +105,7 @@
 <polyline points="1200,535 1245,525" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
 <rect x="975" y="700" width="250" height="100" fill="none" stroke="#000" stroke-width="2.2" />
 <text x="987" y="723" font-family="Helvetica, Arial, sans-serif" font-size="17" text-anchor="start" font-weight="bold"  fill="#000">Data</text>
-<text x="987" y="743" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/data/</text>
+<text x="987" y="743" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/model/</text>
 <rect x="1000" y="752" width="200" height="40" fill="#fff" stroke="#000" stroke-width="1.6" />
 <text x="1100.0" y="776.9" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="middle" font-weight="normal"  fill="#000">QuestionTemplate</text>
 <polyline points="990,375 982,375 982,772 1000,772" fill="none" stroke="#000" stroke-width="1.6"  marker-end="url(#arrow)"/>
