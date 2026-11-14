@@ -10,8 +10,7 @@ export class MinigameModel {
     questions: MinigameQuestion[];
     answers: MinigameAnswer[];
 	amount_answered: number;
-	player_answers: {q:number, a:number}[];
-	currently_selected: string | null;
+	player_answers: {q: number, a: number}[];
 
     constructor() {
         this.questions = [{question: '', id: 0},
@@ -37,8 +36,6 @@ export class MinigameModel {
     	this.answers = this.shuffle(this.answers);
 
 		this.player_answers = [{q:5, a:5}, {q:5, a:5}, {q:5, a:5}, {q:5, a:5}, {q:5, a:5}];
-
-		this.currently_selected = null;
     }
 
     getQuestions() {
@@ -86,70 +83,37 @@ export class MinigameModel {
         return copy;
     }
 
-	selectQuestion(index: number){
-		if(this.currently_selected == null) {
-			this.currently_selected = 'question';
-			this.player_answers[this.amount_answered].q = index;
-		} 
-		else if (this.currently_selected == 'question'){
-			this.player_answers[this.amount_answered].q = index;
-		}
-		else {
-			this.player_answers[this.amount_answered].q = index;
-			this.currently_selected = null;
-			this.amount_answered++;	
-		}
+	addPair(q: number, a: number) {
+		this.player_answers[this.amount_answered] = {q: q, a: a};
+		this.amount_answered++;
 	}
 
-	selectAnswer(index: number){
-		if(this.currently_selected == null) {
-			this.currently_selected = 'answer';
-			this.player_answers[this.amount_answered].a = index;
-		} 
-		else if (this.currently_selected == 'answer'){
-			this.player_answers[this.amount_answered].a = index;
-		}
-		else {
-			this.player_answers[this.amount_answered].a = index;
-			this.currently_selected = null;
-			this.amount_answered++;	
-		}
-	}
-
-	deselectQuestion(index: number) {
-		if(this.currently_selected == 'question') {
-			if (this.player_answers[this.amount_answered].q == index) {
-				this.player_answers[this.amount_answered].q = 5;
-				this.currently_selected = null;
-				return;
-			}
-		}
+	removePairQ(index: number) {
+		let answer = 5;
 		for(let i: number = 0; i < this.NUMBER_OF_QUESTIONS; i++) {
 			if (this.player_answers[i].q == index) {
+				answer = this.player_answers[i].a
 				this.player_answers.splice(i,1);
 				break;
 			}
 		}
 		this.player_answers.push({q: 5, a:5});
-		this.amount_answered -= 1;
+		this.amount_answered--;
+		return answer;
 	}
 
-	deselectAnswer(index: number) {
-		if(this.currently_selected == 'answer') {
-			if (this.player_answers[this.amount_answered].a == index) {
-				this.player_answers[this.amount_answered].a = 5;
-				this.currently_selected = null;
-				return;
-			}
-		}
+	removePairA(index: number) {
+		let question = 5;
 		for(let i: number = 0; i < this.NUMBER_OF_QUESTIONS; i++) {
 			if (this.player_answers[i].a == index) {
+				question = this.player_answers[i].q
 				this.player_answers.splice(i,1);
 				break;
 			}
 		}
 		this.player_answers.push({q: 5, a:5});
-		this.amount_answered -= 1;
+		this.amount_answered--;
+		return question;
 	}
 }
 
