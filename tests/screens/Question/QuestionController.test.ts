@@ -98,15 +98,14 @@ describe("QuestionController submit", () => {
 describe("QuestionController next", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("loads the next question and unlocks submit", () => {
+  it("moves to next slot and goes to the options screen", () => {
     mocks.checkAnswer.mockReturnValue({ status: "correct" });
     const { model, controller, screenSwitcher } = setup();
     controller.handleSubmitClick("5");
     controller.handleNextClick();
-    expect(mocks.view.showQuestion).toHaveBeenCalled();
     expect(model.questionIndex).toBe(1);
     expect(ScoreTracker.isFinished(model.getCurrentRecord())).toBe(false);
-    expect(screenSwitcher.switchToScreen).not.toHaveBeenCalled();
+    expect(screenSwitcher.switchToScreen).toHaveBeenCalledWith({ type: "options" });
   });
 
   it("ends the game on the last question", () => {
