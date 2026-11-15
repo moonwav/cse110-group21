@@ -17,7 +17,11 @@ export default class MinigameController extends Controller{
         super();
         this.model = model;
         this.minigameModel = new MinigameModel();
-        this.view = new MinigameView(this.minigameModel, stage_width, stage_height, (id: number) => this.handleQuestionSelect(id), (id: number) => this.handleQuestionDeselect(id), (id: number) => this.handleAnswerSelect(id),  (id: number) => this.handleAnswerDeselect(id));
+        this.view = new MinigameView(this.minigameModel, stage_width, stage_height, 
+                                    (id: number) => this.handleQuestionSelect(id), 
+                                    (id: number) => this.handleQuestionDeselect(id), 
+                                    (id: number) => this.handleAnswerSelect(id),  
+                                    (id: number) => this.handleAnswerDeselect(id));
         this.screenSwitcher = screenSwitcher;
         this.currently_selected = null;
         this.waiting = 5;
