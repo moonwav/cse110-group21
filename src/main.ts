@@ -1,14 +1,15 @@
 
 import Konva from 'konva';
-import GameModel from './logic/model';
-import MainMenuController from './logic/mainMenuController';
-import QuestionController from './logic/questionController';
-import InfoController from './logic/infoController';
-import ResultController from './logic/resultController';
-import AnswerController from './logic/answerController';
-import MinigameController from './logic/minigameController';
-import EnterNameController from './logic/enterNameController';
+import GameModel from './model/GameModel';
+import MainMenuController from './screens/MainMenu/MainMenuController';
+import QuestionController from './screens/Question/QuestionController';
+import InfoController from './screens/Info/InfoController';
+import ResultController from './screens/Result/ResultController';
+import AnswerController from './screens/AnswerKey/AnswerKeyController';
+import MinigameController from './screens/Minigame/MinigameController';
+import EnterNameController from './screens/EnterName/EnterNameController';
 import type { ScreenSwitcher, Screen } from "./types.ts";
+import OptionsController from './screens/Options/OptionsController';
 
 
 /**
@@ -34,6 +35,7 @@ class Game implements ScreenSwitcher {
 	private minigameController: MinigameController;
 	private resultController: ResultController;
     private answerController: AnswerController;
+	private optionsController: OptionsController;
 
 	private model: GameModel;
 
@@ -76,6 +78,9 @@ class Game implements ScreenSwitcher {
 		this.minigameController = new MinigameController(this.model, this,
 														this.stage_width, 
 														this.stage_height);
+		this.optionsController = new OptionsController(this.model, this, 
+													this.stage_width, 
+													this.stage_height);
 
 		// Add all screen groups to the layer
 		// All screens exist simultaneously but only one is visible at a time
@@ -86,6 +91,7 @@ class Game implements ScreenSwitcher {
 		this.layer.add(this.resultController.getView().getGroup());
 		this.layer.add(this.answerController.getView().getGroup());
 		this.layer.add(this.minigameController.getView().getGroup());
+		this.layer.add(this.optionsController.getView().getGroup());
 		// Draw the layer (render everything to the canvas)
 
 		// Start with menu screen visible
@@ -112,6 +118,7 @@ class Game implements ScreenSwitcher {
         this.answerController.hide();
 		this.resultController.hide();
 		this.minigameController.hide();
+		this.optionsController.hide();
 
 		// Show the requested screen based on the screen type
 		switch (screen.type) {
@@ -143,6 +150,10 @@ class Game implements ScreenSwitcher {
 
 			case "minigame":
 				this.minigameController.show();
+				break;
+
+			case "options":
+				this.optionsController.show();
 				break;
 			
 		}

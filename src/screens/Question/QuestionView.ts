@@ -1,0 +1,385 @@
+import Konva from 'konva';
+//import { loadFont } from './fonts';
+import GameModel from '../../model/GameModel';
+import Question, { parsePlayerAnswer } from '../../model/Question';
+import { View } from '../../types';
+import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR, loadFonts } from '../../constants';
+
+
+//Will define the QuestionView class, very unfinished
+export default class QuestionView implements View{
+	SILKSCREEN = 'Silkscreen';
+	ROBOTO = 'Roboto';
+
+    model: GameModel;
+    stage_width: number;
+    stage_height: number;
+    background: Konva.Rect;
+    main_card: Konva.Rect;
+
+	question: Question;
+	question_location: Konva.Text;
+	question_text: Konva.Text;
+
+	title: Konva.Text;
+	score: Konva.Text;
+	score_number: number;
+
+	answer_header: Konva.Text;
+	answer_bubble: Konva.Rect;
+	answer_input: HTMLInputElement;
+
+	submit_button_shape: Konva.Rect;
+	submit_button_text: Konva.Text;
+	submit_button: Konva.Group;
+
+	hint_button_shape: Konva.Rect;
+	hint_button_text: Konva.Text;
+	hint_button: Konva.Group;
+
+	reveal_button_shape: Konva.Rect;
+	reveal_button_text: Konva.Text;
+	reveal_button: Konva.Group;
+	result_text: Konva.Text;
+	next_button_shape: Konva.Rect;
+	next_button_text: Konva.Text;
+	next_button: Konva.Group;
+    group: Konva.Group;
+
+
+    constructor(model: GameModel, question: Question, score: number, 
+				onSubmitClick: (answerText: string) => void,
+				onHintClick: () => void,
+				onRevealClick: () => void,
+				onNextClick: () => void,
+				stage_width: number, stage_height: number) {
+        this.model = model;
+		this.question = question;
+		this.score_number = score;
+		this.stage_width = stage_width;
+		this.stage_height = stage_height;
+
+
+        this.background = new Konva.Rect({
+            x: 0,
+            y: 0,
+            width: this.stage_width,
+            height: this.stage_height,
+            fill: PRIMARY_COLOR,
+        });
+
+		this.main_card = new Konva.Rect ({
+			x: this.stage_width*0.025,
+			y: this.stage_height*0.05,
+			width: this.stage_width*0.95,
+			height: this.stage_height*0.9,
+			cornerRadius: 25,
+			fill: SECONDARY_COLOR,
+		});
+
+		this.title = new Konva.Text ({
+			x: this.stage_width*0.06,
+			y: this.stage_height*0.1,
+			text: `Question ${this.question.getQuestionNumber()} of 10`,
+			fontFamily: 'Silkscreen',
+			fontSize: this.stage_height*0.035,
+			align: 'center',
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+
+		this.score = new Konva.Text ({
+			x: this.stage_width*0.8,
+			y: this.stage_height*0.1,
+			text: `Score ${this.score_number}%`,
+			fontFamily: 'Silkscreen',
+			fontSize: this.stage_height*0.035,
+			align: 'center',
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+
+		this.question_location = new Konva.Text ({
+			x: this.stage_width*0.06,
+			y: this.stage_height*0.275,
+			text: `${this.question.location}`,
+			fontFamily: this.ROBOTO,
+			fontSize: this.stage_height*0.035,
+			align: 'center',
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+
+		this.question_text = new Konva.Text ({
+			x: this.stage_width*0.06,
+			y: this.stage_height*0.35,
+			text: `${this.question.getQuestion()}`,
+			fontFamily: this.ROBOTO,
+			fontSize: this.stage_height*0.05,
+			width: this.stage_width*0.9,
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+
+		this.answer_header = new Konva.Text ({
+			x: this.stage_width*0.06,
+			y: this.stage_height*0.5,
+			text: `Type answer below`,
+			fontFamily: this.ROBOTO,
+			fontSize: this.stage_height*0.035,
+			width: this.stage_width*0.9,
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+	
+		this.answer_bubble = new Konva.Rect ({
+			x: this.stage_width*0.06,
+			y: this.stage_height*0.575,
+			width: this.stage_width*0.37,
+			height: this.stage_height*0.1,
+			cornerRadius: 25,
+			fill: 'White',
+		});
+
+		this.answer_input = document.createElement("input");
+		this.answer_input.className = "answer-field";
+		this.answer_input.inputMode = "decimal";
+		this.answer_input.autocomplete = "off";
+		this.answer_input.setAttribute("aria-label", "Your answer");
+		this.placeAnswerInput();
+		document.getElementById("container")?.append(this.answer_input);
+
+		this.submit_button_shape = new Konva.Rect({
+			x: this.stage_width*0.375,
+			y: this.stage_height*0.83,
+			width: this.stage_width*0.25,
+			height: this.stage_height*0.09,
+			cornerRadius: 25,
+			fill: BUTTON_COLOR,
+		});
+
+		this.submit_button_text = new Konva.Text({
+			x: this.stage_width*0.05,
+			y: this.stage_height*0.835,
+			text: 'Submit',
+			fontFamily: this.SILKSCREEN,
+			width: this.stage_width*0.9,
+			fontSize: this.stage_height*0.068,
+			align: 'center',
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+
+		this.submit_button = new Konva.Group();
+		this.submit_button.add(this.submit_button_shape);
+		this.submit_button.add(this.submit_button_text);
+		this.submit_button.on('click', () => onSubmitClick(this.answer_input.value));
+
+		this.next_button_shape = new Konva.Rect({
+			x: this.stage_width*0.375,
+			y: this.stage_height*0.83,
+			width: this.stage_width*0.25,
+			height: this.stage_height*0.09,
+			cornerRadius: 25,
+			fill: BUTTON_COLOR,
+		});
+
+		this.next_button_text = new Konva.Text({
+			x: this.stage_width*0.05,
+			y: this.stage_height*0.835,
+			text: 'Next',
+			fontFamily: this.SILKSCREEN,
+			width: this.stage_width*0.9,
+			fontSize: this.stage_height*0.068,
+			align: 'center',
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+
+		this.next_button = new Konva.Group({ visible: false });
+		this.next_button.add(this.next_button_shape);
+		this.next_button.add(this.next_button_text);
+		this.next_button.on('click', onNextClick);
+
+		this.hint_button_shape = new Konva.Rect({
+			x: this.stage_width*0.785,
+			y: this.stage_height*0.8325,
+			width: this.stage_width*0.15,
+			height: this.stage_height*0.085,
+			cornerRadius: 25,
+			fill: BUTTON_COLOR,
+		});
+
+		this.hint_button_text = new Konva.Text({
+			x: this.stage_width*0.76,
+			y: this.stage_height*0.84,
+			text: 'Hint',
+			fontFamily: this.SILKSCREEN,
+			width: this.stage_width*0.2,
+			fontSize: this.stage_height*0.06,
+			align: 'center',
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+	
+		this.hint_button = new Konva.Group();
+		this.hint_button.add(this.hint_button_shape);
+		this.hint_button.add(this.hint_button_text);
+		this.hint_button.on('click', onHintClick);
+
+		this.reveal_button_shape = new Konva.Rect({
+			x: this.stage_width*0.785,
+			y: this.stage_height*0.8325,
+			width: this.stage_width*0.15,
+			height: this.stage_height*0.085,
+			cornerRadius: 25,
+			fill: BUTTON_COLOR,
+		});
+
+		this.reveal_button_text = new Konva.Text({
+			x: this.stage_width*0.76,
+			y: this.stage_height*0.84,
+			text: 'Reveal',
+			fontFamily: this.SILKSCREEN,
+			width: this.stage_width*0.2,
+			fontSize: this.stage_height*0.06,
+			align: 'center',
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+		/*
+		loadFont(this.SILKSCREEN, 'normal', '400').then(() => {
+  		this.title.fontFamily(this.SILKSCREEN);
+		});
+		loadFont(this.ROBOTO, 'normal', '400').then(() => {
+  		this.question_text.fontFamily(this.ROBOTO);
+		});
+		*/
+		this.result_text = new Konva.Text ({
+			x: this.stage_width*0.06,
+			y: this.stage_height*0.69,
+			width: this.stage_width*0.9,
+			fill: 'Black',
+			fontFamily: this.ROBOTO,
+			fontSize: stage_height * 0.035,
+			text: '',
+		});
+
+
+		loadFonts(); 
+		this.reveal_button = new Konva.Group();
+		this.reveal_button.add(this.reveal_button_shape);
+		this.reveal_button.add(this.reveal_button_text);
+		this.reveal_button.on('click', onRevealClick);
+
+		this.group = new Konva.Group();
+		this.group.add(this.background);
+		this.group.add(this.main_card);
+		this.group.add(this.title);
+		this.group.add(this.score);
+		this.group.add(this.question_location);
+		this.group.add(this.question_text);
+		this.group.add(this.answer_bubble);
+		this.group.add(this.answer_header);
+		this.group.add(this.submit_button);
+		this.group.add(this.next_button);
+		this.group.add(this.hint_button);
+		this.group.add(this.result_text);
+
+		this.hide();
+	}
+
+	//updates text displayed on screen based on the current question
+	displayQuestion() {
+		this.title.text(`Question ${this.question.getQuestionNumber()} of 10`);
+		this.score.text(`Score ${this.score_number}%`);
+		this.question_location.text(`${this.question.location}`);
+		this.question_text.text(`${this.question.getQuestion()}`);
+		this.group.getLayer()?.draw();
+	}
+
+	startGame(){
+		
+	}
+
+	getGroup(){
+		return this.group;
+	}
+
+	placeAnswerInput() {
+		const box = this.answer_bubble;
+		this.answer_input.style.left = `${box.x() + 24}px`;
+		this.answer_input.style.top = `${box.y() + box.height() / 2 - 20}px`;
+		this.answer_input.style.width = `${box.width() - 48}px`;
+		this.answer_input.style.height = "40px";
+		this.answer_input.style.fontSize = "32px";
+	}
+
+	// unused now
+	getPlayerAnswer() {
+		return parsePlayerAnswer(this.answer_input.value);
+	}
+
+	showQuestion(question: Question) {
+		this.question = question;
+		this.question_location.text(question.getLocation());
+		this.question_text.text(question.getQuestion());
+		this.answer_header.text("Type answer below");
+		this.answer_input.value = "";
+		this.result_text.text("");
+		this.hideNext();
+	}
+
+	showInvalid() {
+		this.answer_header.text("Enter a number.");
+	}
+
+	showResult(message: string) {
+		this.result_text.text(message);
+		this.result_text.getLayer()?.batchDraw();
+	}
+
+	/**
+	 * Shows the score and which question the player is on.
+	 * The controller calls this whenever either one changes.
+	 */
+	updateScoreAndProgress(score: number, questionNumber: number, totalQuestions: number) {
+		this.title.text(`Question ${questionNumber} of ${totalQuestions}`);
+		this.score.text(`Score ${score}%`);
+	}
+
+	clearInvalid() {
+		this.answer_header.text("Type answer below");
+	}
+
+	showHint() {
+		//code to show hint and add reveal button
+	}
+
+	showNext() {
+		this.answer_input.disabled = true;
+		this.submit_button.visible(false);
+		this.hint_button.visible(false);
+		this.next_button.visible(true);
+		this.group.getLayer()?.batchDraw();
+	}
+
+	hideNext() {
+		this.answer_input.disabled = false;
+		this.next_button.visible(false);
+		this.submit_button.visible(true);
+		this.hint_button.visible(true);
+		this.group.getLayer()?.batchDraw();
+	}
+
+	hide() {
+		this.group.visible(false);
+		this.answer_input.style.display = "none";
+	}
+
+	show() {
+		this.group.visible(true);
+		this.answer_input.style.display = "block";
+	}
+
+}
