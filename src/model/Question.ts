@@ -23,6 +23,10 @@ export default class Question {
         return this.question_number
     }
 
+    setQuestionNumber(questions_number: number) {
+        this.question_number = questions_number;
+    }
+
     getLocation() {
         return this.location;
     }

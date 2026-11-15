@@ -23,3 +23,42 @@ describe("GameModel question completion", () => {
     expect(finished(model)).toBe(false);
   });
 });
+
+describe("GameModel choosing the next stop", () => {
+  it("offers four different questions that have not been played", () => {
+    const model = new GameModel();
+    model.questionIndex = 3;
+    const options = model.getOptions();
+    expect(options).toHaveLength(4);
+    expect(new Set(options).size).toBe(4);
+    for (const option of options) {
+      expect(model.questions.indexOf(option)).toBeGreaterThanOrEqual(3);
+    }
+  });
+
+  it("offers only the last question at the end", () => {
+    const model = new GameModel();
+    model.questionIndex = model.questions.length - 1;
+    expect(model.getOptions()).toEqual([model.questions[model.questions.length - 1]]);
+  });
+
+  it("moves the chosen question into the current slot", () => {
+    const model = new GameModel();
+    model.questionIndex = 2;
+    const chosen = model.questions[7];
+    const replaced = model.questions[2];
+    model.chooseQuestion(chosen);
+    expect(model.getCurrentQuestion()).toBe(chosen);
+    expect(model.questions[7]).toBe(replaced);
+    expect(model.questions).toHaveLength(10);
+    expect(chosen.getQuestionNumber()).toBe(3);
+  });
+
+  it("ignores a question that was already played", () => {
+    const model = new GameModel();
+    model.questionIndex = 5;
+    const played = model.questions[1];
+    model.chooseQuestion(played);
+    expect(model.questions[1]).toBe(played);
+  });
+});

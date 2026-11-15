@@ -49,7 +49,9 @@ export default class QuestionController extends Controller{
         if (this.model.isLastQuestion()) {
             this.endGame();
         } else {
-            this.newQuestion();
+            // this.newQuestion();
+            this.model.nextQuestion();
+            this.screenSwitcher.switchToScreen({ type: "options" });
         }
     }
 
@@ -91,7 +93,6 @@ export default class QuestionController extends Controller{
     }
 
     show() {
-        this.model.beginGame();
         this.view.showQuestion(this.model.getCurrentQuestion());
         this.refreshScoreAndProgress();
         this.view.show();

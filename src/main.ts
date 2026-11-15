@@ -78,7 +78,6 @@ class Game implements ScreenSwitcher {
 		this.minigameController = new MinigameController(this.model, this,
 														this.stage_width, 
 														this.stage_height);
-		//this.minigameController = new MinigameController(this.model, this);
 		this.optionsController = new OptionsController(this.model, this, 
 													this.stage_width, 
 													this.stage_height);
@@ -92,12 +91,11 @@ class Game implements ScreenSwitcher {
 		this.layer.add(this.resultController.getView().getGroup());
 		this.layer.add(this.answerController.getView().getGroup());
 		this.layer.add(this.minigameController.getView().getGroup());
-		//this.layer.add(this.minigameController.getView().getGroup());
 		this.layer.add(this.optionsController.getView().getGroup());
 		// Draw the layer (render everything to the canvas)
 
 		// Start with menu screen visible
-		this.switchToScreen({type: "options"});
+		this.switchToScreen({type: "menu"});
 
 		this.layer.draw();
 	}
@@ -152,8 +150,7 @@ class Game implements ScreenSwitcher {
 
 			case "minigame":
 				this.minigameController.show();
-			//case "minigame":
-				//break;
+				break;
 
 			case "options":
 				this.optionsController.show();

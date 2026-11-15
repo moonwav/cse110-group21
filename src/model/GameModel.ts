@@ -1,5 +1,5 @@
 import Question from './Question';
-import { generateTrip } from './questionGenerator';
+import { generateTrip, pickOptions } from './questionGenerator';
 
 export type QuestionRecord = {
     hintUsed: boolean;
@@ -25,7 +25,6 @@ export default class GameModel {
     }
 
     beginGame() {
-        // this.gameState = this.QUESTION;
         this.setQuestions(generateTrip());
         this.playerAnswer = null;
     }
@@ -63,6 +62,25 @@ export default class GameModel {
 
     isLastQuestion(): boolean {
         return this.questionIndex >= this.questions.length - 1;
+    }
+
+    /**
+     * Get up to four random questions the player has not seen yet
+     */
+    getOptions(random: () => number = Math.random): Question[] {
+        return pickOptions(this.questions.slice(this.questionIndex), 4, random)
+    }
+
+    /**
+     * Moves the chosen question to the current index
+     * (swaps order in original generated trip)
+     */
+    chooseQuestion(question: Question) {
+        const chosenIndex = this.questions.indexOf(question, this.questionIndex);
+        if (chosenIndex === -1) return;  // shouldn't happen in practice
+        this.questions[chosenIndex] = this.questions[this.questionIndex];
+        this.questions[this.questionIndex] = question;
+        question.setQuestionNumber(this.questionIndex + 1);
     }
 
     setPlayer(playerName: string) {
