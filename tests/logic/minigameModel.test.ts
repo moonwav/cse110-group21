@@ -118,7 +118,7 @@ describe('Minigame Model', () => {
         expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
         expect(minigameModel.amount_answered).toBe(1);
         expect(minigameModel.player_answers.length).toBe(5);
-
+        
         expect(minigameModel.removePairQ(2)).toBe(0);
         expect(minigameModel.player_answers[0]).toStrictEqual({q: 5, a: 5});
         expect(minigameModel.player_answers[1]).toStrictEqual({q: 5, a: 5});

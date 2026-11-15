@@ -21,7 +21,6 @@ export default class MinigameController extends Controller{
         this.screenSwitcher = screenSwitcher;
         this.currently_selected = null;
         this.waiting = 5;
-
     }
 
 
