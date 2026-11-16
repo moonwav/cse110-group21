@@ -1,7 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { MinigameModel } from '../../../src/screens/Minigame/MinigameModel'
 
-
 describe('Minigame Model', () => {
     const minigameModel = new MinigameModel();
     it('should generate an array of 5 shuffled questions with ids', () => {

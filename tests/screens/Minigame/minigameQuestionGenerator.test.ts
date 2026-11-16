@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { numberGenerator, minigameQuestionGenerator } from '../../../src/screens/Minigame/MinigameQuestionGenerator'
+import { numberGenerator, MinigameQuestionGenerator } from '../../../src/screens/Minigame/MinigameQuestionGenerator'
 
 describe("Minigame question number generator", () => {
     const result1 = numberGenerator();
@@ -51,11 +51,11 @@ describe("minigame question generator", () => {
 
     it("should generate a question in the format of 1 of 3 format options with the correct matching anwser", () => {
         const numbers = numberGenerator();
-        const question1 = minigameQuestionGenerator(numbers);
-        const question2 = minigameQuestionGenerator(numbers);
-        const question3 = minigameQuestionGenerator(numbers);
-        const question4 = minigameQuestionGenerator(numbers);
-        const question5 = minigameQuestionGenerator(numbers);
+        const question1 = MinigameQuestionGenerator(numbers);
+        const question2 = MinigameQuestionGenerator(numbers);
+        const question3 = MinigameQuestionGenerator(numbers);
+        const question4 = MinigameQuestionGenerator(numbers);
+        const question5 = MinigameQuestionGenerator(numbers);
 
         const allowedSet = new Set([
             {question: `What is ${numbers.percent}% of ${numbers.multiplier}?`, 

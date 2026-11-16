@@ -1,5 +1,5 @@
 import { MinigameQuestionAnswer, numberGenerator, 
-		minigameQuestionGenerator } from './MinigameQuestionGenerator';
+		MinigameQuestionGenerator } from './MinigameQuestionGenerator';
 
 export type MinigameQuestion = {question: string, id: number};
 export type MinigameAnswer = {answer:string, id: number};
@@ -25,7 +25,7 @@ export class MinigameModel {
 						{answer: '', id: 4}];
 		let q: MinigameQuestionAnswer;
 		for(let i: number = 0; i < this.NUMBER_OF_QUESTIONS; i++) {
-			q = minigameQuestionGenerator(numberGenerator());
+			q = MinigameQuestionGenerator(numberGenerator());
 			this.questions[i].question = q.question;
 			this.answers[i]. answer = q.answer;
 		}
