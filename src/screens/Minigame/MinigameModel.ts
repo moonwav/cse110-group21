@@ -25,7 +25,7 @@ export class MinigameModel {
 						{answer: '', id: 4}];
 		let q: MinigameQuestionAnswer;
 		for(let i: number = 0; i < this.NUMBER_OF_QUESTIONS; i++) {
-			q = MinigameQuestionGenerator(numberGenerator());
+			q = minigameQuestionGenerator(numberGenerator());
 			this.questions[i].question = q.question;
 			this.answers[i]. answer = q.answer;
 		}
