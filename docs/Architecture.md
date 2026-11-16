@@ -56,8 +56,9 @@ view or controller.
 - **Wrong answers:** the player can try again as many times as they like, with no
   penalty. `ScoreTracker` counts wrong tries only for the "wrong answers" stat on the
   results screen.
-- **Hints and reveals:** a hint costs 2 points and a reveal costs 5 points, each at most
-  once per question, and the score never goes below 0. A revealed question earns no points.
+- **Hints and reveals:** a hint costs 2 points, at most once per question. Reveal is only
+  available after a hint; a revealed question earns no points, so it loses its full value
+  (7, 10 or 14, with the hint's 2 already included).
 - **Deployment:** the frontend is published to GitHub Pages at
   <https://moonwav.github.io/cse110-group21/>. The **Tests** workflow builds and tests every
   push to `main`; if it passes, its `deploy` job publishes exactly the build it tested. To
@@ -423,18 +424,18 @@ sequenceDiagram
     QuestionController->>HintProvider: Hint for the Question
     HintProvider-->>QuestionController: Hint text
     QuestionController->>ScoreTracker: Apply hint penalty
-    ScoreTracker->>GameModel: update: mark hint used, subtract 2 points (not below 0)
+    ScoreTracker->>GameModel: update: mark hint used, subtract 2 points
     QuestionController->>GameModel: fetch state: new score
     QuestionController->>QuestionView: update: show hint and new score, Hint becomes Reveal Answer
 
     Player->>QuestionView: Press Reveal Answer
-    QuestionView-->>Player: Confirm? Revealing costs 5 points
+    QuestionView-->>Player: Confirm? You won't earn any points for this question
     Player->>QuestionView: Confirm
     QuestionView->>QuestionController: user action: onRevealClick
     QuestionController->>HintProvider: Answer for the Question
     HintProvider-->>QuestionController: Correct answer
     QuestionController->>ScoreTracker: Apply reveal penalty
-    ScoreTracker->>GameModel: update: mark answer revealed (earns 0), subtract 5 points (not below 0)
+    ScoreTracker->>GameModel: update: mark answer revealed (earns 0)
     QuestionController->>GameModel: fetch state: new score
     QuestionController->>QuestionView: update: show answer and new score, Submit becomes Next
 ```
