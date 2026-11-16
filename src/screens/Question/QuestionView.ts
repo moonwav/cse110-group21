@@ -41,6 +41,7 @@ export default class QuestionView implements View{
 	reveal_button_text: Konva.Text;
 	reveal_button: Konva.Group;
 	result_text: Konva.Text;
+	hint_text: Konva.Text;
 	next_button_shape: Konva.Rect;
 	next_button_text: Konva.Text;
 	next_button: Konva.Group;
@@ -265,6 +266,17 @@ export default class QuestionView implements View{
 			text: '',
 		});
 
+		this.hint_text = new Konva.Text({
+			x: this.stage_width*0.46,
+			y: this.stage_height*0.575,
+			width: this.stage_width*0.48,
+			fill: 'Black',
+			fontFamily: this.ROBOTO,
+			fontSize: this.stage_height*0.03,
+			lineHeight: 1.2,
+			text: '',
+			visible: false,
+		});
 
 		loadFonts(); 
 		this.reveal_button = new Konva.Group();
@@ -285,6 +297,7 @@ export default class QuestionView implements View{
 		this.group.add(this.next_button);
 		this.group.add(this.hint_button);
 		this.group.add(this.result_text);
+		this.group.add(this.hint_text);
 
 		this.hide();
 	}
@@ -327,6 +340,7 @@ export default class QuestionView implements View{
 		this.answer_header.text("Type answer below");
 		this.answer_input.value = "";
 		this.result_text.text("");
+		this.clearHint();
 		this.hideNext();
 	}
 
@@ -352,8 +366,16 @@ export default class QuestionView implements View{
 		this.answer_header.text("Type answer below");
 	}
 
-	showHint() {
-		//code to show hint and add reveal button
+	showHint(hint: string) {
+		this.hint_text.text(`Hint: ${hint}`);
+		this.hint_text.visible(true);
+		this.hint_button.visible(false);
+		this.group.getLayer()?.batchDraw();
+	}
+
+	clearHint() {
+		this.hint_text.text('');
+		this.hint_text.visible(false);
 	}
 
 	showNext() {

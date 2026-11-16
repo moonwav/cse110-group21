@@ -1,6 +1,7 @@
 import QuestionView from './QuestionView';
 import GameModel from '../../model/GameModel';
 import * as ScoreTracker from '../../model/scoreTracker';
+import * as HintProvider from '../../model/hintProvider';
 import { ScreenSwitcher, Controller } from "../../types";
 import { checkAnswer } from '../../model/answerChecker';
 import { parsePlayerAnswer } from '../../model/Question';
@@ -58,6 +59,8 @@ export default class QuestionController extends Controller{
     handleHintClick() {
         //tell view to show hint
         ScoreTracker.applyHint(this.model);
+        if (!this.model.getCurrentRecord().hintUsed) return;
+        this.view.showHint(HintProvider.getHint(this.model.getCurrentQuestion()));
         this.refreshScoreAndProgress();
     }
 
