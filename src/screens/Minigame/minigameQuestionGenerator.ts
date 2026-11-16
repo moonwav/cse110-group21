@@ -18,7 +18,7 @@ export function numberGenerator(): MinigameQuestionNumbers {
 }
 
 
-export function MinigameQuestionGenerator(numbers: MinigameQuestionNumbers): MinigameQuestionAnswer {
+export function minigameQuestionGenerator(numbers: MinigameQuestionNumbers): MinigameQuestionAnswer {
     switch(Math.floor(Math.random()*3)) {
         case 0:
             return{question: `What is ${numbers.percent}% of ${numbers.multiplier}?`, answer: `${numbers.product}`};
