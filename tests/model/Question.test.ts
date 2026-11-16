@@ -40,6 +40,23 @@ describe("question generation", () => {
     expect(question.getQuestion()).toContain("$100");
     expect(question.getQuestion()).toContain("50%");
   });
+
+  it("gives every template a hint", () => {
+    for (const template of questionTemplates) {
+      expect(template.hint.trim()).not.toBe("");
+    }
+  });
+
+  it("fills the question's numbers into its hint", () => {
+    const question = generateQuestion(questionTemplates[0], 1, () => 0);
+    expect(question.getHint()).toBe("Multiply $10 by 10, then divide by 100.");
+  });
+
+  it("leaves no placeholders in any hint", () => {
+    for (const question of generateTrip(() => 0.99)) {
+      expect(question.getHint()).not.toMatch(/\{[a-zA-Z]+\}/);
+    }
+  });
 });
 
 describe("picking options", () => {
@@ -82,7 +99,7 @@ describe("input validation", () => {
 describe("answer submission", () => {
   function modelWith(answer: number) {
     const model = new GameModel();
-    model.questions = [new Question(1, "Shop", "What do you pay?", answer, 7)];
+    model.questions = [new Question(1, "Shop", "What do you pay?", answer, 7, "Hint")];
     model.questionIndex = 0;
     return model;
   }

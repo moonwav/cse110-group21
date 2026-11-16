@@ -13,23 +13,35 @@ function pickedNumbers(template: QuestionTemplate, random: () => number) {
   return numbers;
 }
 
+//Share the number fill-in between prompt and hint
+function fillIn(text: string, numbers: Record<string, number>): string {
+  let filled = text;
+  for (const [name, value] of Object.entries(numbers)) {
+    filled = filled.split(`{${name}}`).join(String(money(value)));
+  }
+  return filled;
+}
+
 export function generateQuestion(
   template: QuestionTemplate,
   questionNumber: number,
   random: () => number = Math.random,
 ): Question {
   const numbers = pickedNumbers(template, random);
+  /*
   let prompt = template.prompt;
   for (const [name, value] of Object.entries(numbers)) {
     prompt = prompt.split(`{${name}}`).join(String(money(value)));
   }
+  */
 
   return new Question(
     questionNumber,
     template.scenario,
-    prompt,
+    fillIn(template.prompt, numbers),
     money(formulas[template.formula](numbers)),
     template.points,
+    fillIn(template.hint, numbers),
   );
 }
 

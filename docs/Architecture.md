@@ -293,13 +293,13 @@ what exists on `main` today.
 
 | Component | Responsibility | Status |
 |---|---|---|
-| `GameModel` | Everything about the current trip: player name, questions, current position, score, wrong tries, and which hints and reveals were used. | Exists (`GameModel.ts`): player name and score so far |
-| `Question` | One generated question: its number, location (scenario), text, correct answer, point value, and hint. | Exists (`Question.ts`): no points or hint yet |
-| `QuestionGenerator` | Builds a trip's 10 questions (4 easy, 3 medium, 3 hard) from the templates with new random numbers each time. | Planned |
-| `AnswerChecker` | Validates the player's input and decides whether it matches a `Question`'s correct answer. | Planned |
-| `HintProvider` | Gives the hint text and the revealed answer for a `Question`. Penalties are applied by `ScoreTracker`, not here. | Planned |
-| `ScoreTracker` | Applies all scoring rules to `GameModel`: points per question, hint and reveal penalties, the floor at zero, wrong-try counting, and the letter grade. | Planned |
-| `MinigameModel` | Everything about the current matching game: the pairs, current selection, matches made, and time left. | Planned |
+| `GameModel` | Everything about the current trip: player name, questions, current position, score, wrong tries, and which hints and reveals were used. | Exists (`GameModel.ts`) |
+| `Question` | One generated question: its number, location (scenario), text, correct answer, point value, and hint. | Exists (`Question.ts`) |
+| `QuestionGenerator` | Builds a trip's 10 questions (4 easy, 3 medium, 3 hard) from the templates with new random numbers each time. | Exists (`questionGenerator.ts`) |
+| `AnswerChecker` | Validates the player's input and decides whether it matches a `Question`'s correct answer. | Exists (`answerChecker.ts`) |
+| `HintProvider` | Gives the hint text and the revealed answer for a `Question`. Penalties are applied by `ScoreTracker`, not here. | Exists (`hintProvider.ts`) |
+| `ScoreTracker` | Applies all scoring rules to `GameModel`: points per question, hint and reveal penalties, the floor at zero, wrong-try counting, and the letter grade. | Exists (`scoreTracker.ts`) |
+| `MinigameModel` | Everything about the current matching game: the pairs, current selection, matches made, and time left. | Exists (`MinigameModel.ts`) |
 | `ApiClient` | The browser's only connection to the backend: sends the player and finished-trip score over HTTP. | Planned |
 
 `MinigameModel` is used only by the mini-game, so it lives with its screen in

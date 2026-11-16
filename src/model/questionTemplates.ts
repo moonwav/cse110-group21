@@ -42,7 +42,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "percentOf",
     points: 7,
-    hint: "Multiply the budget by the percent, then divide by 100.",
+    hint: "Multiply ${budget} by {percent}, then divide by 100.",
   },
   {
     id: "snack-budget",
@@ -57,7 +57,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "percentOf",
     points: 7,
-    hint: "Multiply the amount by the percent, then divide by 100.",
+    hint: "Multiply ${budget} by {percent}, then divide by 100.",
   },
   {
     id: "arcade-tickets",
@@ -72,7 +72,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "percentOf",
     points: 7,
-    hint: "Multiply the amount by the percent, then divide by 100.",
+    hint: "Multiply ${budget} by {percent}, then divide by 100.",
   },
   {
     id: "lunch-drink",
@@ -87,7 +87,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "percentOf",
     points: 7,
-    hint: "Multiply the meal money by the percent, then divide by 100.",
+    hint: "Multiply ${budget} by {percent}, then divide by 100.",
   },
   {
     id: "jacket-discount",
@@ -101,7 +101,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "discount",
     points: 10,
-    hint: "Find the discount amount, then subtract it from the price.",
+    hint: "Find {percent}% of ${price}, then subtract it from ${price}.",
   },
   {
     id: "meal-tip",
@@ -116,7 +116,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "tip",
     points: 10,
-    hint: "Find the tip amount, then add it to the bill.",
+    hint: "Find {percent}% of ${price}, then add it to ${price}.",
   },
   {
     id: "ticket-tax",
@@ -131,7 +131,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "tax",
     points: 10,
-    hint: "Find the tax amount, then add it to the ticket price.",
+    hint: "Find {percent}% of ${price}, then add it to ${price}.",
   },
   {
     id: "sticker-before-tax",
@@ -146,7 +146,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "reverseTax",
     points: 14,
-    hint: "Divide the tag price by 1 plus the tax rate written as a decimal.",
+    hint: "Divide ${price} by 1 plus {percent}% written as a decimal.",
   },
   {
     id: "cheaper-ride",
@@ -163,7 +163,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "compare",
     points: 14,
-    hint: "Take each percent off its price, then pick the lower price.",
+    hint: "Take {percentA}% off ${priceA} and {percentB}% off ${priceB}, then pick the lower price.",
   },
   {
     id: "hoodie-sale-tax",
@@ -179,6 +179,6 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "discountThenTax",
     points: 14,
-    hint: "Take the discount off the price, then add tax to what is left.",
+    hint: "Take {discount}% off ${price}, then add {tax}% tax to what is left.",
   },
 ];
