@@ -1,5 +1,5 @@
 import { MinigameQuestionAnswer, numberGenerator, 
-		minigameQuestionGenerator } from './MinigameQuestionGenerator';
+		minigameQuestionGenerator } from './minigameQuestionGenerator';
 
 export type MinigameQuestion = {question: string, id: number};
 export type MinigameAnswer = {answer:string, id: number};

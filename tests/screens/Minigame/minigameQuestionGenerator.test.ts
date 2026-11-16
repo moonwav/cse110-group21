@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { numberGenerator, minigameQuestionGenerator } from '../../../src/screens/Minigame/MinigameQuestionGenerator'
+import { numberGenerator, minigameQuestionGenerator } from '../../../src/screens/Minigame/minigameQuestionGenerator'
 
 describe("Minigame question number generator", () => {
     const result1 = numberGenerator();
