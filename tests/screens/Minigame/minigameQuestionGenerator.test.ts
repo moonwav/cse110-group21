@@ -1,4 +1,4 @@
-import { describe, it, test, expect } from "vitest";
+import { describe, it, expect } from "vitest";
 import { numberGenerator, minigameQuestionGenerator } from '../../../src/screens/Minigame/MinigameQuestionGenerator'
 
 describe("Minigame question number generator", () => {
