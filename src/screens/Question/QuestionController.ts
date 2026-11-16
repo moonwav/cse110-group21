@@ -67,6 +67,10 @@ export default class QuestionController extends Controller{
     handleRevealClick() {
         //tell view to reveal
         ScoreTracker.applyReveal(this.model);
+        if (!this.model.getCurrentRecord().revealed) return;
+        this.view.showRevealedAnswer(
+            HintProvider.getRevealedAnswer(this.model.getCurrentQuestion()));
+        this.view.showNext();
         this.refreshScoreAndProgress();
     }
     
