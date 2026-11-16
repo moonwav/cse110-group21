@@ -1,79 +1,154 @@
 import { describe, it, test, expect } from "vitest";
-import { numberGenerator, minigameQuestionGenerator } from '../../../src/screens/Minigame/MinigameQuestionGenerator'
+import { MinigameQuestion, MinigameAnswer, MinigameModel } from '../../../src/screens/Minigame/MinigameModel'
 
-describe("Minigame question number generator", () => {
-    const result1 = numberGenerator();
-    const result2 = numberGenerator();
-    const result3 = numberGenerator();
 
-    it ("should generate percent as an integer greater than or equal to 1 and less than 100", () => {
-        expect(result1.percent).toBeLessThanOrEqual(99);
-        expect(result1.percent).toBeGreaterThanOrEqual(1);
-        expect(result1.percent).toBe(Math.floor(result1.percent));
+describe('Minigame Model', () => {
+    const minigameModel = new MinigameModel();
+    it('should generate an array of 5 shuffled questions with ids', () => {
+        expect(minigameModel.questions).toHaveLength(5);
+        expect(minigameModel.answers).toHaveLength(5);
+        expect(minigameModel.questions).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    question: expect.any(String),
+                    id: expect.any(Number),
+                }),
+            ])
+        );
+        expect(minigameModel.answers).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    answer: expect.any(String),
+                    id: expect.any(Number),
+                }),
+            ])
+        );
+    });
 
-        expect(result2.percent).toBeLessThanOrEqual(99);
-        expect(result2.percent).toBeGreaterThanOrEqual(1);
-        expect(result2.percent).toBe(Math.floor(result2.percent));
+    it('should add new question/answer pairs to its list', () => {
+        expect(minigameModel.player_answers).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    q: 5,
+                    a: 5,
+                }),
+            ])
+        );
+        expect(minigameModel.amount_answered).toBe(0);
 
-        expect(result3.percent).toBeLessThanOrEqual(99);
-        expect(result3.percent).toBeGreaterThanOrEqual(1);
-        expect(result3.percent).toBe(Math.floor(result3.percent));
+        expect(minigameModel.addPair(1, 3)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(1);
+        expect(minigameModel.player_answers.length).toBe(5);
+
+        expect(minigameModel.addPair(4, 2)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 2});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(2);
+        expect(minigameModel.player_answers.length).toBe(5);
+
+        expect(minigameModel.addPair(2, 0)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 2});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(3);
+        expect(minigameModel.player_answers.length).toBe(5);
+
+        expect(minigameModel.addPair(0, 4)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 2});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 0, a: 4});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(4);
+        expect(minigameModel.player_answers.length).toBe(5);
+
+        expect(minigameModel.addPair(3, 1)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 2});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 0, a: 4});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 3, a: 1});
+        expect(minigameModel.amount_answered).toBe(5);
+        expect(minigameModel.player_answers.length).toBe(5);
     })
 
-    it("should generate multiplier as an integer greater than 0 and less than 100 ", () => {
-        expect(result1.multiplier).toBeLessThanOrEqual(200);
-        expect(result1.multiplier).toBeGreaterThanOrEqual(4);
-        expect(result1.multiplier).toBe(Math.floor(result1.multiplier));
+    it('should remove question/answer pairs', () => {
+        expect(minigameModel.removePairQ(3)).toBe(1);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 4, a: 2});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 0, a: 4});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(4);
+        expect(minigameModel.player_answers.length).toBe(5);
 
-        expect(result2.multiplier).toBeLessThanOrEqual(200);
-        expect(result2.multiplier).toBeGreaterThanOrEqual(4);
-        expect(result2.multiplier).toBe(Math.floor(result2.multiplier));
+        expect(minigameModel.removePairA(2)).toBe(4);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 1, a: 3});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 0, a: 4});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(3);
+        expect(minigameModel.player_answers.length).toBe(5);
 
-        expect(result3.multiplier).toBeLessThanOrEqual(200);
-        expect(result3.multiplier).toBeGreaterThanOrEqual(4);
-        expect(result3.multiplier).toBe(Math.floor(result3.multiplier));
+        expect(minigameModel.removePairA(3)).toBe(1);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 0, a: 4});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(2);
+        expect(minigameModel.player_answers.length).toBe(5);
+
+        expect(minigameModel.removePairQ(0)).toBe(4);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 2, a: 0});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(1);
+        expect(minigameModel.player_answers.length).toBe(5);
+
+        expect(minigameModel.removePairQ(2)).toBe(0);
+        expect(minigameModel.player_answers[0]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[1]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[2]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[3]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.player_answers[4]).toStrictEqual({q: 5, a: 5});
+        expect(minigameModel.amount_answered).toBe(0);
+        expect(minigameModel.player_answers.length).toBe(5);
     })
 
-    it ("should generate product such that it is greater than or equal to 1 ", () => {
-        expect(result1.product).toBeGreaterThanOrEqual(1);
-        expect(result2.product).toBeGreaterThanOrEqual(1);
-        expect(result3.product).toBeGreaterThanOrEqual(1);
-    })
+    describe('should check solutions', () => {
+        const minigame_model = new MinigameModel();
+        const solns = minigame_model.getSolutions();
+        it('and returns true when they are all correct', ()=> {
+            for(let i: number = 0; i<minigame_model.NUMBER_OF_QUESTIONS; i++){
+                minigame_model.addPair(solns[i].q, solns[i].a);
+            }
+            expect(minigame_model.checkAnswers()).toBe(true);
+        })
 
-    it("should generate percent, multiplier, and product such that (percent/100)*mulitplier = product", () => {
-        expect(Math.floor(result1.percent*result1.multiplier)/100).toBe(result1.product);
-        expect(Math.floor(result2.percent*result2.multiplier)/100).toBe(result2.product);
-        expect(Math.floor(result3.percent*result3.multiplier)/100).toBe(result3.product);
+        it('and returns false if one or more are incorrect', () =>{
+            expect(minigame_model.removePairQ(solns[1].q)).toBe(solns[1].a);
+            expect(minigame_model.removePairQ(solns[3].q)).toBe(solns[3].a);
+
+            minigame_model.addPair(solns[1].q, solns[3].a);
+            minigame_model.addPair(solns[3].q, solns[1].a);
+
+            expect(minigame_model.checkAnswers()).toBe(false);
+
+        });
+
     })
 })
-
-describe("minigame question generator", () => {
-
-    it("should generate a question in the format of 1 of 3 format options with the correct matching anwser", () => {
-        const numbers = numberGenerator();
-        const question1 = minigameQuestionGenerator(numbers);
-        const question2 = minigameQuestionGenerator(numbers);
-        const question3 = minigameQuestionGenerator(numbers);
-        const question4 = minigameQuestionGenerator(numbers);
-        const question5 = minigameQuestionGenerator(numbers);
-
-        const allowedSet = new Set([
-            {question: `What is ${numbers.percent}% of ${numbers.multiplier}?`, 
-            answer: `${numbers.product}`},
-            {question: `${numbers.product} is ${numbers.percent}% of what?`, 
-            answer: `${numbers.multiplier}`},
-            {question: `${numbers.product} is what percent of ${numbers.multiplier}?`, 
-            answer: `${numbers.percent}%`},
-        ]);
-
-        expect(question1).toBeOneOf(allowedSet);
-        expect(question2).toBeOneOf(allowedSet);
-        expect(question3).toBeOneOf(allowedSet);
-        expect(question4).toBeOneOf(allowedSet);
-        expect(question5).toBeOneOf(allowedSet);
-    })
-
-})
-
-
-
