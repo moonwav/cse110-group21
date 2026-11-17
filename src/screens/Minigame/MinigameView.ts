@@ -46,52 +46,42 @@ export default class MinigameView implements View{
     a_card_1_shape: Konva.Rect;
     a_card_1_text: Konva.Text;
     a_card_1: Konva.Group;
-    a1_toggled: boolean;
 
     b_card_1_shape: Konva.Rect;
     b_card_1_text:Konva.Text;
     b_card_1: Konva.Group;
-    b1_toggled: boolean;
 
     a_card_2_shape: Konva.Rect;
     a_card_2_text: Konva.Text;
     a_card_2: Konva.Group;
-    a2_toggled: boolean;
 
     b_card_2_shape: Konva.Rect;
     b_card_2_text:Konva.Text;
     b_card_2: Konva.Group;
-    b2_toggled: boolean;
 
     a_card_3_shape: Konva.Rect;
     a_card_3_text: Konva.Text;
     a_card_3: Konva.Group;
-    a3_toggled: boolean;
 
     b_card_3_shape: Konva.Rect;
     b_card_3_text:Konva.Text;
     b_card_3: Konva.Group;
-    b3_toggled: boolean;
 
     a_card_4_shape: Konva.Rect;
     a_card_4_text: Konva.Text;
     a_card_4: Konva.Group;
-    a4_toggled: boolean;
 
     b_card_4_shape: Konva.Rect;
     b_card_4_text:Konva.Text;
     b_card_4: Konva.Group;
-    b4_toggled: boolean;
 
     a_card_5_shape: Konva.Rect;
     a_card_5_text: Konva.Text;
     a_card_5: Konva.Group;
-    a5_toggled: boolean;
 
     b_card_5_shape: Konva.Rect;
     b_card_5_text:Konva.Text;
     b_card_5: Konva.Group;
-    b5_toggled: boolean;
 
     submit_button_shape: Konva.Rect;
     submit_button_text: Konva.Text;
@@ -99,8 +89,21 @@ export default class MinigameView implements View{
 
     group: Konva.Group;
 
+    question_cards: Konva.Group[];
+    question_shapes: Konva.Rect[];
+    question_texts: Konva.Text[];
+    question_locked: boolean[];
 
-    constructor(model: MinigameModel, stage_width: number, stage_height: number, onQuestionSelect: (id: number) => void, onQuestionDeselect: (id: number) => void, onAnswerSelect: (id: number) => void, onAnswerDeselect: (id: number) => void) {
+    answer_cards: Konva.Group[];
+    answer_shapes: Konva.Rect[];
+    answer_texts: Konva.Text[];
+    answer_locked: boolean[];
+
+
+    constructor(model: MinigameModel, stage_width: number, stage_height: number,
+                onQuestionClick: (id: number) => void,
+                onAnswerClick: (id: number) => void,
+                onSubmitClick: () => void) {
         this.model = model;
         this.stage_height = stage_height;
         this.stage_width = stage_width;
@@ -258,15 +261,7 @@ export default class MinigameView implements View{
         this.a_card_1.add(this.a_card_1_shape);
         this.a_card_1.add(this.a_card_1_text);
         this.a_card_1.id('q1');
-        this.a1_toggled = false;
         
-        this.a_card_1.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.a_card_1.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
 
 
         this.b_card_1_shape = new Konva.Rect({
@@ -295,15 +290,7 @@ export default class MinigameView implements View{
         this.b_card_1.add(this.b_card_1_shape);
         this.b_card_1.add(this.b_card_1_text);
         this.b_card_1.id('a1');
-        this.b1_toggled = false;
 
-        this.b_card_1.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.b_card_1.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
 
         this.a_card_2_shape = new Konva.Rect({
             x: this.a_card_1_shape.x(),
@@ -331,15 +318,7 @@ export default class MinigameView implements View{
         this.a_card_2.add(this.a_card_2_shape);
         this.a_card_2.add(this.a_card_2_text);
         this.a_card_2.id('q2');
-        this.a2_toggled = false;
 
-        this.a_card_2.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.a_card_2.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
 
         this.b_card_2_shape = new Konva.Rect({
             x: this.b_card_1_shape.x(),
@@ -367,15 +346,7 @@ export default class MinigameView implements View{
         this.b_card_2.add(this.b_card_2_shape);
         this.b_card_2.add(this.b_card_2_text);
         this.b_card_2.id('a2');
-        this.b2_toggled = false;
 
-        this.b_card_2.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.b_card_2.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
 
         this.a_card_3_shape = new Konva.Rect({
             x: this.a_card_1_shape.x(),
@@ -403,15 +374,7 @@ export default class MinigameView implements View{
         this.a_card_3.add(this.a_card_3_shape);
         this.a_card_3.add(this.a_card_3_text);
         this.a_card_3.id('q3');
-        this.a3_toggled = false;
 
-        this.a_card_3.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.a_card_3.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
 
         this.b_card_3_shape = new Konva.Rect({
             x: this.b_card_1_shape.x(),
@@ -439,15 +402,7 @@ export default class MinigameView implements View{
         this.b_card_3.add(this.b_card_3_shape);
         this.b_card_3.add(this.b_card_3_text);
         this.b_card_3.id('a3');
-        this.b3_toggled = false;
 
-        this.b_card_3.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.b_card_3.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
 
         this.a_card_4_shape = new Konva.Rect({
             x: this.a_card_1_shape.x(),
@@ -475,15 +430,7 @@ export default class MinigameView implements View{
         this.a_card_4.add(this.a_card_4_shape);
         this.a_card_4.add(this.a_card_4_text);
         this.a_card_4.id('q4');
-        this.a4_toggled = false;
 
-        this.a_card_4.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.a_card_4.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
 
         this.b_card_4_shape = new Konva.Rect({
             x: this.b_card_1_shape.x(),
@@ -511,15 +458,7 @@ export default class MinigameView implements View{
         this.b_card_4.add(this.b_card_4_shape);
         this.b_card_4.add(this.b_card_4_text);
         this.b_card_4.id('a4');
-        this.b4_toggled = false;
 
-        this.b_card_4.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.b_card_4.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
 
         this.a_card_5_shape = new Konva.Rect({
             x: this.a_card_1_shape.x(),
@@ -547,15 +486,7 @@ export default class MinigameView implements View{
         this.a_card_5.add(this.a_card_5_shape);
         this.a_card_5.add(this.a_card_5_text);
         this.a_card_5.id('q5');
-        this.a5_toggled = false;
 
-        this.a_card_5.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.a_card_5.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
 
         this.b_card_5_shape = new Konva.Rect({
             x: this.b_card_1_shape.x(),
@@ -583,16 +514,8 @@ export default class MinigameView implements View{
         this.b_card_5 = new Konva.Group();
         this.b_card_5.add(this.b_card_5_shape);
         this.b_card_5.add(this.b_card_5_text);
-        this.b_card_5.id('q5');
-        this.b5_toggled = false;
+        this.b_card_5.id('a5');
 
-        this.b_card_5.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.b_card_5.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
 
         this.submit_button_shape = new Konva.Rect({
             x: this.stage_width/2,
@@ -653,22 +576,117 @@ export default class MinigameView implements View{
         this.group.add(this.b_card_5);
         this.group.add(this.submit_button);
 
-    }	
+        this.question_cards = [this.a_card_1, this.a_card_2, this.a_card_3,
+                                this.a_card_4, this.a_card_5];
+        this.question_shapes = [this.a_card_1_shape, this.a_card_2_shape,
+                                this.a_card_3_shape, this.a_card_4_shape,
+                                this.a_card_5_shape];
+        this.question_texts = [this.a_card_1_text, this.a_card_2_text,
+                                this.a_card_3_text, this.a_card_4_text,
+                                this.a_card_5_text];
 
-    questionCardSelected(id: number) {
+        this.answer_cards = [this.b_card_1, this.b_card_2, this.b_card_3,
+                                this.b_card_4, this.b_card_5];
+        this.answer_shapes = [this.b_card_1_shape, this.b_card_2_shape,
+                                this.b_card_3_shape, this.b_card_4_shape,
+                                this.b_card_5_shape];
+        this.answer_texts = [this.b_card_1_text, this.b_card_2_text,
+                                this.b_card_3_text, this.b_card_4_text,
+                                this.b_card_5_text];
+
+        this.question_locked = [false, false, false, false, false];
+        this.answer_locked = [false, false, false, false, false];
+
+        this.question_cards.forEach((card, i) => {
+            card.on('click', () => onQuestionClick(i));
+            card.on('mouseover mousemove', () => {
+                document.body.style.cursor = this.question_locked[i] ? 'default' : 'pointer';
+            });
+            card.on('mouseout', () => {
+                document.body.style.cursor = 'default';
+            });
+        });
+
+        this.answer_cards.forEach((card, i) => {
+            card.on('click', () => onAnswerClick(i));
+            card.on('mouseover mousemove', () => {
+                document.body.style.cursor = this.answer_locked[i] ? 'default' : 'pointer';
+            });
+            card.on('mouseout', () => {
+                document.body.style.cursor = 'default';
+            });
+        });
+
+        this.submit_button.on('click', () => onSubmitClick());
+    }
+
+    questionCardSelected(id: number, color: string = BUTTON_COLOR) {
         //updates view of the card to look like it has been selected and updates if its toggled
+        if (id < 0 || id >= this.question_shapes.length) return;
+        this.question_shapes[id].fill(color);
+        this.group.getLayer()?.batchDraw();
     }
 
     questionCardDeselected(id: number) {
         //updates view of the card to look like it is not selected and updates if its toggled
+        if (id < 0 || id >= this.question_shapes.length) return;
+        this.question_shapes[id].fill('white');
+        this.group.getLayer()?.batchDraw();
     }
 
-    answerCardSelected(id: number) {
+    answerCardSelected(id: number, color: string = BUTTON_COLOR) {
         //updates view of the card to look like it has been selected and updates if its toggled
+        if (id < 0 || id >= this.answer_shapes.length) return;
+        this.answer_shapes[id].fill(color);
+        this.group.getLayer()?.batchDraw();
     }
 
     answerCardDeselected(id: number) {
         //updates view of the card to look like it is not selected and updates if its toggled
+        if (id < 0 || id >= this.answer_shapes.length) return;
+        this.answer_shapes[id].fill('white');
+        this.group.getLayer()?.batchDraw();
+    }
+
+    setCards(model: MinigameModel) {
+        this.model = model;
+        for (let i = 0; i < this.question_texts.length; i++) {
+            this.question_texts[i].text(model.questions[i].question);
+            this.answer_texts[i].text(model.answers[i].answer);
+            this.question_shapes[i].fill('white');
+            this.answer_shapes[i].fill('white');
+            this.question_locked[i] = false;
+            this.answer_locked[i] = false;
+        }
+        this.group.getLayer()?.batchDraw();
+    }
+
+    lockQuestionCard(id: number) {
+        if (id < 0 || id >= this.question_locked.length) return;
+        this.question_locked[id] = true;
+    }
+
+    lockAnswerCard(id: number) {
+        if (id < 0 || id >= this.answer_locked.length) return;
+        this.answer_locked[id] = true;
+    }
+
+    lockAllCards() {
+        this.question_locked.fill(true);
+        this.answer_locked.fill(true);
+    }
+
+    setButtonText(text: string) {
+        this.submit_button_text.text(text);
+        this.group.getLayer()?.batchDraw();
+    }
+
+    setTime(seconds_left: number) {
+        const seconds = Math.max(0, seconds_left);
+        const m = Math.floor(seconds / 60);
+        const s = seconds % 60;
+        this.time.text(`${m}:${s < 10 ? '0' : ''}${s}`);
+        this.group.getLayer()?.batchDraw();
     }
 
 

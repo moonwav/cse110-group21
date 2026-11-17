@@ -275,7 +275,7 @@ what exists on `main` today.
 | `QuestionView` | Question screen: progress, score, grade scale, scenario, answer input, Submit/Next, Hint/Reveal, and feedback messages. | In progress (layout only) |
 | `ResultView` | Shows the final letter grade, percent score, wrong answers, and hints used, with Answer Key and Play Again. | Empty placeholder |
 | `AnswerKeyView` | Lists each question with the player's answers and the correct answer. | Planned |
-| `MinigameView` | Matching game screen: two columns to match, a countdown timer, and win and lose overlays. | Empty placeholder |
+| `MinigameView` | Matching game screen: two columns to match, a countdown timer, green and red cards for right and wrong pairs, and win and lose overlays. | Exists; win and lose overlays not built yet (Submit becomes Main Menu when the round ends) |
 | `constants` | The game's shared colors and fonts. | Exists (`src/constants.ts`) |
 
 ### Controller (`src/screens/<Screen>/<Screen>Controller.ts`)
@@ -288,7 +288,7 @@ what exists on `main` today.
 | `QuestionController` | Handles Submit, Next, Hint, and Reveal using `AnswerChecker`, `HintProvider`, and `ScoreTracker`, updates `QuestionView`, and switches to results after question 10. | In progress (handlers are empty) |
 | `ResultController` | Shows the final grade from `ScoreTracker`, saves the score through `ApiClient`, and handles Answer Key and Play Again. | Empty placeholder |
 | `AnswerKeyController` | Shows the trip's questions and answers from `GameModel`, and handles Back. | Planned |
-| `MinigameController` | Runs one matching game in `MinigameModel`: pairs, selections, timer, and win or lose. | Empty placeholder |
+| `MinigameController` | Runs one matching game: tracks the selected question and answer, checks each submitted pair against `MinigameModel`, runs the 60-second timer, and ends the round on a win or when time runs out. | Exists; no win or lose overlay yet |
 
 ### Model: game logic (`src/model/`)
 
@@ -300,7 +300,7 @@ what exists on `main` today.
 | `AnswerChecker` | Validates the player's input and decides whether it matches a `Question`'s correct answer. | Exists (`answerChecker.ts`) |
 | `HintProvider` | Gives the hint text and the revealed answer for a `Question`. Penalties are applied by `ScoreTracker`, not here. | Exists (`hintProvider.ts`) |
 | `ScoreTracker` | Applies all scoring rules to `GameModel`: points per question, hint and reveal penalties, the floor at zero, wrong-try counting, and the letter grade. | Exists (`scoreTracker.ts`) |
-| `MinigameModel` | Everything about the current matching game: the pairs, current selection, matches made, and time left. | Exists (`MinigameModel.ts`) |
+| `MinigameModel` | The current matching game's shuffled questions and answers and the correct pairs made so far. | Exists (`MinigameModel.ts`) |
 | `ApiClient` | The browser's only connection to the backend: sends the player and finished-trip score over HTTP. | Planned |
 
 `MinigameModel` is used only by the mini-game, so it lives with its screen in
