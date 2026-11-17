@@ -48,18 +48,21 @@ Full details: [Game vision and decisions](docs/decisions.md)
 
 | Folder | Contents |
 |---|---|
-| `src/presentation/` | UI screens: `MainMenu`, `IndividualProblem`, results, mini-game |
-| `src/logic/` | `GameController`, `QuestionGenerator`, `AnswerChecker`, `ScoreTracker` |
-| `src/data/` | `QuestionTemplate` files, `GameState`, persistent storage |
-| `src/backend/` | `ApiRouter`, `Accounts`, `ScoreHolder` |
-| `tests/` | Automated tests |
-| `docs/` | Architecture and decision documentation |
+| `src/main.ts` | `Game`: creates the stage and every controller, and switches screens |
+| `src/types.ts` | Shared types: `View`, `Controller`, `Screen`, `ScreenSwitcher` |
+| `src/constants.ts` | Shared colors and fonts |
+| `src/screens/<Screen>/` | One folder per screen (`MainMenu`, `EnterName`, `Info`, `Options`, `Question`, `Result`, `AnswerKey`, `Minigame`) with its `<Screen>View` and `<Screen>Controller`, plus any model only that screen uses |
+| `src/model/` | Shared game state and rules: `GameModel`, `Question`, `questionGenerator`, `questionTemplates`, `answerChecker`, `scoreTracker`, `formulas` |
+| `src/backend/` | Node-only SQLite code: `database.ts`, `schema.ts` |
+| `src/styles/` | CSS loaded by `index.html` |
+| `tests/` | Automated tests, in the same folders as `src/` |
+| `docs/` | Architecture documentation |
 
 ## Documentation
 
 | Document | What it covers |
 |---|---|
-| [Architecture](docs/architecture.md) | Quality attribute scenarios, dynamic and static views, component glossary, design walkthroughs |
+| [Architecture](docs/Architecture.md) | Quality attribute scenarios, dynamic and static views, component glossary, design walkthroughs |
 | [Decisions](docs/decisions.md) | Why we made key design and scope choices |
 | [Contributing](CONTRIBUTING.md) | Branching, pull requests, definition of done |
 | [Figma mockups](https://www.figma.com/design/bQuWbczVU3FqEZtMuZA6Tx/CSE-110-Mockup?node-id=0-1&t=fXMIbBTT8kAez9Qe-0) | UI screens, including error and hint paths |

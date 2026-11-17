@@ -5,9 +5,12 @@ place: the quality attribute scenarios that drive the design, the dynamic and st
 views, a glossary of components, and walkthroughs of the two key scenarios.
 
 **Naming rule:** every component name in this document is the name of a class (or file)
-in the code, written exactly the same way in both diagrams and the glossary. Source files
-use the class name in camelCase (`MainMenuController` lives in `mainMenuController.ts`);
-the exceptions are `GameModel` in `model.ts` and `Game` in `main.ts`. If you rename a
+in the code, written exactly the same way in both diagrams and the glossary. A class lives
+in a file with the same name in PascalCase (`MainMenuController` lives in
+`MainMenuController.ts`). A module that exports only functions or data lives in a
+camelCase file with the same name (`ScoreTracker` is `scoreTracker.ts`,
+`QuestionTemplate` is in `questionTemplates.ts`). The one exception is `Game` in
+`main.ts`, the app's entry point. If you rename a
 component, update the code, both diagrams, and the [glossary](#4-component-glossary) in
 the same pull request.
 
@@ -27,14 +30,17 @@ diagrams use the same parts:
 
 | Part | What it holds | Where |
 |---|---|---|
-| **View** | One `<Name>View` class per screen. It draws the screen in its own Konva group, shows whatever its controller gives it, and reports clicks through callbacks. It never changes game data. Every view implements the `View` interface. | `src/presentation/` |
-| **Controller** | One `<Name>Controller` class per screen. It creates its view (passing the callbacks), updates the Model, gives its view the data to show, and asks `Game` to switch screens. Every controller extends the `Controller` base class. | `src/logic/*Controller.ts` |
-| **Model** | `GameModel` (the state of the current trip) and the game rules (questions, answer checking, hints, scoring), plus the backend and its database. | `src/logic/`, `src/data/`, `src/backend/` |
+| **View** | One `<Name>View` class per screen. It draws the screen in its own Konva group, shows whatever its controller gives it, and reports clicks through callbacks. It never changes game data. Every view implements the `View` interface. | `src/screens/<Screen>/<Screen>View.ts` |
+| **Controller** | One `<Name>Controller` class per screen. It creates its view (passing the callbacks), updates the Model, gives its view the data to show, and asks `Game` to switch screens. Every controller extends the `Controller` base class. | `src/screens/<Screen>/<Screen>Controller.ts` |
+| **Model** | `GameModel` (the state of the current trip) and the game rules (questions, answer checking, hints, scoring), plus the backend and its database. A model that only one screen uses lives with that screen. | `src/model/`, `src/screens/<Screen>/<Screen>Model.ts`, `src/backend/` |
 | **Game** | The app entry point. It creates the Konva stage, the `GameModel`, and every controller, and implements `ScreenSwitcher`. | `src/main.ts` |
 
-The shared types (`View`, `Controller`, `Screen`, `ScreenSwitcher`) are in `src/types.ts`.
-Controllers and Model logic share `src/logic/`. They are told apart by name: every file
-ending in `Controller.ts` is a controller, and no Model module imports a controller.
+The shared types (`View`, `Controller`, `Screen`, `ScreenSwitcher`) are in `src/types.ts`,
+and the shared colors and fonts are in `src/constants.ts`. Each screen has its own folder
+under `src/screens/` holding its view, its controller, and any model only that screen
+uses (`MinigameModel`, `ResultModel`). Shared Model code is in `src/model/`. Code outside
+a screen's folder may import *types* from it (for example `ResultData`), but never its
+view or controller.
 
 ### Design decisions this document relies on
 
@@ -50,8 +56,9 @@ ending in `Controller.ts` is a controller, and no Model module imports a control
 - **Wrong answers:** the player can try again as many times as they like, with no
   penalty. `ScoreTracker` counts wrong tries only for the "wrong answers" stat on the
   results screen.
-- **Hints and reveals:** a hint costs 2 points and a reveal costs 5 points, each at most
-  once per question, and the score never goes below 0. A revealed question earns no points.
+- **Hints and reveals:** a hint costs 2 points, at most once per question. Reveal is only
+  available after a hint; a revealed question earns no points, so it loses its full value
+  (7, 10 or 14, with the hint's 2 already included).
 - **Deployment:** the frontend is published to GitHub Pages at
   <https://moonwav.github.io/cse110-group21/>. The **Tests** workflow builds and tests every
   push to `main`; if it passes, its `deploy` job publishes exactly the build it tested. To
@@ -124,7 +131,7 @@ interface gets in the way of learning percentages.
 | **Stimulus** | Needs to add a new screen and new game logic during Sprint 2 or later |
 | **Artifact** | Overall code structure: the MVC split, the shared types in `src/types.ts`, module interfaces, and shared UI pieces |
 | **Environment** | Development, mid-project, with multiple developers working in parallel |
-| **Response** | The feature follows the existing patterns: the new screen is a `<Name>View` that implements `View` plus a `<Name>Controller` that extends `Controller`, added to the `Screen` type and to `Game`; questions are defined with the shared `QuestionTemplate` format; scoring goes through `ScoreTracker`; views get their data only from their controller; and views use the shared colors in `viewConstants`. The documented patterns are the only approach for each of these jobs. |
+| **Response** | The feature follows the existing patterns: the new screen is a folder `src/screens/<Name>/` with a `<Name>View` that implements `View` plus a `<Name>Controller` that extends `Controller`, added to the `Screen` type and to `Game`; questions are defined with the shared `QuestionTemplate` format; scoring goes through `ScoreTracker`; views get their data only from their controller; and views use the shared colors in `constants`. The documented patterns are the only approach for each of these jobs. |
 | **Response measure** | Code review finds zero deviations from the documented patterns (checked by a reviewer using the [contributing checklist](../CONTRIBUTING.md)), and 0 duplicated copies of shared code such as buttons, colors, or font loading |
 
 *Why it matters:* several teammates build different screens and features, and the game
@@ -228,9 +235,10 @@ are the specific modules behind it. Every controller also uses its own view and
 
 - **Dependencies point downward only:** `Game` → controllers → views and Model, and Model
   logic → data. A view never imports a controller and never calls the Model. The Model
-  never imports a view or a controller, even though controllers also live in `src/logic/`.
+  never imports a view or a controller.
 - **Every screen is a pair:** a `<Name>View` that implements `View` and a
-  `<Name>Controller` that extends `Controller`. The controller creates its view and passes
+  `<Name>Controller` that extends `Controller`, both in `src/screens/<Name>/`. The
+  controller creates its view and passes
   it callbacks such as `onSubmitClick`; that's how user actions reach the controller
   without the view importing it.
 - **Controllers don't import each other.** They depend only on the `ScreenSwitcher`
@@ -238,7 +246,7 @@ are the specific modules behind it. Every controller also uses its own view and
   type and to `Game`.
 - **Only `ApiClient` talks to the backend, and only over HTTP.** Browser code never imports
   `src/backend/`, because it uses Node-only APIs such as `node:sqlite`.
-- **Views share one look.** Colors come from `viewConstants`; no view defines its own.
+- **Views share one look.** Colors come from `constants`; no view defines its own.
 
 ---
 
@@ -257,7 +265,7 @@ what exists on `main` today.
 | `Screen` | The list of screens `Game` can switch to. | Exists (`types.ts`); needs story and answer key |
 | `ScreenSwitcher` | Interface controllers use to change screens; `Game` implements it. | Exists (`types.ts`) |
 
-### View (`src/presentation/`)
+### View (`src/screens/<Screen>/<Screen>View.ts`)
 
 | Component | Responsibility | Status |
 |---|---|---|
@@ -268,9 +276,9 @@ what exists on `main` today.
 | `ResultView` | Shows the final letter grade, percent score, wrong answers, and hints used, with Answer Key and Play Again. | Empty placeholder |
 | `AnswerKeyView` | Lists each question with the player's answers and the correct answer. | Planned |
 | `MinigameView` | Matching game screen: two columns to match, a countdown timer, and win and lose overlays. | Empty placeholder |
-| `viewConstants` | The game's shared colors. | Exists (colors only) |
+| `constants` | The game's shared colors and fonts. | Exists (`src/constants.ts`) |
 
-### Controller (`src/logic/*Controller.ts`)
+### Controller (`src/screens/<Screen>/<Screen>Controller.ts`)
 
 | Component | Responsibility | Status |
 |---|---|---|
@@ -282,20 +290,23 @@ what exists on `main` today.
 | `AnswerKeyController` | Shows the trip's questions and answers from `GameModel`, and handles Back. | Planned |
 | `MinigameController` | Runs one matching game in `MinigameModel`: pairs, selections, timer, and win or lose. | Empty placeholder |
 
-### Model: game logic (`src/logic/`)
+### Model: game logic (`src/model/`)
 
 | Component | Responsibility | Status |
 |---|---|---|
-| `GameModel` | Everything about the current trip: player name, questions, current position, score, wrong tries, and which hints and reveals were used. | Exists (`model.ts`): player name and score so far |
-| `Question` | One generated question: its number, location (scenario), text, correct answer, point value, and hint. | Exists (`question.ts`): no points or hint yet |
-| `QuestionGenerator` | Builds a trip's 10 questions (4 easy, 3 medium, 3 hard) from the templates with new random numbers each time. | Planned |
-| `AnswerChecker` | Validates the player's input and decides whether it matches a `Question`'s correct answer. | Planned |
-| `HintProvider` | Gives the hint text and the revealed answer for a `Question`. Penalties are applied by `ScoreTracker`, not here. | Planned |
-| `ScoreTracker` | Applies all scoring rules to `GameModel`: points per question, hint and reveal penalties, the floor at zero, wrong-try counting, and the letter grade. | Planned |
-| `MinigameModel` | Everything about the current matching game: the pairs, current selection, matches made, and time left. | Planned |
+| `GameModel` | Everything about the current trip: player name, questions, current position, score, wrong tries, and which hints and reveals were used. | Exists (`GameModel.ts`) |
+| `Question` | One generated question: its number, location (scenario), text, correct answer, point value, and hint. | Exists (`Question.ts`) |
+| `QuestionGenerator` | Builds a trip's 10 questions (4 easy, 3 medium, 3 hard) from the templates with new random numbers each time. | Exists (`questionGenerator.ts`) |
+| `AnswerChecker` | Validates the player's input and decides whether it matches a `Question`'s correct answer. | Exists (`answerChecker.ts`) |
+| `HintProvider` | Gives the hint text and the revealed answer for a `Question`. Penalties are applied by `ScoreTracker`, not here. | Exists (`hintProvider.ts`) |
+| `ScoreTracker` | Applies all scoring rules to `GameModel`: points per question, hint and reveal penalties, the floor at zero, wrong-try counting, and the letter grade. | Exists (`scoreTracker.ts`) |
+| `MinigameModel` | Everything about the current matching game: the pairs, current selection, matches made, and time left. | Exists (`MinigameModel.ts`) |
 | `ApiClient` | The browser's only connection to the backend: sends the player and finished-trip score over HTTP. | Planned |
 
-### Model: data (`src/data/`)
+`MinigameModel` is used only by the mini-game, so it lives with its screen in
+`src/screens/Minigame/` instead of in `src/model/`.
+
+### Model: data (`src/model/`)
 
 | Component | Responsibility | Status |
 |---|---|---|
@@ -308,7 +319,7 @@ what exists on `main` today.
 | `ApiRouter` | HTTP endpoints that receive requests from `ApiClient` and pass them to `Accounts` or `ScoreHolder`. | Planned |
 | `Accounts` | Creates and looks up players (name and unique ID). | Planned |
 | `ScoreHolder` | Saves and reads players' finished-trip scores. | Planned |
-| `Database` | Opens the SQLite database and creates its tables. | Exists as `src/data/database.ts`; should move here |
+| `Database` | Opens the SQLite database and creates its tables. | Exists (`src/backend/database.ts`, tables in `schema.ts`) |
 
 ---
 
@@ -413,18 +424,18 @@ sequenceDiagram
     QuestionController->>HintProvider: Hint for the Question
     HintProvider-->>QuestionController: Hint text
     QuestionController->>ScoreTracker: Apply hint penalty
-    ScoreTracker->>GameModel: update: mark hint used, subtract 2 points (not below 0)
+    ScoreTracker->>GameModel: update: mark hint used, subtract 2 points
     QuestionController->>GameModel: fetch state: new score
     QuestionController->>QuestionView: update: show hint and new score, Hint becomes Reveal Answer
 
     Player->>QuestionView: Press Reveal Answer
-    QuestionView-->>Player: Confirm? Revealing costs 5 points
+    QuestionView-->>Player: Confirm? You won't earn any points for this question
     Player->>QuestionView: Confirm
     QuestionView->>QuestionController: user action: onRevealClick
     QuestionController->>HintProvider: Answer for the Question
     HintProvider-->>QuestionController: Correct answer
     QuestionController->>ScoreTracker: Apply reveal penalty
-    ScoreTracker->>GameModel: update: mark answer revealed (earns 0), subtract 5 points (not below 0)
+    ScoreTracker->>GameModel: update: mark answer revealed (earns 0)
     QuestionController->>GameModel: fetch state: new score
     QuestionController->>QuestionView: update: show answer and new score, Submit becomes Next
 ```

@@ -26,10 +26,10 @@
 <text x="1326" y="130" font-family="Helvetica, Arial, sans-serif" font-size="12" text-anchor="middle" font-weight="normal"  fill="#000">group</text>
 <rect x="40" y="170" width="320" height="650" fill="none" stroke="#000" stroke-width="2.4" />
 <text x="54" y="200" font-family="Helvetica, Arial, sans-serif" font-size="22" text-anchor="start" font-weight="bold"  fill="#000">View</text>
-<text x="54" y="220" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/presentation/</text>
+<text x="54" y="220" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/screens/*/*View.ts</text>
 <rect x="530" y="170" width="360" height="650" fill="none" stroke="#000" stroke-width="2.4" />
 <text x="544" y="200" font-family="Helvetica, Arial, sans-serif" font-size="22" text-anchor="start" font-weight="bold"  fill="#000">Controller</text>
-<text x="544" y="220" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/logic/*Controller.ts</text>
+<text x="544" y="220" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/screens/*/*Controller.ts</text>
 <rect x="70" y="245" width="260" height="54" fill="#fff" stroke="#000" stroke-width="1.6" />
 <text x="200.0" y="277.6" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="normal"  fill="#000">MainMenuView</text>
 <rect x="560" y="245" width="300" height="54" fill="#fff" stroke="#000" stroke-width="1.6" />
@@ -113,7 +113,7 @@
 <text x="508" y="868" font-family="Helvetica, Arial, sans-serif" font-size="14" text-anchor="end" font-weight="normal" font-style="italic" fill="#000">show / hide</text>
 <rect x="960" y="170" width="515" height="900" fill="none" stroke="#000" stroke-width="2.4" />
 <text x="974" y="200" font-family="Helvetica, Arial, sans-serif" font-size="22" text-anchor="start" font-weight="bold"  fill="#000">Model</text>
-<text x="974" y="220" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/logic/, src/data/, src/backend/</text>
+<text x="974" y="220" font-family="Menlo, Consolas, monospace" font-size="13" text-anchor="start" font-weight="normal"  fill="#000">src/model/, src/screens/*/*Model.ts, src/backend/</text>
 <rect x="990" y="245" width="220" height="54" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
 <text x="1100.0" y="277.6" font-family="Helvetica, Arial, sans-serif" font-size="16" text-anchor="middle" font-weight="normal"  fill="#000">QuestionGenerator</text>
 <rect x="1240" y="245" width="210" height="54" fill="#fff" stroke="#000" stroke-width="1.6" stroke-dasharray="6 4"/>
