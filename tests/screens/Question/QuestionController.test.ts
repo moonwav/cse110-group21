@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import * as HintProvider from "../../../src/model/hintProvider";
 
 const mocks = vi.hoisted(() => ({
   view: {
@@ -7,6 +8,8 @@ const mocks = vi.hoisted(() => ({
     showResult: vi.fn(),
     showNext: vi.fn(),
     showQuestion: vi.fn(),
+    showHint: vi.fn(),
+    showRevealedAnswer: vi.fn(),
     updateScoreAndProgress: vi.fn(),
     show: vi.fn(),
     hide: vi.fn(),
@@ -134,5 +137,73 @@ describe("QuestionController scoring", () => {
     controller.handleHintClick();
     expect(mocks.view.updateScoreAndProgress).toHaveBeenLastCalledWith(
       98, 1, model.questions.length);
+  });
+});
+
+describe("QuestionController hint", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("shows the current question's hint", () => {
+    const { model, controller } = setup();
+    controller.handleHintClick();
+    expect(mocks.view.showHint).toHaveBeenCalledWith(
+      HintProvider.getHint(model.getCurrentQuestion()));
+  });
+
+  it("charges only once if Hint is pressed twice", () => {
+    const { model, controller } = setup();
+    controller.handleHintClick();
+    controller.handleHintClick();
+    expect(ScoreTracker.currentScore(model)).toBe(98);
+  });
+
+  it("does nothing after the question is answered", () => {
+    mocks.checkAnswer.mockReturnValue({ status: "correct" });
+    const { model, controller } = setup();
+    controller.handleSubmitClick("5");
+    controller.handleHintClick();
+    expect(mocks.view.showHint).not.toHaveBeenCalled();
+    expect(ScoreTracker.currentScore(model)).toBe(100);
+  });
+});
+
+describe("QuestionController reveal", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("does nothing before a hint", () => {
+    const { model, controller } = setup();
+    controller.handleRevealClick();
+    expect(mocks.view.showRevealedAnswer).not.toHaveBeenCalled();
+    expect(ScoreTracker.currentScore(model)).toBe(100);
+  });
+
+  it("shows the answer and Next after a hint", () => {
+    const { model, controller } = setup();
+    controller.handleHintClick();
+    controller.handleRevealClick();
+    expect(mocks.view.showRevealedAnswer).toHaveBeenCalledWith(
+      HintProvider.getRevealedAnswer(model.getCurrentQuestion()));
+    expect(mocks.view.showNext).toHaveBeenCalled();
+  });
+
+  it("takes all of the question's points, once", () => {
+    const { model, controller } = setup();
+    const points = model.getCurrentQuestion().getPoints();
+    controller.handleHintClick();
+    controller.handleRevealClick();
+    controller.handleRevealClick();
+    expect(ScoreTracker.currentScore(model)).toBe(100 - points);
+    expect(mocks.view.updateScoreAndProgress).toHaveBeenLastCalledWith(
+      100 - points, 1, model.questions.length);
+  });
+
+  it("does nothing after the question is answered", () => {
+    mocks.checkAnswer.mockReturnValue({ status: "correct" });
+    const { model, controller } = setup();
+    controller.handleHintClick();
+    controller.handleSubmitClick("5");
+    controller.handleRevealClick();
+    expect(mocks.view.showRevealedAnswer).not.toHaveBeenCalled();
+    expect(model.getCurrentRecord().revealed).toBe(false);
   });
 });

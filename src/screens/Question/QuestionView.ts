@@ -41,6 +41,8 @@ export default class QuestionView implements View{
 	reveal_button_text: Konva.Text;
 	reveal_button: Konva.Group;
 	result_text: Konva.Text;
+	hint_text: Konva.Text;
+	reveal_popup: Konva.Group;
 	next_button_shape: Konva.Rect;
 	next_button_text: Konva.Text;
 	next_button: Konva.Group;
@@ -265,12 +267,25 @@ export default class QuestionView implements View{
 			text: '',
 		});
 
+		this.hint_text = new Konva.Text({
+			x: this.stage_width*0.46,
+			y: this.stage_height*0.575,
+			width: this.stage_width*0.48,
+			fill: 'Black',
+			fontFamily: this.ROBOTO,
+			fontSize: this.stage_height*0.03,
+			lineHeight: 1.2,
+			text: '',
+			visible: false,
+		});
 
 		loadFonts(); 
-		this.reveal_button = new Konva.Group();
+		this.reveal_button = new Konva.Group({ visible: false });
 		this.reveal_button.add(this.reveal_button_shape);
 		this.reveal_button.add(this.reveal_button_text);
-		this.reveal_button.on('click', onRevealClick);
+		this.reveal_button.on('click', () => this.openRevealPopup());
+
+		this.reveal_popup = this.buildRevealPopup(onRevealClick);
 
 		this.group = new Konva.Group();
 		this.group.add(this.background);
@@ -285,10 +300,79 @@ export default class QuestionView implements View{
 		this.group.add(this.next_button);
 		this.group.add(this.hint_button);
 		this.group.add(this.result_text);
+		this.group.add(this.hint_text);
+		this.group.add(this.reveal_button);
+		this.group.add(this.reveal_popup);
 
 		this.hide();
 	}
 
+	buildRevealPopup(onRevealClick: () => void): Konva.Group {
+		const w = this.stage_width;
+		const h = this.stage_height;
+
+		// Dims the screen and catches clicks so nothing behind the popup can be pressed.
+		const shade = new Konva.Rect({
+			x: 0, y: 0, width: w, height: h,
+			fill: 'Black', opacity: 0.4,
+		});
+
+		const card = new Konva.Rect({
+			x: w*0.3, y: h*0.3, width: w*0.4, height: h*0.4,
+			cornerRadius: 25, fill: SECONDARY_COLOR,
+			stroke: PRIMARY_COLOR, strokeWidth: 4,
+		});
+
+		const message = new Konva.Text({
+			x: w*0.32, y: h*0.35, width: w*0.36,
+			text: "Reveal the answer?\n\nYou won't earn any points for this question.",
+			fontFamily: this.ROBOTO, fontSize: h*0.03,
+			align: 'center', fill: 'Black',
+		});
+
+		const confirm = this.makePopupButton('Reveal', w*0.32);
+		confirm.on('click', () => {
+			this.closeRevealPopup();
+			onRevealClick();
+		});
+
+		const cancel = this.makePopupButton('Cancel', w*0.52);
+		cancel.on('click', () => this.closeRevealPopup());
+
+		const popup = new Konva.Group({ visible: false });
+		popup.add(shade, card, message, confirm, cancel);
+		return popup;
+	}
+
+	makePopupButton(label: string, x: number): Konva.Group {
+		const button = new Konva.Group();
+		button.add(new Konva.Rect({
+			x, y: this.stage_height*0.56,
+			width: this.stage_width*0.16, height: this.stage_height*0.08,
+			cornerRadius: 25, fill: BUTTON_COLOR,
+		}));
+		button.add(new Konva.Text({
+			x, y: this.stage_height*0.575,
+			width: this.stage_width*0.16,
+			text: label, fontFamily: this.SILKSCREEN,
+			fontSize: this.stage_height*0.045,
+			align: 'center', fill: 'Black',
+		}));
+		return button;
+	}
+
+	openRevealPopup() {
+		// The answer box is HTML on top of the canvas, so hide it or it would sit over the popup.
+		this.answer_input.style.visibility = 'hidden';
+		this.reveal_popup.visible(true);
+		this.group.getLayer()?.batchDraw();
+	}
+
+	closeRevealPopup() {
+		this.answer_input.style.visibility = 'visible';
+		this.reveal_popup.visible(false);
+		this.group.getLayer()?.batchDraw();
+	}
 	//updates text displayed on screen based on the current question
 	displayQuestion() {
 		this.title.text(`Question ${this.question.getQuestionNumber()} of 10`);
@@ -327,6 +411,7 @@ export default class QuestionView implements View{
 		this.answer_header.text("Type answer below");
 		this.answer_input.value = "";
 		this.result_text.text("");
+		this.clearHint();
 		this.hideNext();
 	}
 
@@ -352,14 +437,26 @@ export default class QuestionView implements View{
 		this.answer_header.text("Type answer below");
 	}
 
-	showHint() {
-		//code to show hint and add reveal button
+	showHint(hint: string) {
+		this.hint_text.text(`Hint: ${hint}`);
+		this.hint_text.visible(true);
+		this.hint_button.visible(false);
+		this.reveal_button.visible(true);
+		this.group.getLayer()?.batchDraw();
+	}
+
+	clearHint() {
+		this.hint_text.text('');
+		this.hint_text.visible(false);
+		this.reveal_button.visible(false);
+		this.closeRevealPopup();
 	}
 
 	showNext() {
 		this.answer_input.disabled = true;
 		this.submit_button.visible(false);
 		this.hint_button.visible(false);
+		this.reveal_button.visible(false);
 		this.next_button.visible(true);
 		this.group.getLayer()?.batchDraw();
 	}
@@ -380,6 +477,11 @@ export default class QuestionView implements View{
 	show() {
 		this.group.visible(true);
 		this.answer_input.style.display = "block";
+	}
+
+	showRevealedAnswer(answer: string) {
+		this.result_text.text(`The answer is ${answer}.`);
+		this.group.getLayer()?.batchDraw();
 	}
 
 }
