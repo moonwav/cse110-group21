@@ -46,42 +46,52 @@ export default class MinigameView implements View{
     a_card_1_shape: Konva.Rect;
     a_card_1_text: Konva.Text;
     a_card_1: Konva.Group;
+    a1_toggled: boolean;
 
     b_card_1_shape: Konva.Rect;
     b_card_1_text:Konva.Text;
     b_card_1: Konva.Group;
+    b1_toggled: boolean;
 
     a_card_2_shape: Konva.Rect;
     a_card_2_text: Konva.Text;
     a_card_2: Konva.Group;
+    a2_toggled: boolean;
 
     b_card_2_shape: Konva.Rect;
     b_card_2_text:Konva.Text;
     b_card_2: Konva.Group;
+    b2_toggled: boolean;
 
     a_card_3_shape: Konva.Rect;
     a_card_3_text: Konva.Text;
     a_card_3: Konva.Group;
+    a3_toggled: boolean;
 
     b_card_3_shape: Konva.Rect;
     b_card_3_text:Konva.Text;
     b_card_3: Konva.Group;
+    b3_toggled: boolean;
 
     a_card_4_shape: Konva.Rect;
     a_card_4_text: Konva.Text;
     a_card_4: Konva.Group;
+    a4_toggled: boolean;
 
     b_card_4_shape: Konva.Rect;
     b_card_4_text:Konva.Text;
     b_card_4: Konva.Group;
+    b4_toggled: boolean;
 
     a_card_5_shape: Konva.Rect;
     a_card_5_text: Konva.Text;
     a_card_5: Konva.Group;
+    a5_toggled: boolean;
 
     b_card_5_shape: Konva.Rect;
     b_card_5_text:Konva.Text;
     b_card_5: Konva.Group;
+    b5_toggled: boolean;
 
     submit_button_shape: Konva.Rect;
     submit_button_text: Konva.Text;
@@ -90,7 +100,7 @@ export default class MinigameView implements View{
     group: Konva.Group;
 
 
-    constructor(model: MinigameModel, stage_width: number, stage_height: number) {
+    constructor(model: MinigameModel, stage_width: number, stage_height: number, onQuestionSelect: (id: number) => void, onQuestionDeselect: (id: number) => void, onAnswerSelect: (id: number) => void, onAnswerDeselect: (id: number) => void) {
         this.model = model;
         this.stage_height = stage_height;
         this.stage_width = stage_width;
@@ -248,6 +258,7 @@ export default class MinigameView implements View{
         this.a_card_1.add(this.a_card_1_shape);
         this.a_card_1.add(this.a_card_1_text);
         this.a_card_1.id('q1');
+        this.a1_toggled = false;
         
         this.a_card_1.on('mouseover', function(){
             document.body.style.cursor = 'pointer';
@@ -284,6 +295,7 @@ export default class MinigameView implements View{
         this.b_card_1.add(this.b_card_1_shape);
         this.b_card_1.add(this.b_card_1_text);
         this.b_card_1.id('a1');
+        this.b1_toggled = false;
 
         this.b_card_1.on('mouseover', function(){
             document.body.style.cursor = 'pointer';
@@ -319,6 +331,7 @@ export default class MinigameView implements View{
         this.a_card_2.add(this.a_card_2_shape);
         this.a_card_2.add(this.a_card_2_text);
         this.a_card_2.id('q2');
+        this.a2_toggled = false;
 
         this.a_card_2.on('mouseover', function(){
             document.body.style.cursor = 'pointer';
@@ -354,6 +367,15 @@ export default class MinigameView implements View{
         this.b_card_2.add(this.b_card_2_shape);
         this.b_card_2.add(this.b_card_2_text);
         this.b_card_2.id('a2');
+        this.b2_toggled = false;
+
+        this.b_card_2.on('mouseover', function(){
+            document.body.style.cursor = 'pointer';
+        });
+
+        this.b_card_2.on('mouseout', function(){
+            document.body.style.cursor = 'default';
+        });
 
         this.a_card_3_shape = new Konva.Rect({
             x: this.a_card_1_shape.x(),
@@ -377,18 +399,11 @@ export default class MinigameView implements View{
 			fill: 'Black',
         });
 
-        this.b_card_2.on('mouseover', function(){
-            document.body.style.cursor = 'pointer';
-        });
-
-        this.b_card_2.on('mouseout', function(){
-            document.body.style.cursor = 'default';
-        });
-
         this.a_card_3 = new Konva.Group();
         this.a_card_3.add(this.a_card_3_shape);
         this.a_card_3.add(this.a_card_3_text);
         this.a_card_3.id('q3');
+        this.a3_toggled = false;
 
         this.a_card_3.on('mouseover', function(){
             document.body.style.cursor = 'pointer';
@@ -424,6 +439,7 @@ export default class MinigameView implements View{
         this.b_card_3.add(this.b_card_3_shape);
         this.b_card_3.add(this.b_card_3_text);
         this.b_card_3.id('a3');
+        this.b3_toggled = false;
 
         this.b_card_3.on('mouseover', function(){
             document.body.style.cursor = 'pointer';
@@ -459,6 +475,7 @@ export default class MinigameView implements View{
         this.a_card_4.add(this.a_card_4_shape);
         this.a_card_4.add(this.a_card_4_text);
         this.a_card_4.id('q4');
+        this.a4_toggled = false;
 
         this.a_card_4.on('mouseover', function(){
             document.body.style.cursor = 'pointer';
@@ -494,6 +511,7 @@ export default class MinigameView implements View{
         this.b_card_4.add(this.b_card_4_shape);
         this.b_card_4.add(this.b_card_4_text);
         this.b_card_4.id('a4');
+        this.b4_toggled = false;
 
         this.b_card_4.on('mouseover', function(){
             document.body.style.cursor = 'pointer';
@@ -529,6 +547,7 @@ export default class MinigameView implements View{
         this.a_card_5.add(this.a_card_5_shape);
         this.a_card_5.add(this.a_card_5_text);
         this.a_card_5.id('q5');
+        this.a5_toggled = false;
 
         this.a_card_5.on('mouseover', function(){
             document.body.style.cursor = 'pointer';
@@ -565,6 +584,7 @@ export default class MinigameView implements View{
         this.b_card_5.add(this.b_card_5_shape);
         this.b_card_5.add(this.b_card_5_text);
         this.b_card_5.id('q5');
+        this.b5_toggled = false;
 
         this.b_card_5.on('mouseover', function(){
             document.body.style.cursor = 'pointer';
@@ -634,6 +654,23 @@ export default class MinigameView implements View{
         this.group.add(this.submit_button);
 
     }	
+
+    questionCardSelected(id: number) {
+        //updates view of the card to look like it has been selected and updates if its toggled
+    }
+
+    questionCardDeselected(id: number) {
+        //updates view of the card to look like it is not selected and updates if its toggled
+    }
+
+    answerCardSelected(id: number) {
+        //updates view of the card to look like it has been selected and updates if its toggled
+    }
+
+    answerCardDeselected(id: number) {
+        //updates view of the card to look like it is not selected and updates if its toggled
+    }
+
 
     getGroup() : Konva.Group {
         return this.group;

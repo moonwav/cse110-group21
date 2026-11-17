@@ -5,7 +5,7 @@ export type MinigameQuestionNumbers = {percent:number, multiplier: number, produ
 
 export function numberGenerator(): MinigameQuestionNumbers {
     let percent =  Math.floor(Math.random()*(99))+1;
-    let multiplier = Math.floor(Math.random()*200-3)+4;
+    let multiplier = Math.floor(Math.random()*(200-3))+4;
     let product = (percent/100)*multiplier;
 
     while (percent <= 0 || product < 1 || (product*100 != Math.floor(product*100))) {
