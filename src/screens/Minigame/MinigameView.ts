@@ -5,11 +5,6 @@ import { PRIMARY_COLOR, SECONDARY_COLOR, BUTTON_COLOR } from '../../constants';
 import { MinigameModel,  MinigameQuestion, 
                             MinigameAnswer } from "./MinigameModel";
 
-export const UNSELECTED_COLOR = 'white';
-export const SELECTED_COLOR = BUTTON_COLOR;
-export const CORRECT_COLOR = 'green';
-export const WRONG_COLOR = 'red';
-
 //Defines the MinigameView class
 export default class MinigameView implements View{
 
@@ -625,7 +620,7 @@ export default class MinigameView implements View{
         this.submit_button.on('click', () => onSubmitClick());
     }
 
-    questionCardSelected(id: number, color: string = SELECTED_COLOR) {
+    questionCardSelected(id: number, color: string = BUTTON_COLOR) {
         //updates view of the card to look like it has been selected and updates if its toggled
         if (id < 0 || id >= this.question_shapes.length) return;
         this.question_shapes[id].fill(color);
@@ -635,11 +630,11 @@ export default class MinigameView implements View{
     questionCardDeselected(id: number) {
         //updates view of the card to look like it is not selected and updates if its toggled
         if (id < 0 || id >= this.question_shapes.length) return;
-        this.question_shapes[id].fill(UNSELECTED_COLOR);
+        this.question_shapes[id].fill('white');
         this.group.getLayer()?.batchDraw();
     }
 
-    answerCardSelected(id: number, color: string = SELECTED_COLOR) {
+    answerCardSelected(id: number, color: string = BUTTON_COLOR) {
         //updates view of the card to look like it has been selected and updates if its toggled
         if (id < 0 || id >= this.answer_shapes.length) return;
         this.answer_shapes[id].fill(color);
@@ -649,7 +644,7 @@ export default class MinigameView implements View{
     answerCardDeselected(id: number) {
         //updates view of the card to look like it is not selected and updates if its toggled
         if (id < 0 || id >= this.answer_shapes.length) return;
-        this.answer_shapes[id].fill(UNSELECTED_COLOR);
+        this.answer_shapes[id].fill('white');
         this.group.getLayer()?.batchDraw();
     }
 
@@ -658,8 +653,8 @@ export default class MinigameView implements View{
         for (let i = 0; i < this.question_texts.length; i++) {
             this.question_texts[i].text(model.questions[i].question);
             this.answer_texts[i].text(model.answers[i].answer);
-            this.question_shapes[i].fill(UNSELECTED_COLOR);
-            this.answer_shapes[i].fill(UNSELECTED_COLOR);
+            this.question_shapes[i].fill('white');
+            this.answer_shapes[i].fill('white');
             this.question_locked[i] = false;
             this.answer_locked[i] = false;
         }

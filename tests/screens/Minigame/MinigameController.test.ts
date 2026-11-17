@@ -18,8 +18,6 @@ const mocks = vi.hoisted(() => ({
 }));
 
 vi.mock("../../../src/screens/Minigame/MinigameView", () => ({
-  CORRECT_COLOR: "green",
-  WRONG_COLOR: "red",
   default: class {
     constructor() {
       return mocks.view;

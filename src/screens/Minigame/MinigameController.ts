@@ -1,6 +1,7 @@
-import MinigameView, { CORRECT_COLOR, WRONG_COLOR } from './MinigameView';
+import MinigameView from './MinigameView';
 import GameModel from '../../model/GameModel';
 import { ScreenSwitcher, Controller } from "../../types";
+import { CORRECT_COLOR, WRONG_COLOR } from '../../constants';
 import { MinigameModel } from './MinigameModel';
 
 export const MINIGAME_TIME = 60;
