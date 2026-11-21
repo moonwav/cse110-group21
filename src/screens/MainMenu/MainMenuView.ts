@@ -193,18 +193,6 @@ export default class MainMenuView implements View {
 			cornerRadius: 25,
 			fill: 'White',
 		});
-		/*	
-		this.text_node = new Konva.Text({
-			text: 'type name here',
-			fontSize: 20,
-			fontFamily: 'Roboto',
-			x: this.stage_width*0.35,
-			y: this.stage_height*0.6,
-			width: this.stage_width*0.37,
-			height: this.stage_height*0.1,
-			fill: 'black',
-		});
-		*/
 		loadFonts();
 		this.group = new Konva.Group();
 		this.group.add(this.background);
@@ -219,9 +207,17 @@ export default class MainMenuView implements View {
 		return this.group;
 	}
 	
-	show() {
-		this.group.visible(true);
-		this.group.getLayer()?.draw();
+	async show() {
+		try {
+			this.group.visible(true);
+			await loadFonts();
+			this.group.getLayer()?.draw();
+		}
+		catch (error) {
+			if (error instanceof Error) {
+      			window.Error("failed to load fonts")
+    		}
+		}
 	}
 	
 	hide() {
