@@ -208,7 +208,6 @@ export default class AnswerView implements View{
 			document.body.style.cursor = 'default';
 		});
 
-        this.loadFonts();
         this.group = new Konva.Group();
         this.group.add(this.background);
         this.group.add(this.title);

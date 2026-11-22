@@ -279,7 +279,6 @@ export default class QuestionView implements View{
 			visible: false,
 		});
 
-		loadFonts(); 
 		this.reveal_button = new Konva.Group({ visible: false });
 		this.reveal_button.add(this.reveal_button_shape);
 		this.reveal_button.add(this.reveal_button_text);
