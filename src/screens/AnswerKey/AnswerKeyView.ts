@@ -221,18 +221,6 @@ export default class AnswerView implements View{
 
         this.prev_button.visible(false);
     }	
- 
-    async loadFonts() {
-        await document.fonts.ready;
-        await Promise.all([
-            document.fonts.load("700 48px Silkscreen"),
-            document.fonts.load("400 36px Silkscreen"),
-            document.fonts.load("400 40px Roboto"),
-            document.fonts.load("400 36px Roboto"),
-            document.fonts.load("400 24px Roboto"),
-            document.fonts.load("400 22px Roboto"),
-        ]);
-    }
 
     /**
      * Update shown question
