@@ -86,14 +86,15 @@ export default class MainMenuView implements View {
 		});
 
 		this.start_button_text = new Konva.Text({
-			x: this.stage_width*0.3,
-			y: this.stage_height*0.205,
+			x: this.start_button_shape.x(),
+			y: this.start_button_shape.y(),
+			width: this.start_button_shape.width(),
+			height: this.start_button_shape.height(),
 			text: this.START,
 			fontFamily: this.SILKSCREEN,
-			width: this.stage_width*0.4,
 			fontSize: this.stage_height*0.068,
 			align: 'center',
-			verticalAlign: 'center',
+			verticalAlign: 'middle',
 			fill: 'Black',
 		});
 
@@ -113,14 +114,15 @@ export default class MainMenuView implements View {
 		});
 
 		this.info_button_text = new Konva.Text({
-			x: this.stage_width*0.275,
-			y: this.stage_height*0.327,
+			x: this.info_button_shape.x(),
+			y: this.info_button_shape.y(),
+			width: this.info_button_shape.width(),
+			height: this.info_button_shape.height(),
 			text: this.HOW_TO_PLAY,
 			fontFamily: this.SILKSCREEN,
-			width: this.stage_width*0.45,
 			fontSize: this.stage_height*0.068,
 			align: 'center',
-			verticalAlign: 'center',
+			verticalAlign: 'middle',
 			fill: 'Black',
 		});
 		
@@ -139,14 +141,15 @@ export default class MainMenuView implements View {
 		});
 
 		this.mini_game_button_text = new Konva.Text({
-			x: this.stage_width*0.315,
-			y: this.stage_height*0.835,
+			x: this.mini_game_button_shape.x(),
+			y: this.mini_game_button_shape.y(),
+			width: this.mini_game_button_shape.width(),
+			height: this.mini_game_button_shape.height(),
 			text: this.MINIGAME,
 			fontFamily: this.SILKSCREEN,
-			width: this.stage_width*0.37,
 			fontSize: this.stage_height*0.068,
 			align: 'center',
-			verticalAlign: 'center',
+			verticalAlign: 'middle',
 			fill: 'Black',
 		});
 
@@ -193,7 +196,7 @@ export default class MainMenuView implements View {
 			cornerRadius: 25,
 			fill: 'White',
 		});
-		loadFonts();
+
 		this.group = new Konva.Group();
 		this.group.add(this.background);
 		this.group.add(this.title);
@@ -207,17 +210,10 @@ export default class MainMenuView implements View {
 		return this.group;
 	}
 	
-	async show() {
-		try {
-			this.group.visible(true);
-			await loadFonts();
-			this.group.getLayer()?.draw();
-		}
-		catch (error) {
-			if (error instanceof Error) {
-      			window.Error("failed to load fonts")
-    		}
-		}
+
+	show() {
+		this.group.visible(true);
+		this.group.getLayer()?.draw();
 	}
 	
 	hide() {
