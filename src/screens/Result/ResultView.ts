@@ -385,7 +385,6 @@ export default class ResultView implements View{
 			visible: false,
 		});
 
-		this.loadFonts();
 		this.group = new Konva.Group();
 		this.group.add(this.background);
 		this.group.add(this.title);
@@ -445,18 +444,7 @@ export default class ResultView implements View{
 		this.leaderboard_text.visible(true);
 		this.group.getLayer()?.draw();
 	}
-	
-	async loadFonts() {
-		await document.fonts.ready;
-		await Promise.all([
-			document.fonts.load("700 48px Silkscreen"),
-			document.fonts.load("400 36px Silkscreen"),
-			document.fonts.load("400 40px Roboto"),
-			document.fonts.load("400 36px Roboto"),
-			document.fonts.load("400 24px Roboto"),
-			document.fonts.load("400 22px Roboto"),
-		]);
-	}
+
 
 	getGroup() : Konva.Group {
 		return this.group;

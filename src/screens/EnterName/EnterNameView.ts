@@ -84,7 +84,6 @@ export default class EnterNameView implements View {
             fill: 'Black',
         });
             
-        loadFonts();
         this.group = new Konva.Group();
         this.group.add(this.background_blur);
         this.group.add(this.name_card);
