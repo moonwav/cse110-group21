@@ -24,6 +24,7 @@ export default class ResultController extends Controller{
     }
 
     handleAnswerKeyClick() {
+        this.view.hideLeaderboard();
         this.screenSwitcher.switchToScreen({type: "answer"});
     }
 
