@@ -12,6 +12,7 @@ export default class ResultView implements View{
 	ANSWER_KEY = "Answer Key";
 	LEADERBOARD = "Leaderboard";
 	PLAY_AGAIN = "Play Again";
+	BACK = "Back";
 
 	SILKSCREEN = 'Silkscreen';
 	ROBOTO = 'Roboto';
@@ -58,12 +59,17 @@ export default class ResultView implements View{
 	again_button_text: Konva.Text;
 	again_button: Konva.Group;
 
+	back_button: Konva.Group;
+	back_button_shape: Konva.Rect;
+	back_button_text: Konva.Text;
+
 	group: Konva.Group;
 
 
 	constructor(onAnswerKeyClick: () => void,
                 onLeaderboardClick: () => void,
                 onPlayAgainClick: () => void,
+				onBackClick: () => void, 
 				stage_width: number, stage_height: number) {
 		this.stage_width = stage_width;
 		this.stage_height = stage_height;
@@ -385,6 +391,40 @@ export default class ResultView implements View{
 			visible: false,
 		});
 
+ 		this.back_button_shape = new Konva.Rect({
+			x: this.stage_width*0.05,
+			y: this.stage_height*0.05,
+			width: this.stage_width*0.15,
+			height: this.stage_height*0.09,
+			cornerRadius: 25,
+			fill: BUTTON_COLOR,
+		});
+	
+		this.back_button_text = new Konva.Text({
+			x: this.stage_width*0.05,
+			y: this.stage_height*0.055,
+			listening: false,
+			text: this.BACK,
+			fontFamily: this.SILKSCREEN,
+			width: this.stage_width*0.15,
+			fontSize: this.stage_height*0.068,
+			align: 'center',
+			verticalAlign: 'center',
+			fill: 'Black',
+		});
+
+		this.back_button = new Konva.Group();
+		this.back_button.add(this.back_button_shape);
+		this.back_button.add(this.back_button_text);
+		
+		this.back_button.on('click', onBackClick);
+		this.back_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		this.back_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});		
+
 		this.group = new Konva.Group();
 		this.group.add(this.background);
 		this.group.add(this.title);
@@ -442,6 +482,20 @@ export default class ResultView implements View{
 		this.hints_display.visible(false);
 		this.leaderboard_text.text(lines);
 		this.leaderboard_text.visible(true);
+		this.group.add(this.back_button);
+		this.group.getLayer()?.draw();
+	}
+
+	hideLeaderboard() {
+		this.grade_display.visible(true);
+		this.result_text_1.visible(true);
+		this.result_text_2.visible(true);
+		this.result_text_3.visible(true);
+		this.percent_display.visible(true);
+		this.wrong_display.visible(true);
+		this.hints_display.visible(true);
+		this.leaderboard_text.visible(false);
+		this.back_button.remove();
 		this.group.getLayer()?.draw();
 	}
 

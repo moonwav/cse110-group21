@@ -18,6 +18,7 @@ export default class ResultController extends Controller{
         this.view = new ResultView(() => this.handleAnswerKeyClick(),
                                     () => this.handleLeaderboardClick(),
                                     () => this.handlePlayAgainClick(),
+                                    () => this.handleBackClick(),
                                     stage_width, stage_height);
         this.screenSwitcher = screenSwitcher;
     }
@@ -35,6 +36,10 @@ export default class ResultController extends Controller{
 
     handlePlayAgainClick() {
         this.screenSwitcher.switchToScreen({type: "menu"});
+    }
+
+    handleBackClick() {
+        this.view.hideLeaderboard();
     }
 
     show(data?: ResultData) {
