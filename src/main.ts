@@ -10,7 +10,6 @@ import MinigameController from './screens/Minigame/MinigameController';
 import EnterNameController from './screens/EnterName/EnterNameController';
 import type { ScreenSwitcher, Screen } from "./types.ts";
 import OptionsController from './screens/Options/OptionsController';
-import { loadFonts } from './constants'
 
 
 /**
@@ -56,8 +55,6 @@ class Game implements ScreenSwitcher {
 		this.stage.add(this.layer);
 
 		this.model = new GameModel();
-
-		loadFonts();
 		// Initialize all screen controllers
 		// Each controller manages a Model, View, and handles user interactions
 		this.menuController = new MainMenuController(this.model, this, 
@@ -98,10 +95,10 @@ class Game implements ScreenSwitcher {
 		// Draw the layer (render everything to the canvas)
 
 		// Start with menu screen visible
-		this.switchToScreen({type: "question"});
-	}
+		this.switchToScreen({type: "menu"});
 
-	
+		this.layer.draw();
+	}
 
 	/**
 	 * Switch to a different screen
@@ -163,11 +160,5 @@ class Game implements ScreenSwitcher {
 	}
 }
 
-async function start() {
-	await loadFonts();
-	new Game("container");
-}
-
 // Initialize the application
-start();
-
+new Game("container");
