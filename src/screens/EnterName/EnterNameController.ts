@@ -13,9 +13,13 @@ export default class EnterNameController extends Controller{
         super();
         this.model = model;
         this.screenSwitcher = screenSwitcher;
-        this.view = new EnterNameView(model, stage_width, stage_height);
+        this.view = new EnterNameView(model, stage_width, stage_height, 
+                                      () => this.handleConfirmClick());
     }
     
+    handleConfirmClick() {
+
+    }
 
     handleReadyClick() {
         this.model.beginGame();

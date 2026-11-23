@@ -18,24 +18,27 @@ export default class EnterNameView implements View {
     name_entry_text: Konva.Text;
     name_box: Konva.Rect;
 
+    confirm_button_shape: Konva.Rect;
+    confirm_button_text: Konva.Text;
+    confirm_button: Konva.Group;
+
     invalid_msg: Konva.Text;
 
     input: HTMLInputElement;
 
     group: Konva.Group;
 
-    constructor(model: GameModel, stage_width: number, 
-                stage_height: number) {
-
+    constructor(model: GameModel, stage_width: number, stage_height: number,
+                onConfirmClick: (answerText: string) => void) {
         this.stage_width = stage_width;
         this.stage_height = stage_height;
         this.model = model;
 
         this.name_card = new Konva.Rect({
             x: this.stage_width*0.15,
-            y: this.stage_height*0.27,
+            y: this.stage_height*0.20,
             width: this.stage_width*0.7,
-            height: this.stage_height*0.58,
+            height: this.stage_height*0.63,
             cornerRadius: 25,
             fill: PRIMARY_COLOR,
         });
@@ -51,7 +54,7 @@ export default class EnterNameView implements View {
                 
         this.name_entry_text = new Konva.Text({
             x: this.stage_width*0.2,
-            y: this.stage_height*0.32,
+            y: this.stage_height*0.25,
             text: 'Enter a username for leaderboard below',
             fontFamily: this.SILKSCREEN,
             width: this.stage_width*0.6,
@@ -63,7 +66,7 @@ export default class EnterNameView implements View {
                 
         this.name_box = new Konva.Rect({
             x: this.stage_width*0.315,
-            y: this.stage_height*0.575,
+            y: this.stage_height*0.43,
             width: this.stage_width*0.37,
             height: this.stage_height*0.1,
             cornerRadius: 25,
@@ -72,9 +75,42 @@ export default class EnterNameView implements View {
         
         this.input = document.createElement('input');
 
+        this.confirm_button_shape = new Konva.Rect({
+            x: this.stage_width*0.375,
+            y: this.stage_height*0.68,
+            width: this.stage_width*0.25,
+            height: this.stage_height*0.09,
+            cornerRadius: 25,
+            fill: BUTTON_COLOR,
+        });
+
+        this.confirm_button_text = new Konva.Text({
+            x: this.stage_width*0.05,
+            y: this.stage_height*0.685,
+            text: 'Confirm',
+            fontFamily: this.SILKSCREEN,
+            width: this.stage_width*0.9,
+            fontSize: this.stage_height*0.068,
+            align: 'center',
+            verticalAlign: 'center',
+            fill: 'Black',
+            listening: false,
+        });
+
+        this.confirm_button = new Konva.Group();
+        this.confirm_button.add(this.confirm_button_shape);
+        this.confirm_button.add(this.confirm_button_text);
+        this.confirm_button.on('click', () => onConfirmClick(this.input.value));
+        this.confirm_button.on('mouseover', () => {
+            document.body.style.cursor = 'pointer';
+        });
+        this.confirm_button.on('mouseout', () => {
+            document.body.style.cursor = 'default';
+        });
+
         this.invalid_msg = new Konva.Text({
             x: this.stage_width*0.2,
-            y: this.stage_height*0.75,
+            y: this.stage_height*0.57,
             text: 'Please enter a valid username',
             fontFamily: this.SILKSCREEN,
             width: this.stage_width*0.6,
@@ -90,6 +126,7 @@ export default class EnterNameView implements View {
         this.group.add(this.name_card);
         this.group.add(this.name_box);
         this.group.add(this.name_entry_text);
+        this.group.add(this.confirm_button);
     }
 
     waitForUsername(element: HTMLInputElement): Promise<string> {
@@ -109,7 +146,7 @@ export default class EnterNameView implements View {
 
         const areaPosition = {
             x: this.stage_width*0.33,
-            y: this.stage_height*0.6
+            y: this.stage_height*0.46
         };
 
         this.input.placeholder = 'type name here';
