@@ -164,6 +164,7 @@ export default class EnterNameView implements View {
             align: 'center',
             verticalAlign: 'center',
             fill: 'Black',
+            listening: false,
         });
         
         const ready_button = new Konva.Group();
@@ -171,6 +172,12 @@ export default class EnterNameView implements View {
         ready_button.add(ready_button_shape);
         ready_button.add(ready_button_text);
         ready_button.on('click', onReadyClick);
+        ready_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		ready_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 
         this.group.add(welcome_message);
         this.group.add(ready_button);
@@ -189,6 +196,7 @@ export default class EnterNameView implements View {
     }
     
     hide() {
+        document.body.style.cursor = 'default';
         this.group.visible(false);
         this.group.getLayer()?.draw();
     }
