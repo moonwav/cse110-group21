@@ -27,6 +27,7 @@ export default class QuestionView implements View{
 
 	answer_header: Konva.Text;
 	answer_bubble: Konva.Rect;
+	dollar_sign: Konva.Text;
 	answer_input: HTMLInputElement;
 
 	submit_button_shape: Konva.Rect;
@@ -143,6 +144,19 @@ export default class QuestionView implements View{
 			fill: 'White',
 		});
 
+		this.dollar_sign = new Konva.Text({
+			x: this.stage_width*0.07,
+			y: this.stage_height*0.575,
+			text: '$',
+			fontFamily: this.ROBOTO,
+			height: this.answer_bubble.height(),
+			fontSize: this.stage_height*0.055,
+			align: 'left',
+			verticalAlign: 'middle',
+			fill: 'Black',
+
+		})
+
 		this.answer_input = document.createElement("input");
 		this.answer_input.className = "answer-field";
 		this.answer_input.inputMode = "decimal";
@@ -168,7 +182,6 @@ export default class QuestionView implements View{
 			width: this.stage_width*0.9,
 			fontSize: this.stage_height*0.068,
 			align: 'center',
-			verticalAlign: 'center',
 			fill: 'Black',
 		});
 
@@ -194,7 +207,6 @@ export default class QuestionView implements View{
 			width: this.stage_width*0.9,
 			fontSize: this.stage_height*0.068,
 			align: 'center',
-			verticalAlign: 'center',
 			fill: 'Black',
 		});
 
@@ -220,7 +232,6 @@ export default class QuestionView implements View{
 			width: this.stage_width*0.2,
 			fontSize: this.stage_height*0.06,
 			align: 'center',
-			verticalAlign: 'center',
 			fill: 'Black',
 		});
 	
@@ -246,7 +257,6 @@ export default class QuestionView implements View{
 			width: this.stage_width*0.2,
 			fontSize: this.stage_height*0.06,
 			align: 'center',
-			verticalAlign: 'center',
 			fill: 'Black',
 		});
 		/*
@@ -295,6 +305,7 @@ export default class QuestionView implements View{
 		this.group.add(this.question_text);
 		this.group.add(this.answer_bubble);
 		this.group.add(this.answer_header);
+		this.group.add(this.dollar_sign);
 		this.group.add(this.submit_button);
 		this.group.add(this.next_button);
 		this.group.add(this.hint_button);
@@ -391,11 +402,11 @@ export default class QuestionView implements View{
 
 	placeAnswerInput() {
 		const box = this.answer_bubble;
-		this.answer_input.style.left = `${box.x() + 24}px`;
-		this.answer_input.style.top = `${box.y() + box.height() / 2 - 20}px`;
+		this.answer_input.style.left = `${box.x() + this.dollar_sign.width() + this.stage_width*0.011}px`;
+		this.answer_input.style.top = `${box.y() + box.height() / 2 - this.stage_height*0.055/2}px`;
 		this.answer_input.style.width = `${box.width() - 48}px`;
-		this.answer_input.style.height = "40px";
-		this.answer_input.style.fontSize = "32px";
+		this.answer_input.style.height = `${this.stage_height*0.055}px`;
+		this.answer_input.style.fontSize = `${this.stage_height*0.055}px`;
 	}
 
 	// unused now
