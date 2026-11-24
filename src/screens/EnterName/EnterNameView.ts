@@ -22,6 +22,9 @@ export default class EnterNameView implements View {
     confirm_button_text: Konva.Text;
     confirm_button: Konva.Group;
 
+    ready_button: Konva.Group | null = null;
+
+    welcome_msg: Konva.Text | null = null;
     invalid_msg: Konva.Text;
 
     name_input: HTMLInputElement;
@@ -156,7 +159,7 @@ export default class EnterNameView implements View {
         this.confirm_button.remove();
         this.name_input.style.display = 'none';
 
-        const welcome_message = new Konva.Text({
+        this.welcome_msg = new Konva.Text({
             x: this.stage_width*0.2,
             y: this.stage_height*0.3,
             text: `Hello ${this.model.getPlayer()}!\nWelcome to Percentage City!`,
@@ -190,20 +193,39 @@ export default class EnterNameView implements View {
             listening: false,
         });
         
-        const ready_button = new Konva.Group();
+        this.ready_button = new Konva.Group();
     
-        ready_button.add(ready_button_shape);
-        ready_button.add(ready_button_text);
-        ready_button.on('click', onReadyClick);
-        ready_button.on('mouseover', () => {
+        this.ready_button.add(ready_button_shape);
+        this.ready_button.add(ready_button_text);
+        this.ready_button.on('click', onReadyClick);
+        this.ready_button.on('mouseover', () => {
 			document.body.style.cursor = 'pointer';
 		});
-		ready_button.on('mouseout', () => {
+		this.ready_button.on('mouseout', () => {
 			document.body.style.cursor = 'default';
 		});
 
-        this.group.add(welcome_message);
-        this.group.add(ready_button);
+        this.group.add(this.welcome_msg);
+        this.group.add(this.ready_button);
+
+        this.group.getLayer()?.draw();
+    }
+
+    // puts the screen back to it's "enter a name" state
+    reset() {
+        // remove the welcome screen for replays
+        this.welcome_msg?.destroy();
+        this.ready_button?.destroy();
+        this.welcome_msg = null;
+        this.ready_button = null;
+
+        this.invalid_msg.remove();
+
+        this.group.add(this.name_box);
+        this.group.add(this.name_entry_text);
+        this.group.add(this.confirm_button);
+
+        this.name_input.value = '';
 
         this.group.getLayer()?.draw();
     }

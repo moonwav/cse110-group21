@@ -33,6 +33,7 @@ export default class EnterNameController extends Controller{
     }
 
     show() {
+        this.view.reset();
         this.view.show();
     }
 
