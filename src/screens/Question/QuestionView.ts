@@ -144,7 +144,7 @@ export default class QuestionView implements View{
 		});
 
 		this.answer_input = document.createElement("input");
-		this.answer_input.className = "answer-field";
+		this.answer_input.className = "input-field";
 		this.answer_input.inputMode = "decimal";
 		this.answer_input.autocomplete = "off";
 		this.answer_input.setAttribute("aria-label", "Your answer");

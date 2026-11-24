@@ -24,12 +24,12 @@ export default class EnterNameView implements View {
 
     invalid_msg: Konva.Text;
 
-    input: HTMLInputElement;
+    name_input: HTMLInputElement;
 
     group: Konva.Group;
 
     constructor(model: GameModel, stage_width: number, stage_height: number,
-                onConfirmClick: (answerText: string) => void) {
+                onConfirmClick: (nameText: string) => void) {
         this.stage_width = stage_width;
         this.stage_height = stage_height;
         this.model = model;
@@ -73,7 +73,13 @@ export default class EnterNameView implements View {
             fill: 'White',
         });
         
-        this.input = document.createElement('input');
+        this.name_input = document.createElement('input');
+        this.name_input.className = "input-field";
+        this.name_input.placeholder = 'type name here';
+		this.name_input.autocomplete = "off";
+		this.name_input.setAttribute("aria-label", "Your username");
+		this.placeNameInput();
+		document.getElementById("container")?.append(this.name_input);
 
         this.confirm_button_shape = new Konva.Rect({
             x: this.stage_width*0.375,
@@ -100,7 +106,7 @@ export default class EnterNameView implements View {
         this.confirm_button = new Konva.Group();
         this.confirm_button.add(this.confirm_button_shape);
         this.confirm_button.add(this.confirm_button_text);
-        this.confirm_button.on('click', () => onConfirmClick(this.input.value));
+        this.confirm_button.on('click', () => onConfirmClick(this.name_input.value));
         this.confirm_button.on('mouseover', () => {
             document.body.style.cursor = 'pointer';
         });
@@ -129,35 +135,13 @@ export default class EnterNameView implements View {
         this.group.add(this.confirm_button);
     }
 
-    waitForUsername(element: HTMLInputElement): Promise<string> {
-        return new Promise((resolve) => {
-            element.addEventListener("keydown", function handler(e: KeyboardEvent) {
-                if (e.key === 'Enter' && !e.shiftKey) {
-                    element.removeEventListener("keydown", handler);
-                    document.body.removeChild(element);
-                    resolve(element.value);
-                }
-            });
-        });
-    }
-
-    async getUsername(): Promise<string> {
-        document.body.appendChild(this.input);
-
-        const areaPosition = {
-            x: this.stage_width*0.33,
-            y: this.stage_height*0.46
-        };
-
-        this.input.placeholder = 'type name here';
-        this.input.autocomplete = 'off';
-        this.input.style.position = 'absolute';
-        this.input.style.top = areaPosition.y + 'px';
-        this.input.style.left = areaPosition.x + 'px';
-    
-        this.input.focus();
-        
-        return await this.waitForUsername(this.input);
+    placeNameInput() {
+        const box = this.name_box;
+		this.name_input.style.left = `${box.x() + 24}px`;
+		this.name_input.style.top = `${box.y() + box.height() / 2 - 20}px`;
+		this.name_input.style.width = `${box.width() - 48}px`;
+		this.name_input.style.height = "40px";
+		this.name_input.style.fontSize = "32px";
     }
 
     showInvalid(){
@@ -169,6 +153,8 @@ export default class EnterNameView implements View {
         this.name_entry_text.remove();
         this.name_box.remove();
         this.invalid_msg.remove();
+        this.confirm_button.remove();
+        this.name_input.style.display = 'none';
 
         const welcome_message = new Konva.Text({
             x: this.stage_width*0.2,
@@ -184,7 +170,7 @@ export default class EnterNameView implements View {
 
         const ready_button_shape = new Konva.Rect({
             x: this.stage_width*0.3,
-            y: this.stage_height*0.72,
+            y: this.stage_height*0.62,
             width: this.stage_width*0.4,
             height: this.stage_height*0.09,
             cornerRadius: 25,
@@ -193,7 +179,7 @@ export default class EnterNameView implements View {
         
         const ready_button_text = new Konva.Text({
             x: this.stage_width*0.3,
-            y: this.stage_height*0.725,
+            y: this.stage_height*0.625,
             text: "ready?",
             fontFamily: this.SILKSCREEN,
             width: this.stage_width*0.4,
@@ -229,12 +215,15 @@ export default class EnterNameView implements View {
 
     show() {
         this.group.visible(true);
+        this.name_input.style.display = 'block';
+        this.name_input.focus();
         this.group.getLayer()?.draw();
     }
     
     hide() {
         document.body.style.cursor = 'default';
         this.group.visible(false);
+        this.name_input.style.display = 'none';
         this.group.getLayer()?.draw();
     }
 

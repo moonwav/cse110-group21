@@ -9,16 +9,22 @@ export default class EnterNameController extends Controller{
     screenSwitcher: ScreenSwitcher;
 
     constructor (model: GameModel, screenSwitcher: ScreenSwitcher, 
-                stage_width: number, stage_height: number) {
+                 stage_width: number, stage_height: number) {
         super();
         this.model = model;
         this.screenSwitcher = screenSwitcher;
         this.view = new EnterNameView(model, stage_width, stage_height, 
-                                      () => this.handleConfirmClick());
+                                      (nameText) => this.handleConfirmClick(nameText));
     }
     
-    handleConfirmClick() {
-
+    handleConfirmClick(nameText: string) {
+        const name = nameText.trim();
+        if (name === "" || name === null) {
+            this.view.showInvalid();
+            return;
+        }
+        this.model.setPlayer(name);
+        this.view.displayWelcomeMessage(() => this.handleReadyClick());
     }
 
     handleReadyClick() {
@@ -26,24 +32,9 @@ export default class EnterNameController extends Controller{
         this.screenSwitcher.switchToScreen({type: "options"});
     }
 
-
-    async show() {
+    show() {
         this.view.show();
-        this.model.setPlayer(await this.getPlayerName());
-        this.view.displayWelcomeMessage(() => this.handleReadyClick());
     }
-
-    async getPlayerName(): Promise<string> {
-        let name = (await this.view.getUsername()).trim();
-        if (name ===  "" || name === null) {
-            this.view.showInvalid();
-            return this.getPlayerName();
-        }
-        else {
-            return name;
-        }
-    }
-
 
     hide() {
         this.view.hide();
