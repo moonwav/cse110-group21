@@ -10,13 +10,15 @@ export default class Question {
     question: string;
     answer: number;
     points: number;
+    hint: string;
 
-    constructor(question_number: number, location: string, question: string, answer: number, points: number) {
+    constructor(question_number: number, location: string, question: string, answer: number, points: number, hint = "") {
         this.question_number = question_number;
         this.location = location;
         this.question = question;
         this.answer = answer;
         this.points = points;
+        this.hint = hint;
     }
 
     getQuestionNumber() {
@@ -37,5 +39,9 @@ export default class Question {
 
     getPoints() {
         return this.points;
+    }
+
+    getHint() {
+        return this.hint;
     }
 }

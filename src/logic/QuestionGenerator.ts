@@ -30,6 +30,7 @@ export function generateQuestion(
     prompt,
     money(formulas[template.formula](numbers)),
     template.points,
+    template.hint,
   );
 }
 

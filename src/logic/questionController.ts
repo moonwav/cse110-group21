@@ -54,8 +54,8 @@ export default class QuestionController extends Controller{
     }
 
     handleHintClick() {
-        //tell view to show hint
         ScoreTracker.applyHint(this.model);
+        this.view.showHint(this.model.getCurrentQuestion().getHint());
         this.refreshScoreAndProgress();
     }
 
