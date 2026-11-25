@@ -28,15 +28,20 @@ export default class EnterNameView implements View {
     invalid_msg: Konva.Text;
 
     name_input: HTMLInputElement;
+    
+    back_button_shape: Konva.Rect;
+    back_button_text: Konva.Text;
+    back_button: Konva.Group;
 
     group: Konva.Group;
 
     constructor(model: GameModel, stage_width: number, stage_height: number,
-                onConfirmClick: (nameText: string) => void) {
+                onConfirmClick: (nameText: string) => void,
+                onBackClick: () => void) {
         this.stage_width = stage_width;
         this.stage_height = stage_height;
         this.model = model;
-
+                    
         this.name_card = new Konva.Rect({
             x: this.stage_width*0.15,
             y: this.stage_height*0.20,
@@ -128,6 +133,39 @@ export default class EnterNameView implements View {
             verticalAlign: 'center',
             fill: 'Black',
         });
+
+         this.back_button_shape = new Konva.Rect({
+            x: this.stage_width*0.985 - this.stage_height*0.07,
+            y: this.stage_width*0.015,
+            width: this.stage_height*0.07,
+            height: this.stage_height*0.07,
+            cornerRadius: 25,
+            fill: BUTTON_COLOR,
+        })
+        
+        this.back_button_text = new Konva.Text({
+            x: this.back_button_shape.x(),
+            y: this.back_button_shape.y(),
+            text: 'X',
+            width: this.stage_height*0.07,
+            fontFamily: this.SILKSCREEN,
+            fontSize: this.stage_height*0.06,
+            align: 'center',
+            verticalAlign: 'middle',
+            fill: 'Black',
+        });
+
+        this.back_button =  new Konva.Group();
+        this.back_button.add(this.back_button_shape);
+        this.back_button.add(this.back_button_text);
+        
+        this.back_button.on('click', () => onBackClick());
+        this.back_button.on('mouseover', () => {
+            document.body.style.cursor = 'pointer';
+        });
+        this.back_button.on('mouseout', () => {
+            document.body.style.cursor = 'default';
+        });
             
         this.group = new Konva.Group();
         this.group.add(this.background_blur);
@@ -135,6 +173,7 @@ export default class EnterNameView implements View {
         this.group.add(this.name_box);
         this.group.add(this.name_entry_text);
         this.group.add(this.confirm_button);
+        this.group.add(this.back_button);
     }
 
     placeNameInput() {
