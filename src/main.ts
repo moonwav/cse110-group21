@@ -99,6 +99,8 @@ class Game implements ScreenSwitcher {
 
 		// Start with menu screen visible
 		this.switchToScreen({type: "menu"});
+		
+		this.layer.draw();
 	}
 
 	
@@ -170,4 +172,3 @@ async function start() {
 
 // Initialize the application
 start();
-
