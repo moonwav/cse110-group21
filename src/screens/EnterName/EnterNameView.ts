@@ -262,6 +262,7 @@ export default class EnterNameView implements View {
         this.group.add(this.name_box);
         this.group.add(this.name_entry_text);
         this.group.add(this.confirm_button);
+        this.group.add(this.back_button);
 
         this.name_input.value = '';
 
