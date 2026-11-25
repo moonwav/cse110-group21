@@ -75,29 +75,30 @@ export default class AnswerView implements View{
 
         this.back_button_shape = new Konva.Rect({
             x: this.stage_width*0.05,
-            y: this.stage_height*0.05,
-            width: this.stage_width*0.15,
-            height: this.stage_height*0.09,
-            cornerRadius: 25,
-            fill: BUTTON_COLOR,
-        });
-    
-        this.back_button_text = new Konva.Text({
-            x: this.stage_width*0.05,
-            y: this.stage_height*0.055,
-            listening: false,
-            text: this.BACK,
-            fontFamily: this.SILKSCREEN,
-            width: this.stage_width*0.15,
-            fontSize: this.stage_height*0.068,
-            align: 'center',
-            verticalAlign: 'center',
-            fill: 'Black',
-        });
+            y: (this.main_card.y() - this.stage_height*0.09)/2,
+                    width: this.stage_width*0.15,
+                    height: this.stage_height*0.09,
+                    cornerRadius: 25,
+                    fill: BUTTON_COLOR,
+                });
+            
+                this.back_button_text = new Konva.Text({
+                    x: this.stage_width*0.05,
+                    y: (this.main_card.y() - this.stage_height*0.075)/2,
+                    listening: false,
+                    text: this.BACK,
+                    fontFamily: this.SILKSCREEN,
+                    width: this.stage_width*0.15,
+                    fontSize: this.stage_height*0.068,
+                    align: 'center',
+                    verticalAlign: 'middle',
+                    fill: 'Black',
+                });
 
         this.back_button = new Konva.Group();
         this.back_button.add(this.back_button_shape);
         this.back_button.add(this.back_button_text);
+
         this.back_button.on('click', onBackClick);
         this.back_button.on('mouseover', () => {
 			document.body.style.cursor = 'pointer';
