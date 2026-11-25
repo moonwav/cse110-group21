@@ -7,6 +7,7 @@ const mocks = vi.hoisted(() => ({
     showResult: vi.fn(),
     showNext: vi.fn(),
     showQuestion: vi.fn(),
+    showHint: vi.fn(),
     updateScoreAndProgress: vi.fn(),
     show: vi.fn(),
     hide: vi.fn(),
@@ -122,12 +123,12 @@ describe("QuestionController next", () => {
 describe("QuestionController scoring", () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it("counts a wrong try without changing the score", () => {
+  it("takes 1 point off an easy question for a wrong try", () => {
     mocks.checkAnswer.mockReturnValue({ status: "incorrect" });
     const { model, controller } = setup();
     controller.handleSubmitClick("1");
     expect(model.getCurrentRecord().wrongTries).toBe(1);
-    expect(ScoreTracker.currentScore(model)).toBe(100);
+    expect(ScoreTracker.currentScore(model)).toBe(99);
   });
 
   it("shows the new score after a hint", () => {

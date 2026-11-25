@@ -57,7 +57,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "percentOf",
     points: 7,
-    hint: "Multiply the amount by the percent, then divide by 100.",
+    hint: "Multiply the snack money by the percent, then divide by 100.",
   },
   {
     id: "arcade-tickets",
@@ -72,7 +72,7 @@ export const questionTemplates: QuestionTemplate[] = [
     },
     formula: "percentOf",
     points: 7,
-    hint: "Multiply the amount by the percent, then divide by 100.",
+    hint: "Multiply the game money by the percent, then divide by 100.",
   },
   {
     id: "lunch-drink",

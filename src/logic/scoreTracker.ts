@@ -6,12 +6,20 @@ import { ResultData } from '../data/resultModel';
  * ScoreTracker: every scoring rule lives here.
  *
  * Each question earns its own points (easy 7, medium 10, hard 14; 100 in total).
- * Wrong tries are counted but cost nothing.
- * A hint costs 2 points from that question; a reveal (only after a hint) makes it earn 0.
+ * A wrong try costs 1, 2, or 3 of those points. A hint costs 2, 3, or 5.
+ * A reveal (only after a hint) makes the question earn 0.
  * The score shown during play is 100 minus the points lost so far.
  */
 
-export const HINT_PENALTY = 2;
+const PENALTY = {
+    7: { wrong: 1, hint: 2 },
+    10: { wrong: 2, hint: 3 },
+    14: { wrong: 3, hint: 5 },
+} as const;
+
+function penaltyFor(question: Question) {
+    return PENALTY[question.getPoints() as keyof typeof PENALTY];
+}
 
 /** A question is finished once it is answered correctly or revealed. */
 export function isFinished(record: QuestionRecord): boolean {
@@ -21,8 +29,10 @@ export function isFinished(record: QuestionRecord): boolean {
 /** Points this question can no longer earn. */
 export function pointsLost(question: Question, record: QuestionRecord): number {
     if (record.revealed) return question.getPoints();
-    if (record.hintUsed) return HINT_PENALTY;
-    return 0;
+    const cost = penaltyFor(question);
+    const hint = record.hintUsed ? cost.hint : 0;
+    const wrong = record.wrongTries * cost.wrong;
+    return Math.min(question.getPoints(), hint + wrong);
 }
 
 /** Points this question has earned (0 until it is answered correctly). */

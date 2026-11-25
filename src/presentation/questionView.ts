@@ -267,7 +267,7 @@ export default class QuestionView implements View{
 
 
 		loadFonts(); 
-		this.reveal_button = new Konva.Group();
+		this.reveal_button = new Konva.Group({ visible: false });
 		this.reveal_button.add(this.reveal_button_shape);
 		this.reveal_button.add(this.reveal_button_text);
 		this.reveal_button.on('click', onRevealClick);
@@ -284,6 +284,7 @@ export default class QuestionView implements View{
 		this.group.add(this.submit_button);
 		this.group.add(this.next_button);
 		this.group.add(this.hint_button);
+		this.group.add(this.reveal_button);
 		this.group.add(this.result_text);
 
 		this.hide();
@@ -352,14 +353,18 @@ export default class QuestionView implements View{
 		this.answer_header.text("Type answer below");
 	}
 
-	showHint() {
-		//code to show hint and add reveal button
+	showHint(hint: string) {
+		this.result_text.text(hint);
+		this.hint_button.visible(false);
+		this.reveal_button.visible(true);
+		this.group.getLayer()?.batchDraw();
 	}
 
 	showNext() {
 		this.answer_input.disabled = true;
 		this.submit_button.visible(false);
 		this.hint_button.visible(false);
+		this.reveal_button.visible(false);
 		this.next_button.visible(true);
 		this.group.getLayer()?.batchDraw();
 	}
@@ -369,6 +374,7 @@ export default class QuestionView implements View{
 		this.next_button.visible(false);
 		this.submit_button.visible(true);
 		this.hint_button.visible(true);
+		this.reveal_button.visible(false);
 		this.group.getLayer()?.batchDraw();
 	}
 

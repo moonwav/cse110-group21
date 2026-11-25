@@ -33,6 +33,17 @@ describe("question generation", () => {
     }
   });
 
+  it("gives a method hint that does not contain the answer", () => {
+    const method = /multiply|divide|add|subtract|discount|tax|lower/i;
+    for (const template of questionTemplates) {
+      const question = generateQuestion(template, 1, () => 0);
+      const answer = String(question.getAnswer()).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      expect(question.getQuestion().endsWith("?")).toBe(true);
+      expect(question.getHint()).toMatch(method);
+      expect(question.getHint()).not.toMatch(new RegExp(`\\b${answer}\\b`));
+    }
+  });
+
   it("picks a later number when the random value changes", () => {
     const question = generateQuestion(questionTemplates[0], 1, () => 0.999);
 

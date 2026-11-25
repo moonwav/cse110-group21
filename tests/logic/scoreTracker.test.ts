@@ -29,14 +29,14 @@ describe("ScoreTracker: answers", () => {
     expect(ScoreTracker.currentScore(model)).toBe(100);
   });
 
-  it("counts wrong tries without losing points", () => {
+  it("takes 1 point per wrong try on an easy question", () => {
     const model = makeModel();
     ScoreTracker.recordWrongTry(model);
     ScoreTracker.recordWrongTry(model);
     ScoreTracker.recordCorrect(model);
     expect(model.getCurrentRecord().wrongTries).toBe(2);
-    expect(ScoreTracker.finalScore(model)).toBe(7);
-    expect(ScoreTracker.currentScore(model)).toBe(100);
+    expect(ScoreTracker.finalScore(model)).toBe(5);
+    expect(ScoreTracker.currentScore(model)).toBe(98);
   });
 
   it("ignores answers after the question is finished", () => {
@@ -75,6 +75,20 @@ describe("ScoreTracker: hints and reveals", () => {
     ScoreTracker.applyHint(model);
     expect(ScoreTracker.currentScore(model)).toBe(98);
     expect(ScoreTracker.finalScore(model)).toBe(0);
+  });
+
+  it("charges more for a hint and a miss on harder questions", () => {
+    const model = makeModel();
+    ScoreTracker.applyHint(model);
+    model.nextQuestion();
+    ScoreTracker.applyHint(model);
+    expect(ScoreTracker.currentScore(model)).toBe(100 - 2 - 3);
+    ScoreTracker.recordWrongTry(model);
+    ScoreTracker.recordCorrect(model);
+    expect(ScoreTracker.finalScore(model)).toBe(10 - 3 - 2);
+    model.nextQuestion();
+    ScoreTracker.applyHint(model);
+    expect(ScoreTracker.currentScore(model)).toBe(100 - 2 - 3 - 2 - 5);
   });
 
   it("earns the question's points minus 2 after a hint", () => {
@@ -176,7 +190,7 @@ describe("ScoreTracker: results", () => {
     ScoreTracker.recordWrongTry(model);
     ScoreTracker.recordCorrect(model);
     expect(ScoreTracker.getResults(model)).toEqual({
-      percent: 7 + 8,
+      percent: 6 + 3,
       wrongAnswers: 3,
       hintsUsed: 1,
     });
