@@ -385,7 +385,6 @@ export default class ResultView implements View{
 			visible: false,
 		});
 
-		this.loadFonts();
 		this.group = new Konva.Group();
 		this.group.add(this.background);
 		this.group.add(this.title);

@@ -210,7 +210,6 @@ export default class OptionsView implements View {
 		});
 
     
-        loadFonts();
         this.group = new Konva.Group();
         this.group.add(this.background);
         this.group.add(this.title);

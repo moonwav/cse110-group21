@@ -207,7 +207,6 @@ export default class InfoView implements View{
 			fill: PRIMARY_COLOR,
 		});
 		
-		loadFonts();
 		this.back_button = new Konva.Group();
 		this.back_button.add(this.back_button_shape);
 		this.back_button.add(this.back_button_text);
