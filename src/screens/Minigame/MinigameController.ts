@@ -92,7 +92,13 @@ export default class MinigameController extends Controller{
         this.stopTimer();
         this.ended = true;
         this.view.lockAllCards();
-        this.view.setButtonText('Main Menu');
+        this.screenSwitcher.switchToScreen({
+            type: "minigame end",
+            data: {
+                completed: this.minigameModel.amount_answered === this.minigameModel.NUMBER_OF_QUESTIONS,
+                timeTaken: MINIGAME_TIME - this.time_left,
+            },
+        });
     }
 
     handleQuestionClick(id: number) {
@@ -168,10 +174,6 @@ export default class MinigameController extends Controller{
     }
 
     handleSubmitClick() {
-        if (this.ended) {
-            this.screenSwitcher.switchToScreen({type: "menu"});
-            return;
-        }
         if (this.selected_question === null || this.selected_answer === null) return;
 
         const q = this.selected_question;

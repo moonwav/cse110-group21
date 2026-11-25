@@ -38,15 +38,23 @@ diagrams use the same parts:
 The shared types (`View`, `Controller`, `Screen`, `ScreenSwitcher`) are in `src/types.ts`,
 and the shared colors and fonts are in `src/constants.ts`. Each screen has its own folder
 under `src/screens/` holding its view, its controller, and any model only that screen
-uses (`MinigameModel`, `ResultModel`). Shared Model code is in `src/model/`. Code outside
+uses (`MinigameModel`, `ResultModel`, `MinigameEndModel`). The minigame end screen only
+ever opens from the mini-game, so its folder is inside the mini-game's
+(`src/screens/Minigame/MinigameEnd/`). Shared Model code is in `src/model/`. Code outside
 a screen's folder may import *types* from it (for example `ResultData`), but never its
 view or controller.
 
 ### Design decisions this document relies on
 
 - **Screens:** main menu (with a pop-up where the player types their name), How to Play
-  (`Info`), story choice, question, results, answer key, and the mini-game. There is no
-  separate login screen. Story choice and answer key are planned but not built yet.
+  (`Info`), story choice, question, results, answer key, the mini-game, and the minigame
+  end screen. There is no separate login screen. Story choice and answer key are planned
+  but not built yet.
+- **Minigame end screen:** when a round ends, the result (completed in time or ran out of
+  time) is its own screen, not part of `MinigameView`. It is a pop-up drawn over the
+  darkened mini-game: for `"minigame end"`, `Game` shows the mini-game's *view* without
+  calling `MinigameController.show()` (that would start a new round), then shows the
+  end screen on top.
 - **Switching screens:** a controller calls `screenSwitcher.switchToScreen({ type: ... })`.
   `Game` hides every screen and shows the one asked for. Controllers never import each
   other, and `GameModel` doesn't track which screen is showing.
@@ -230,6 +238,7 @@ are the specific modules behind it. Every controller also uses its own view and
 | `ResultController` | `GameModel`, `ScoreTracker` (letter grade), `ApiClient` (saves the score) |
 | `AnswerKeyController` | `GameModel` |
 | `MinigameController` | `MinigameModel` |
+| `MinigameEndController` | `MinigameEndModel` (the end screen's title and message) |
 
 **Rules the diagram encodes**
 
@@ -275,7 +284,8 @@ what exists on `main` today.
 | `QuestionView` | Question screen: progress, score, grade scale, scenario, answer input, Submit/Next, Hint/Reveal, and feedback messages. | In progress (layout only) |
 | `ResultView` | Shows the final letter grade, percent score, wrong answers, and hints used, with Answer Key and Play Again. | Empty placeholder |
 | `AnswerKeyView` | Lists each question with the player's answers and the correct answer. | Planned |
-| `MinigameView` | Matching game screen: two columns to match, a countdown timer, green and red cards for right and wrong pairs, and win and lose overlays. | Exists; win and lose overlays not built yet (Submit becomes Main Menu when the round ends) |
+| `MinigameView` | Matching game screen: two columns to match, a countdown timer, and green and red cards for right and wrong pairs. | Exists |
+| `MinigameEndView` | Pop-up over the darkened mini-game: a title and message (given by its controller), with Play Again and Main Menu. The dark background blocks clicks on the cards underneath. | Exists (`src/screens/Minigame/MinigameEnd/`) |
 | `constants` | The game's shared colors and fonts. | Exists (`src/constants.ts`) |
 
 ### Controller (`src/screens/<Screen>/<Screen>Controller.ts`)
@@ -288,7 +298,8 @@ what exists on `main` today.
 | `QuestionController` | Handles Submit, Next, Hint, and Reveal using `AnswerChecker`, `HintProvider`, and `ScoreTracker`, updates `QuestionView`, and switches to results after question 10. | In progress (handlers are empty) |
 | `ResultController` | Shows the final grade from `ScoreTracker`, saves the score through `ApiClient`, and handles Answer Key and Play Again. | Empty placeholder |
 | `AnswerKeyController` | Shows the trip's questions and answers from `GameModel`, and handles Back. | Planned |
-| `MinigameController` | Runs one matching game: tracks the selected question and answer, checks each submitted pair against `MinigameModel`, runs the 60-second timer, and ends the round on a win or when time runs out. | Exists; no win or lose overlay yet |
+| `MinigameController` | Runs one matching game: tracks the selected question and answer, checks each submitted pair against `MinigameModel`, runs the 60-second timer, and ends the round on a win or when time runs out by switching to the minigame end screen with whether it was completed and the time taken. | Exists |
+| `MinigameEndController` | Stores the round's result in `MinigameEndModel`, gives `MinigameEndView` the title and message to show, and handles Play Again (a new round) and Main Menu. | Exists (`src/screens/Minigame/MinigameEnd/`) |
 
 ### Model: game logic (`src/model/`)
 
@@ -301,10 +312,12 @@ what exists on `main` today.
 | `HintProvider` | Gives the hint text and the revealed answer for a `Question`. Penalties are applied by `ScoreTracker`, not here. | Exists (`hintProvider.ts`) |
 | `ScoreTracker` | Applies all scoring rules to `GameModel`: points per question, hint and reveal penalties, the floor at zero, wrong-try counting, and the letter grade. | Exists (`scoreTracker.ts`) |
 | `MinigameModel` | The current matching game's shuffled questions and answers and the correct pairs made so far. | Exists (`MinigameModel.ts`) |
+| `MinigameEndModel` | The finished round's result (`MinigameEndData`: completed or not, and seconds taken) and the end screen's text: "Congratulations!" plus the time, or "You ran out of time". | Exists (`MinigameEnd/MinigameEndModel.ts`) |
 | `ApiClient` | The browser's only connection to the backend: sends the player and finished-trip score over HTTP. | Planned |
 
 `MinigameModel` is used only by the mini-game, so it lives with its screen in
-`src/screens/Minigame/` instead of in `src/model/`.
+`src/screens/Minigame/` instead of in `src/model/`. For the same reason,
+`MinigameEndModel` lives in `src/screens/Minigame/MinigameEnd/`.
 
 ### Model: data (`src/model/`)
 

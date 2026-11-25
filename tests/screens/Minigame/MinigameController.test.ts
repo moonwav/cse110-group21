@@ -216,24 +216,31 @@ describe("MinigameController timer", () => {
     expect(controller.timer).toBeNull();
   });
 
-  it("locks the cards and shows Main Menu when time runs out", () => {
-    const { controller } = setup();
+  it("locks the cards and opens the end screen when time runs out", () => {
+    const { controller, screenSwitcher } = setup();
     vi.advanceTimersByTime(MINIGAME_TIME * 1000);
     controller.handleQuestionClick(0);
     expect(controller.selected_question).toBeNull();
     expect(mocks.view.lockAllCards).toHaveBeenCalled();
-    expect(mocks.view.setButtonText).toHaveBeenLastCalledWith("Main Menu");
+    expect(screenSwitcher.switchToScreen).toHaveBeenCalledWith({
+      type: "minigame end",
+      data: { completed: false, timeTaken: MINIGAME_TIME },
+    });
   });
 
-  it("stops and shows Main Menu when every pair is correct", () => {
-    const { controller, solns } = setup();
+  it("stops and opens the end screen when every pair is correct", () => {
+    const { controller, screenSwitcher, solns } = setup();
+    vi.advanceTimersByTime(3000);
     for (const { q, a } of solns) {
       controller.handleQuestionClick(q);
       controller.handleAnswerClick(a);
       controller.handleSubmitClick();
     }
     expect(controller.ended).toBe(true);
-    expect(mocks.view.setButtonText).toHaveBeenLastCalledWith("Main Menu");
+    expect(screenSwitcher.switchToScreen).toHaveBeenCalledWith({
+      type: "minigame end",
+      data: { completed: true, timeTaken: 3 },
+    });
     const left = controller.time_left;
     vi.advanceTimersByTime(5000);
     expect(controller.time_left).toBe(left);
@@ -259,11 +266,13 @@ describe("MinigameController navigation", () => {
     expect(screenSwitcher.switchToScreen).not.toHaveBeenCalled();
   });
 
-  it("goes back to the main menu after the round ends", () => {
+  it("opens the end screen only once when the round ends", () => {
     const { controller, screenSwitcher } = setup();
     vi.advanceTimersByTime(MINIGAME_TIME * 1000);
     controller.handleSubmitClick();
-    expect(screenSwitcher.switchToScreen).toHaveBeenCalledWith({ type: "menu" });
+    expect(screenSwitcher.switchToScreen).toHaveBeenCalledTimes(1);
+    expect(screenSwitcher.switchToScreen).toHaveBeenCalledWith(
+      expect.objectContaining({ type: "minigame end" }));
   });
 
   it("starts a fresh round each time the screen is shown", () => {
