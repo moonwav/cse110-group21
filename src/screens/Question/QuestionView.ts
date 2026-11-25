@@ -170,12 +170,19 @@ export default class QuestionView implements View{
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
+			listening: false,
 		});
 
 		this.submit_button = new Konva.Group();
 		this.submit_button.add(this.submit_button_shape);
 		this.submit_button.add(this.submit_button_text);
 		this.submit_button.on('click', () => onSubmitClick(this.answer_input.value));
+		this.submit_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		this.submit_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 
 		this.next_button_shape = new Konva.Rect({
 			x: this.stage_width*0.375,
@@ -196,12 +203,19 @@ export default class QuestionView implements View{
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
+			listening: false,
 		});
 
 		this.next_button = new Konva.Group({ visible: false });
 		this.next_button.add(this.next_button_shape);
 		this.next_button.add(this.next_button_text);
 		this.next_button.on('click', onNextClick);
+		this.next_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		this.next_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 
 		this.hint_button_shape = new Konva.Rect({
 			x: this.stage_width*0.785,
@@ -222,12 +236,19 @@ export default class QuestionView implements View{
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
+			listening: false,
 		});
 	
 		this.hint_button = new Konva.Group();
 		this.hint_button.add(this.hint_button_shape);
 		this.hint_button.add(this.hint_button_text);
 		this.hint_button.on('click', onHintClick);
+		this.hint_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		this.hint_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 
 		this.reveal_button_shape = new Konva.Rect({
 			x: this.stage_width*0.785,
@@ -248,15 +269,9 @@ export default class QuestionView implements View{
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
+			listening: false,
 		});
-		/*
-		loadFont(this.SILKSCREEN, 'normal', '400').then(() => {
-  		this.title.fontFamily(this.SILKSCREEN);
-		});
-		loadFont(this.ROBOTO, 'normal', '400').then(() => {
-  		this.question_text.fontFamily(this.ROBOTO);
-		});
-		*/
+
 		this.result_text = new Konva.Text ({
 			x: this.stage_width*0.06,
 			y: this.stage_height*0.69,
@@ -283,6 +298,12 @@ export default class QuestionView implements View{
 		this.reveal_button.add(this.reveal_button_shape);
 		this.reveal_button.add(this.reveal_button_text);
 		this.reveal_button.on('click', () => this.openRevealPopup());
+		this.reveal_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		this.reveal_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 
 		this.reveal_popup = this.buildRevealPopup(onRevealClick);
 
@@ -357,6 +378,12 @@ export default class QuestionView implements View{
 			fontSize: this.stage_height*0.045,
 			align: 'center', fill: 'Black',
 		}));
+		button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 		return button;
 	}
 
@@ -368,6 +395,7 @@ export default class QuestionView implements View{
 	}
 
 	closeRevealPopup() {
+		document.body.style.cursor = 'default';
 		this.answer_input.style.visibility = 'visible';
 		this.reveal_popup.visible(false);
 		this.group.getLayer()?.batchDraw();
@@ -469,6 +497,7 @@ export default class QuestionView implements View{
 	}
 
 	hide() {
+		document.body.style.cursor = 'default';
 		this.group.visible(false);
 		this.answer_input.style.display = "none";
 	}

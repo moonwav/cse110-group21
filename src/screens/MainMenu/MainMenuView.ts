@@ -96,6 +96,7 @@ export default class MainMenuView implements View {
 			align: 'center',
 			verticalAlign: 'middle',
 			fill: 'Black',
+			listening: false,
 		});
 
 		this.start_button = new Konva.Group();
@@ -103,6 +104,12 @@ export default class MainMenuView implements View {
 		this.start_button.add(this.start_button_shape);
 		this.start_button.add(this.start_button_text);
 		this.start_button.on('click', onStartClick);
+		this.start_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		this.start_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 
 		this.info_button_shape = new Konva.Rect({
 			x: this.stage_width*0.275,
@@ -124,12 +131,19 @@ export default class MainMenuView implements View {
 			align: 'center',
 			verticalAlign: 'middle',
 			fill: 'Black',
+			listening: false,
 		});
 		
 		this.info_button = new Konva.Group();
 		this.info_button.add(this.info_button_shape);
 		this.info_button.add(this.info_button_text);
 		this.info_button.on('click', onInfoClick);
+		this.info_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		this.info_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 
 		this.mini_game_button_shape = new Konva.Rect({
 			x: this.stage_width*0.315,
@@ -151,12 +165,19 @@ export default class MainMenuView implements View {
 			align: 'center',
 			verticalAlign: 'middle',
 			fill: 'Black',
+			listening: false,
 		});
 
 		this.mini_game_button = new Konva.Group();
 		this.mini_game_button.add(this.mini_game_button_shape);
 		this.mini_game_button.add(this.mini_game_button_text);
 		this.mini_game_button.on('click', onMinigameClick);
+		this.mini_game_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		this.mini_game_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 
 		this.name_card = new Konva.Rect({
 			x: this.stage_width*0.15,
@@ -217,6 +238,7 @@ export default class MainMenuView implements View {
 	}
 	
 	hide() {
+		document.body.style.cursor = 'default';
 		this.group.visible(false);
 		this.group.getLayer()?.draw();
 	}

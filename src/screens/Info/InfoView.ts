@@ -186,6 +186,7 @@ export default class InfoView implements View{
 			align: 'center',
 			verticalAlign: 'center',
 			fill: 'Black',
+			listening: false,
 		});
 
 		this.main_card = new Konva.Rect({
@@ -211,6 +212,12 @@ export default class InfoView implements View{
 		this.back_button.add(this.back_button_shape);
 		this.back_button.add(this.back_button_text);
 		this.back_button.on('click', onBackClick);
+		this.back_button.on('mouseover', () => {
+			document.body.style.cursor = 'pointer';
+		});
+		this.back_button.on('mouseout', () => {
+			document.body.style.cursor = 'default';
+		});
 
 		this.group = new Konva.Group();
 		this.group.add(this.background);
@@ -232,6 +239,7 @@ export default class InfoView implements View{
 	}
 	
 	hide() {
+		document.body.style.cursor = 'default';
 		let stage = this.group.getStage();
 		if (stage === null) {
 			window.alert("something went wrong");
