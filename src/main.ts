@@ -99,11 +99,7 @@ class Game implements ScreenSwitcher {
 
 		// Start with menu screen visible
 		this.switchToScreen({type: "menu"});
-<<<<<<< HEAD
-		
 		this.layer.draw();
-=======
->>>>>>> 4243f1997ab326853697598bd1c8f8692787dac4
 	}
 
 	
