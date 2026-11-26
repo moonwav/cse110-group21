@@ -6,13 +6,13 @@ import * as ScoreTracker from "../../src/model/scoreTracker";
 
 describe("HintProvider: hints", () => {
   it("returns the question's hint", () => {
-    const question = new Question(1, "Shop", "Q", 10, 7, "Find 10% of $40.");
+    const question = new Question(1, "Shop", "Q", 10, 7, "Find 10% of $40.", "");
     expect(HintProvider.getHint(question)).toBe("Find 10% of $40.");
   });
 
   it("falls back to a general hint when the question has none", () => {
-    const emptyHint = new Question(1, "Shop", "Q", 10, 7, "");
-    const blankHint = new Question(1, "Shop", "Q", 10, 7, "   ");
+    const emptyHint = new Question(1, "Shop", "Q", 10, 7, "", "");
+    const blankHint = new Question(1, "Shop", "Q", 10, 7, "   ","");
     expect(HintProvider.getHint(emptyHint)).toBe(HintProvider.FALLBACK_HINT);
     expect(HintProvider.getHint(blankHint)).toBe(HintProvider.FALLBACK_HINT);
   });
@@ -33,7 +33,7 @@ describe("HintProvider: revealed answer", () => {
     [12.42, "$12.42"],
     [0.5, "$0.50"],
   ])("shows %s as %s", (answer, shown) => {
-    const question = new Question(1, "Shop", "Q", answer, 7, "Hint");
+    const question = new Question(1, "Shop", "Q", answer, 7, "Hint", "");
     expect(HintProvider.getRevealedAnswer(question)).toBe(shown);
   });
 });
