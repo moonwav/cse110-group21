@@ -648,7 +648,6 @@ export default class ResultView implements View{
 	}
 
 	showLeaderboard(scores: { percent: number; playedAt: string }[]) {
-		window.alert(scores);
 		this.grade_display.visible(false);
 		this.result_text_1.visible(false);
 		this.result_text_2.visible(false);
