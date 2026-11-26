@@ -33,10 +33,9 @@ export default class MainMenuView implements View {
 	mini_game_button_text: Konva.Text;
 	mini_game_button: Konva.Group;
 
-	background_blur: Konva.Rect;
-	name_card: Konva.Rect;
-	name_entry_text: Konva.Text;
-	name_box: Konva.Rect;
+	travel_image: Konva.Image | null = null;
+	shopping_image: Konva.Image | null = null;
+	money_image:  Konva.Image | null = null;
 
 	group: Konva.Group;
 
@@ -179,45 +178,6 @@ export default class MainMenuView implements View {
 			document.body.style.cursor = 'default';
 		});
 
-		this.name_card = new Konva.Rect({
-			x: this.stage_width*0.15,
-			y: this.stage_height*0.27,
-			width: this.stage_width*0.7,
-			height: this.stage_height*0.58,
-			cornerRadius: 25,
-			fill: PRIMARY_COLOR,
-		});
-				
-		this.background_blur = new Konva.Rect({
-			x: 0,
-			y: 0,
-			width: this.stage_width,
-			height: this.stage_height,
-			fill: 'black',
-			opacity: 0.5,
-		});
-				
-		this.name_entry_text = new Konva.Text({
-			x: this.stage_width*0.2,
-			y: this.stage_height*0.32,
-			text: 'Enter a username for leaderboard below',
-			fontFamily: this.SILKSCREEN,
-			width: this.stage_width*0.6,
-			fontSize: this.stage_height*0.068,
-			align: 'center',
-			verticalAlign: 'center',
-			fill: 'Black',
-		});
-				
-		this.name_box = new Konva.Rect({
-			x: this.stage_width*0.315,
-			y: this.stage_height*0.575,
-			width: this.stage_width*0.37,
-			height: this.stage_height*0.1,
-			cornerRadius: 25,
-			fill: 'White',
-		});
-
 		this.group = new Konva.Group();
 		this.group.add(this.background);
 		this.group.add(this.title);
@@ -225,6 +185,62 @@ export default class MainMenuView implements View {
 		this.group.add(this.start_button);
 		this.group.add(this.info_button);
 		this.group.add(this.mini_game_button);
+
+		
+		Konva.Image.fromURL("/travel.png",(image) => {
+			const travel_scale = Math.min((this.mini_game_button_shape.y() - (this.info_button_shape.y()+ this.info_button_shape.height()))/image.height(), this.mini_game_button_shape.width()/image.width());
+			image.scale({
+				x: travel_scale,
+				y: travel_scale,
+			});
+			image.position({
+				x: 1/2*this.stage_width - travel_scale/2*image.width(),
+				y: 1/2*this.stage_height - 0.075*image.height(),
+			});
+			image.height();
+			this.travel_image = image;
+			//this.lemonImage.scaleX(0.5);
+			//this.lemonImage.scaleY(0.5);
+			this.group.add(this.travel_image);
+			
+		});
+
+		Konva.Image.fromURL("/shopping_sale.png",(image) => {
+			const shopping_scale = Math.min((this.mini_game_button_shape.y() - (this.info_button_shape.y()+ this.info_button_shape.height())- 1.5*this.main_card.x())/image.height(), (this.mini_game_button_shape.x() - 1.5*this.main_card.x())/image.width());
+			image.scale({
+				x: shopping_scale,
+				y: shopping_scale,
+			});
+			image.position({
+				x: 1/2*this.stage_width + 7/16*this.main_card.width() - shopping_scale*image.width(),
+				y: 1/2*this.stage_height - 0.045*image.width(),
+			});
+			image.height();
+			this.shopping_image = image;
+			//this.lemonImage.scaleX(0.5);
+			//this.lemonImage.scaleY(0.5);
+			this.group.add(this.shopping_image);
+			
+		});
+
+		Konva.Image.fromURL("/money.png",(image) => {
+			const money_scale = Math.min((this.mini_game_button_shape.y() - (this.info_button_shape.y()+ this.info_button_shape.height())- 1.5*this.main_card.x())/image.height(), (this.mini_game_button_shape.x() - 1.5*this.main_card.x())/image.width());
+			image.scale({
+				x: money_scale,
+				y: money_scale,
+			});
+			image.position({
+				x: 1/2*this.stage_width - 7/16*this.main_card.width(),
+				y: 1/2*this.stage_height,
+			});
+			image.height();
+			this.money_image = image;
+			//this.lemonImage.scaleX(0.5);
+			//this.lemonImage.scaleY(0.5);
+			this.group.add(this.money_image);
+			
+		});
+		
 	}	
 
 	getGroup() : Konva.Group {

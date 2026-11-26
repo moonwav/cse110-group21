@@ -11,14 +11,16 @@ export default class Question {
     answer: number;
     points: number;
     hint: string;
+    image: string;
 
-    constructor(question_number: number, location: string, question: string, answer: number, points: number, hint: string) {
+    constructor(question_number: number, location: string, question: string, answer: number, points: number, hint: string, image: string) {
         this.question_number = question_number;
         this.location = location;
         this.question = question;
         this.answer = answer;
         this.points = points;
         this.hint = hint;
+        this.image = image;
 
     }
 
@@ -48,5 +50,9 @@ export default class Question {
 
     getHint() {
         return this.hint;
+    }
+
+    getImage() {
+        return this.image;
     }
 }
