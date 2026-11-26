@@ -14,7 +14,8 @@ export default class EnterNameController extends Controller{
         this.model = model;
         this.screenSwitcher = screenSwitcher;
         this.view = new EnterNameView(model, stage_width, stage_height, 
-                                      (nameText) => this.handleConfirmClick(nameText));
+                                    (nameText) => this.handleConfirmClick(nameText),
+                                    () => this.handleBackClick());
     }
     
     handleConfirmClick(nameText: string) {
@@ -30,6 +31,10 @@ export default class EnterNameController extends Controller{
     handleReadyClick() {
         this.model.beginGame();
         this.screenSwitcher.switchToScreen({type: "options"});
+    }
+
+    handleBackClick() {
+        this.screenSwitcher.switchToScreen({type: "menu"});
     }
 
     show() {
