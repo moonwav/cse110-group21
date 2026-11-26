@@ -232,14 +232,8 @@ export default class AnswerView implements View{
         this.question_answer_text.text(`Correct Answer: ${question.getAnswer()}`);
 
         let questionNumber = question.getQuestionNumber();
-        if(questionNumber == 1) {
-            this.prev_button.visible(false);
-        } else if(questionNumber == 10) {
-            this.next_button.visible(false);
-        } else {
-            this.prev_button.visible(true);
-            this.next_button.visible(true);
-        }
+        this.prev_button.visible(questionNumber > 1);
+        this.next_button.visible(questionNumber < 10);
 
         this.group.getLayer()?.draw();
     }
