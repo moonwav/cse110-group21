@@ -235,8 +235,6 @@ export default class MainMenuView implements View {
 			});
 			image.height();
 			this.money_image = image;
-			//this.lemonImage.scaleX(0.5);
-			//this.lemonImage.scaleY(0.5);
 			this.group.add(this.money_image);
 			
 		});
