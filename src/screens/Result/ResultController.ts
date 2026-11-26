@@ -30,8 +30,15 @@ export default class ResultController extends Controller{
 
     async handleLeaderboardClick() {
         const name = encodeURIComponent(this.model.getPlayer());
-        const response = await fetch(`/api/scores?name=${name}`);
-        const scores = await response.json() as { percent: number; playedAt: string }[];
+        let scores: { percent: number; playedAt: string }[] = [];
+        try {
+            const response = await fetch(`/api/scores?name=${name}`);
+            if (response.ok) {
+                scores = await response.json() as { percent: number; playedAt: string }[];
+            }
+        } catch {
+            // No score server (e.g. the static GitHub Pages build): show an empty leaderboard.
+        }
         this.view.showLeaderboard(scores);
     }
 

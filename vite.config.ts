@@ -2,7 +2,8 @@ import { defineConfig, type ViteDevServer } from "vite";
 import { saveCompletedGame, topScoresForPlayer } from "./src/backend/database";
 import type { ResultData } from "./src/screens/Result/ResultModel";
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === "build" ? "/cse110-group21/" : "/",
   plugins: [
     {
       name: "save-score",
@@ -30,4 +31,4 @@ export default defineConfig({
       },
     },
   ],
-});
+}));

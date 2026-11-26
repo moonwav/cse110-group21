@@ -5,6 +5,8 @@ percentage questions about food, activities, and shopping. Players earn points
 toward a score out of 100, can use hints (at a point cost), and get a letter
 grade at the end.
 
+**Play it:** https://moonwav.github.io/cse110-group21/
+
 ## Learning goal
 
 Players learn to correctly calculate percentages of integer and decimal
