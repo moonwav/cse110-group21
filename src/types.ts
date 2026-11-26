@@ -1,5 +1,6 @@
 import type { Group } from "konva/lib/Group";
 import { ResultData } from "./screens/Result/ResultModel";
+import { MinigameEndData } from "./screens/Minigame/MinigameEnd/MinigameEndModel";
 
 export interface View {
 	getGroup(): Group;
@@ -16,6 +17,8 @@ export interface View {
  *   - data: Final numerical results to display on results screen
  * - "info": The how to play instructions screen
  * - "minigame": The minigame screen
+ * - "minigame end": The minigame end screen
+ *   - data: Whether the round was completed and the seconds taken
  * - "answer": The answer key screen
  * - "options": The options screen in between questions for story progression
  */
@@ -24,6 +27,7 @@ export type Screen =
 	| { type: "question" }
 	| { type: "result"; data?: ResultData }
     | { type: "minigame" }
+	| { type: "minigame end"; data?: MinigameEndData }
 	| { type: "enter name"}
     | { type: "info" }
 	| { type: "answer" }
