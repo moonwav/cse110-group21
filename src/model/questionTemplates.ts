@@ -21,6 +21,7 @@ export type QuestionTemplate = {
   formula: Formula;
   points: number;
   hint: string;
+  picture: string;
 };
 
 const easyPrices = [10, 20, 40, 60, 80, 100];
@@ -43,6 +44,7 @@ export const questionTemplates: QuestionTemplate[] = [
     formula: "percentOf",
     points: 7,
     hint: "Multiply ${budget} by {percent}, then divide by 100.",
+    picture: "/shopping.png"
   },
   {
     id: "snack-budget",
@@ -58,6 +60,7 @@ export const questionTemplates: QuestionTemplate[] = [
     formula: "percentOf",
     points: 7,
     hint: "Multiply ${budget} by {percent}, then divide by 100.",
+    picture: "/lemonade_shop.png"
   },
   {
     id: "arcade-tickets",
@@ -73,6 +76,7 @@ export const questionTemplates: QuestionTemplate[] = [
     formula: "percentOf",
     points: 7,
     hint: "Multiply ${budget} by {percent}, then divide by 100.",
+    picture: "/arcade.png"
   },
   {
     id: "lunch-drink",
@@ -88,6 +92,7 @@ export const questionTemplates: QuestionTemplate[] = [
     formula: "percentOf",
     points: 7,
     hint: "Multiply ${budget} by {percent}, then divide by 100.",
+    picture: "/restaurant.png"
   },
   {
     id: "jacket-discount",
@@ -102,6 +107,7 @@ export const questionTemplates: QuestionTemplate[] = [
     formula: "discount",
     points: 10,
     hint: "Find {percent}% of ${price}, then subtract it from ${price}.",
+    picture: "/shopping_sale.png"
   },
   {
     id: "meal-tip",
@@ -117,6 +123,7 @@ export const questionTemplates: QuestionTemplate[] = [
     formula: "tip",
     points: 10,
     hint: "Find {percent}% of ${price}, then add it to ${price}.",
+    picture: "/food_court.png"
   },
   {
     id: "ticket-tax",
@@ -132,6 +139,7 @@ export const questionTemplates: QuestionTemplate[] = [
     formula: "tax",
     points: 10,
     hint: "Find {percent}% of ${price}, then add it to ${price}.",
+    picture: "/park.png"
   },
   {
     id: "sticker-before-tax",
@@ -147,6 +155,7 @@ export const questionTemplates: QuestionTemplate[] = [
     formula: "reverseTax",
     points: 14,
     hint: "Divide ${price} by 1 plus {percent}% written as a decimal.",
+    picture: "/stickers.png"
   },
   {
     id: "cheaper-ride",
@@ -164,6 +173,7 @@ export const questionTemplates: QuestionTemplate[] = [
     formula: "compare",
     points: 14,
     hint: "Take {percentA}% off ${priceA} and {percentB}% off ${priceB}, then pick the lower price.",
+    picture: "/rollercoaster.png"
   },
   {
     id: "hoodie-sale-tax",
@@ -180,5 +190,6 @@ export const questionTemplates: QuestionTemplate[] = [
     formula: "discountThenTax",
     points: 14,
     hint: "Take {discount}% off ${price}, then add {tax}% tax to what is left.",
+    picture: "/sale.png"
   },
 ];

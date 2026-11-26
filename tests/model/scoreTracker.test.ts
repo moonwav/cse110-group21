@@ -8,9 +8,9 @@ import * as ScoreTracker from "../../src/model/scoreTracker";
 function makeModel(): GameModel {
   const model = new GameModel();
   model.setQuestions([
-    new Question(1, "Shop", "Easy question", 10, 7, "Hint"),
-    new Question(2, "Shop", "Medium question", 10, 10, "Hint"),
-    new Question(3, "Shop", "Hard question", 10, 14, "Hint"),
+    new Question(1, "Shop", "Easy question", 10, 7, "Hint", ""),
+    new Question(2, "Shop", "Medium question", 10, 10, "Hint", ""),
+    new Question(3, "Shop", "Hard question", 10, 14, "Hint", ""),
   ]);
   return model;
 }

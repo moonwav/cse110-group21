@@ -6,13 +6,13 @@ export const CORRECT_COLOR = 'green';
 export const WRONG_COLOR = 'red';
 
 export async function loadFonts() {
-  		await document.fonts.ready;
-  		await Promise.all([
-   			document.fonts.load("700 48px Silkscreen"),
-    		document.fonts.load("400 36px Silkscreen"),
-    		document.fonts.load("400 40px Roboto"),
-    		document.fonts.load("400 36px Roboto"),
-    		document.fonts.load("400 24px Roboto"),
-    		document.fonts.load("400 22px Roboto"),
-  		]);
-	}
+  	await document.fonts.ready;
+  	await Promise.all([
+		document.fonts.load("700 48px Silkscreen"),
+    	document.fonts.load("400 36px Silkscreen"),
+    	document.fonts.load("400 40px Roboto"),
+		document.fonts.load("400 36px Roboto"),
+    	document.fonts.load("400 24px Roboto"),
+    	document.fonts.load("400 22px Roboto"),
+  	]);
+}

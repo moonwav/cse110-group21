@@ -20,6 +20,7 @@ export default class QuestionView implements View{
 	question: Question;
 	question_location: Konva.Text;
 	question_text: Konva.Text;
+	question_image: Konva.Image| null = null;
 
 	title_1: Konva.Text;
 	title_2: Konva.Text;
@@ -318,20 +319,18 @@ export default class QuestionView implements View{
 	
 		this.result_text = new Konva.Text ({
 			x: this.stage_width*0.06,
-			y: this.stage_height*0.69,
+			y: this.stage_height*0.775,
 			width: this.stage_width*0.9,
 			fill: 'Black',
 			fontFamily: this.ROBOTO,
-			fontSize: stage_height * 0.035,
+			fontSize: this.stage_height * 0.035,
 			text: '',
 		});
 
 		this.hint_text = new Konva.Text({
-			x: this.stage_width*0.46,
-			y: this.answer_bubble.y(),
+			x: this.stage_width*0.06,
+			y: this.stage_height*0.69,
 			width: this.stage_width*0.48,
-			height: this.answer_bubble.height(),
-			verticalAlign: 'middle',
 			fill: 'Black',
 			fontFamily: this.ROBOTO,
 			fontSize: this.stage_height*0.03,
@@ -372,6 +371,20 @@ export default class QuestionView implements View{
 		this.group.add(this.hint_text);
 		this.group.add(this.reveal_button);
 		this.group.add(this.reveal_popup);
+
+		Konva.Image.fromURL(this.question.getImage(), (image)=>{
+			image.scale({
+				x: 0.5,
+				y: 0.5,
+			});
+			image.position({
+				x: 1/2*this.stage_width - 1/4*image.width(),
+				y: 1/2*this.stage_height - 1/4*image.height(),
+			});
+			this.question_image = image;
+			this.group.add(this.question_image);
+		})
+		
 
 		this.hide();
 	}
@@ -439,6 +452,7 @@ export default class QuestionView implements View{
 	openRevealPopup() {
 		// The answer box is HTML on top of the canvas, so hide it or it would sit over the popup.
 		this.answer_input.style.visibility = 'hidden';
+		this.question_image?.visible(false);
 		this.reveal_popup.visible(true);
 		this.group.getLayer()?.batchDraw();
 	}
@@ -447,6 +461,7 @@ export default class QuestionView implements View{
 		document.body.style.cursor = 'default';
 		this.answer_input.style.visibility = 'visible';
 		this.reveal_popup.visible(false);
+		this.question_image?.visible(true);
 		this.group.getLayer()?.batchDraw();
 	}
 
@@ -457,10 +472,6 @@ export default class QuestionView implements View{
 		this.question_location.text(`${this.question.location}`);
 		this.question_text.text(`${this.question.getQuestion()}`);
 		this.group.getLayer()?.draw();
-	}
-
-	startGame(){
-		
 	}
 
 	getGroup(){
@@ -482,10 +493,12 @@ export default class QuestionView implements View{
 	}
 
 	showQuestion(question: Question) {
+		this.question_image?.remove();
 		this.question = question;
 		this.question_location.text(question.getLocation());
 		this.question_text.text(question.getQuestion());
 		this.answer_header.text("Type answer below:");
+		this.update_image(question.getImage());
 		this.answer_input.value = "";
 		this.result_text.text("");
 		this.clearHint();
@@ -499,6 +512,24 @@ export default class QuestionView implements View{
 	showResult(message: string) {
 		this.result_text.text(message);
 		this.result_text.getLayer()?.batchDraw();
+	}
+
+	update_image(url: string){
+		
+		Konva.Image.fromURL(url, (image) => {
+			const scale_by = Math.min((this.submit_button_shape.y() - this.stage_height*0.5)/image.height(), (this.answer_bubble.x() + this.answer_bubble.width() - (this.stage_width - this.main_card.width())/2)/image.width())
+			image.scale({
+				x: scale_by,
+				y: scale_by
+			});
+			image.position({
+				x: 3/4*this.stage_width - scale_by/2*image.width(),
+				y: 0.625*this.stage_height - scale_by/2*image.height(),
+			});
+			this.question_image = image;
+			this.group.add(this.question_image);
+		})
+
 	}
 
 	/**

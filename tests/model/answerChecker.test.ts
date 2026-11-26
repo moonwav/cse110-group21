@@ -3,7 +3,7 @@ import Question from "../../src/model/Question";
 import { checkAnswer } from "../../src/model/answerChecker";
 
 function check(input: string, answer: number) {
-  const question = new Question(1, "Shop", "What do you pay?", answer, 7, "Hint");
+  const question = new Question(1, "Shop", "What do you pay?", answer, 7, "Hint", "/travel.png");
   return checkAnswer(input, question);
 }
 

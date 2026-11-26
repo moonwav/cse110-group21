@@ -41,7 +41,8 @@ export function generateQuestion(
     fillIn(template.prompt, numbers),
     money(formulas[template.formula](numbers)),
     template.points,
-    fillIn(template.hint, numbers),
+    fillIn(template.hint, numbers), 
+    template.picture,
   );
 }
 
