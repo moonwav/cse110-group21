@@ -7,6 +7,10 @@ grade at the end.
 
 **Play it:** https://moonwav.github.io/cse110-group21/
 
+Note: Score persistence and the leaderboard
+require the local development server.
+The GitHub Pages deployment is frontend-only.
+
 ## Learning goal
 
 Players learn to correctly calculate percentages of integer and decimal
@@ -26,8 +30,6 @@ numbers, including percent increases and decreases (discounts, tax, tips).
 - Stuck players can use a Hint (costs points), then Reveal Answer (costs more).
 - Replaying generates the same kinds of questions with new numbers.
 - Mini-game: match percentage problems to their results before a timer runs out.
-
-Full details: [Game vision and decisions](docs/decisions.md) 
 
 ## Tech stack
 
@@ -65,19 +67,11 @@ Full details: [Game vision and decisions](docs/decisions.md)
 | Document | What it covers |
 |---|---|
 | [Architecture](docs/Architecture.md) | Quality attribute scenarios, dynamic and static views, component glossary, design walkthroughs |
-| [Decisions](docs/decisions.md) | Why we made key design and scope choices |
 | [Contributing](CONTRIBUTING.md) | Branching, pull requests, definition of done |
 | [Figma mockups](https://www.figma.com/design/bQuWbczVU3FqEZtMuZA6Tx/CSE-110-Mockup?node-id=0-1&t=fXMIbBTT8kAez9Qe-0) | UI screens, including error and hint paths |
 | [Module view (Figma)](https://www.figma.com/design/QOx6lEtyU4C2QbAcc2jVZ7/Module-View-CSE110?node-id=0-1&t=yPAnapl2EZCjIfL0-1) | Static architecture diagram |
 | [GitHub Project](https://github.com/users/moonwav/projects/4/views/1) | User stories, tasks, estimates, priorities |
 
+## Team 21
 
-## Team (Team 21)
-
-| Member | Role |
-|---|---|
-| Aarav | (TODO: add role) |
-| Akari | (TODO: add role) |
-| Nicole | (TODO: add role) |
-| Matthew | (TODO: add role) |
-| William | (TODO: add role) |
+Aarav, Akari, Nicole, Matthew, and William.

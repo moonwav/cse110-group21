@@ -4,15 +4,14 @@ This document collects the architecture of the Percentage Trip Game in one versi
 place: the quality attribute scenarios that drive the design, the dynamic and static
 views, a glossary of components, and walkthroughs of the two key scenarios.
 
-**Naming rule:** every component name in this document is the name of a class (or file)
-in the code, written exactly the same way in both diagrams and the glossary. A class lives
-in a file with the same name in PascalCase (`MainMenuController` lives in
-`MainMenuController.ts`). A module that exports only functions or data lives in a
-camelCase file with the same name (`ScoreTracker` is `scoreTracker.ts`,
-`QuestionTemplate` is in `questionTemplates.ts`). The one exception is `Game` in
-`main.ts`, the app's entry point. If you rename a
-component, update the code, both diagrams, and the [glossary](#4-component-glossary) in
-the same pull request.
+**Naming rule:** component names refer to the classes or modules in the code.
+A class normally lives in a file with the same name in PascalCase (`MainMenuController`
+lives in `MainMenuController.ts`). A module that exports only functions or data lives in a
+camelCase file (`ScoreTracker` is `scoreTracker.ts`, `QuestionTemplate` is in
+`questionTemplates.ts`). `Game` lives in `main.ts`, the app's entry point. The answer
+key exports `AnswerController` and `AnswerView` from `AnswerKeyController.ts` and
+`AnswerKeyView.ts`, respectively. If you rename a component, update the code, both
+diagrams, and the [glossary](#4-component-glossary) in the same pull request.
 
 Contents:
 
@@ -46,10 +45,10 @@ view or controller.
 
 ### Design decisions this document relies on
 
-- **Screens:** main menu (with a pop-up where the player types their name), How to Play
-  (`Info`), story choice, question, results, answer key, the mini-game, and the minigame
-  end screen. There is no separate login screen. Story choice and answer key are planned
-  but not built yet.
+- **Screens:** main menu (with a pop-up where the player types their name, managed by
+  `EnterNameController` and `EnterNameView`), How to Play (`Info`), story choice (`Options`),
+  question, results, answer key, the mini-game, and the minigame end screen. All are implemented.
+  There is no separate login screen.
 - **Minigame end screen:** when a round ends, the result (completed in time or ran out of
   time) is its own screen, not part of `MinigameView`. It is a pop-up drawn over the
   darkened mini-game: for `"minigame end"`, `Game` shows the mini-game's *view* without
@@ -109,9 +108,9 @@ tax), and we expect to keep adding them.
 |---|---|
 | **Source** | A developer or tester |
 | **Stimulus** | Wants to verify the scoring rules: points per question, wrong-answer counting, hint and reveal penalties, and the letter-grade mapping |
-| **Artifact** | `ScoreTracker` (and the `GameModel` it updates) |
+| **Artifact** | `ScoreTracker` (and the `GameModel` it updates), `ResultModel` for letter grades |
 | **Environment** | Development, using the automated test suite |
-| **Response** | `ScoreTracker` runs in isolation. Tests set inputs directly (question value, wrong tries, hints used) and observe outputs (points awarded, final score, grade) without any view, controller, Konva, the network, or the random `QuestionGenerator`. |
+| **Response** | `ScoreTracker` runs in isolation. Tests set inputs directly (question value, wrong tries, hints used) and observe outputs (points awarded and final score). Letter grades are tested through `ResultModel`. Neither requires any view, controller, Konva, the network, or the random `QuestionGenerator`. |
 | **Response measure** | 100% of scoring rules are covered by automated tests, and the full scoring test suite runs in under 30 seconds |
 
 *Why it matters:* wrong scores would undermine the game's feedback, and scoring logic has
@@ -164,80 +163,152 @@ each sprint, and a broken release shouldn't take the game down.
 ## 2. Dynamic view (components and connectors)
 
 The dynamic view shows the running components and how they interact while the game is
-played. The diagram source is [`images/cc-view.svg`](images/cc-view.svg); edit that file to
-change it.
+played. The diagram is embedded below so it can be updated directly in this document.
+The grouped connectors summarize interactions of the relevant screens.
 
-![Dynamic view: View, Controller, and Model components, the Game entry point, and their connectors](images/cc-view.svg)
+```mermaid
+flowchart TB
+    subgraph Browser
+        G[Game]
+        subgraph Views[View]
+            V[MainMenuView / EnterNameView / InfoView]
+            V2[OptionsView / QuestionView / ResultView / AnswerView]
+            V3[MinigameView / MinigameEndView]
+        end
+        subgraph Controllers[Controller]
+            C[MainMenuController / EnterNameController / InfoController]
+            C2[OptionsController / AnswerController]
+            QC[QuestionController]
+            RC[ResultController]
+            C3[MinigameController / MinigameEndController]
+        end
+        subgraph Model
+            GM[GameModel]
+            Rules[QuestionGenerator / AnswerChecker / HintProvider / ScoreTracker]
+            SM[ResultModel / MinigameModel / MinigameEndModel]
+        end
+        Views -->|User action callbacks| Controllers
+        Controllers -->|Display updates| Views
+        Controllers -->|Read or update state| GM
+        Controllers -->|Invoke rules| Rules
+        Controllers -->|Read or update| SM
+        Rules -->|Scoring records| GM
+        GM -->|Generate trip or options| Rules
+        Controllers -->|ScreenSwitcher| G
+        G -->|Show or hide| Controllers
+    end
+    subgraph LocalServer[Local Vite development server]
+        API[vite.config.ts: score middleware]
+        DB[database.ts]
+        SQL[(SQLite game.sqlite)]
+        API -->|Call score functions| DB
+        DB <-->|SQL query / result| SQL
+    end
+    QC -->|POST /api/scores| API
+    RC <-->|GET /api/scores| API
+```
 
 **Key**
 
 | Symbol | Meaning |
 |---|---|
-| Box | A component (a running instance of the class of the same name) |
-| Dashed box | A planned component that isn't in the code yet |
-| Bold box | A group of components: View, Controller, Model |
-| Dashed bold box | Components that run on the server instead of in the browser |
+| Box | A running component or group of related components |
+| Group | A layer or runtime boundary |
 | Cylinder | The SQLite database |
-| ■ Small black square | An interface (port) where a connector attaches |
-| Short-dashed arrow | **User action**: a view reports a click or keypress to its controller through a callback |
-| Solid arrow | **Update**: a component tells another to change (a controller updating its view or the Model, `Game` showing or hiding a screen, or `ScoreTracker` updating `GameModel`) |
-| Long-dashed arrow | **Fetch state**: a controller reads the current state from the Model, for example the current question or the score |
-| Dotted arrow | **Switch screen**: a controller asks `Game`, through `ScreenSwitcher`, to show another screen |
-| Thick double-headed arrow | **HTTP request / response** between the browser and the server |
-| Dash-dot double-headed arrow | **SQL query / result** between the backend and the database |
+| Labeled arrow | User action, update, state access, rule invocation, screen switch, HTTP request or SQL interaction, as labeled |
 
 How to read it:
 
 - Each view is paired with its own controller. The view sends user actions to the
   controller, and the controller updates the view: the data to show, and states such as
   Submit turning into Next.
-- Controllers are the only components that talk to the Model. They read state from it,
-  call its rule modules (`QuestionGenerator`, `AnswerChecker`, `HintProvider`,
-  `ScoreTracker`, `ApiClient`), and update it. Views never touch the Model.
-- `ScoreTracker` is the only rule module that writes to `GameModel` itself. The others take
-  a `Question` from the controller and return an answer, which keeps them easy to test.
+- Controllers read state from the Model, call its rule modules (`QuestionGenerator`,
+  `AnswerChecker`, `HintProvider`, `ScoreTracker`), and update it.
+- `ScoreTracker` is the only shared rule module that writes to `GameModel` itself.
 - To change screens, a controller calls `Game`, which hides every screen and shows the
   requested one.
-- The browser reaches the database only through `ApiClient` and HTTP. `Accounts` and
-  `ScoreHolder` run on the server and are the only components that query the database.
+- `QuestionController` sends completed results with `POST /api/scores`;
+  `ResultController` retrieves the player's top scores with `GET /api/scores?name=...`.
+  Both call `fetch()` directly. The middleware in `vite.config.ts` calls the functions
+  in `src/backend/database.ts`, which access SQLite through Drizzle ORM.
+- The score API is available when running the local Vite development server. GitHub
+  Pages hosts the static frontend only; the trip remains playable without score persistence,
+  and the leaderboard is empty when the score API is unavailable.
 
 ---
 
 ## 3. Static view (modules)
 
-The module view shows the code modules and which modules use which. Every component in the
-dynamic view is an instance of a module here with the same name, and the two diagrams use
-the same layout. The diagram source is [`images/module-view.svg`](images/module-view.svg);
-edit that file to change it.
+The module view shows the code modules and which modules use which. The diagram is
+embedded below. Grouped arrows summarize dependencies of relevant members rather than
+implying that every member imports every target.
 
-![Static view: View, Controller, and Model modules, shared types, Game, and their dependencies](images/module-view.svg)
+```mermaid
+flowchart TD
+    G[main.ts: Game] --> C
+    G --> GM[GameModel.ts]
+    G --> T[types.ts]
+    G --> K[constants.ts]
+    subgraph Screens[src/screens]
+        C[MainMenuController / EnterNameController / InfoController / OptionsController / QuestionController / ResultController / AnswerController / MinigameController / MinigameEndController]
+        V[MainMenuView / EnterNameView / InfoView / OptionsView / QuestionView / ResultView / AnswerView / MinigameView / MinigameEndView]
+        SM[ResultModel / MinigameModel / MinigameEndModel]
+        C --> V
+        C --> SM
+        SM --> MG[minigameQuestionGenerator.ts]
+    end
+    C --> T
+    V --> T
+    V --> K
+    C --> GM
+    C --> AC[answerChecker.ts]
+    C --> HP[hintProvider.ts]
+    C --> ST[scoreTracker.ts]
+    C --> Q[Question.ts]
+    V --> Q
+    ST --> GM
+    ST --> Q
+    AC --> Q
+    HP --> Q
+    GM --> Q
+    GM --> QG[questionGenerator.ts]
+    QG --> QT[questionTemplates.ts]
+    QG --> F[formulas.ts]
+    QG --> Q
+    subgraph Server[Local Node.js development server]
+        API[vite.config.ts] --> DB[src/backend/database.ts]
+        DB --> S[src/backend/schema.ts]
+        DB --> M[drizzle migrations]
+        DB --> SQL[(SQLite)]
+    end
+    C -.->|HTTP via QuestionController and ResultController| API
+```
 
 **Key**
 
 | Symbol | Meaning |
 |---|---|
-| Box | A module: one class or file, with the same name in the code |
-| Dashed box | A planned module that isn't in the code yet |
-| Bold box | A layer, with the folder its modules live in |
-| Dashed bold box | A layer that runs on the server instead of in the browser |
-| Solid arrow A → B | A uses (imports and calls) B. An arrow from a layer means every module in it may use B. |
-| Dotted arrow labeled HTTP | A calls B over the network. The only dependency between the browser and the server. |
+| Box | A module or group of related modules |
+| Group | A layer or runtime boundary |
+| Solid arrow A → B | A uses B (imports, calls, or accesses data/infrastructure) |
+| Dotted arrow labeled HTTP | A calls B over the network, not a source-code import |
 
 **What each controller uses**
 
-The diagram draws the controllers' dependencies on the Model as one "uses" arrow. These
-are the specific modules behind it. Every controller also uses its own view and
+The diagram draws the controllers' dependencies on the Model as grouped arrows. These
+are the specific modules behind them. Every controller also uses its own view and
 `ScreenSwitcher`.
 
 | Controller | Uses |
 |---|---|
-| `MainMenuController` | `GameModel` (stores the player's name and starts a trip), `QuestionGenerator` |
-| `InfoController` | nothing else |
-| `StoryController` | `GameModel` (records the chosen activity) |
-| `QuestionController` | `GameModel`, `AnswerChecker`, `HintProvider`, `ScoreTracker` |
-| `ResultController` | `GameModel`, `ScoreTracker` (letter grade), `ApiClient` (saves the score) |
-| `AnswerKeyController` | `GameModel` |
-| `MinigameController` | `MinigameModel` |
+| `MainMenuController` | Navigates to name entry, instructions or mini-game |
+| `EnterNameController` | `GameModel` (stores the player's name and starts a trip) |
+| `InfoController` | Navigation back to the main menu |
+| `OptionsController` | `GameModel` (selects the next activity and question) |
+| `QuestionController` | `GameModel`, `Question`, `AnswerChecker`, `HintProvider`, `ScoreTracker`, `fetch()` (POST completed results) |
+| `ResultController` | `GameModel`, `ResultModel` (letter grade), `fetch()` (GET score history) |
+| `AnswerController` | `GameModel` |
+| `MinigameController` | `MinigameModel`, `constants` |
 | `MinigameEndController` | `MinigameEndModel` (the end screen's title and message) |
 
 **Rules the diagram encodes**
@@ -253,37 +324,38 @@ are the specific modules behind it. Every controller also uses its own view and
 - **Controllers don't import each other.** They depend only on the `ScreenSwitcher`
   interface, which `Game` implements. Adding a screen means adding a case to the `Screen`
   type and to `Game`.
-- **Only `ApiClient` talks to the backend, and only over HTTP.** Browser code never imports
-  `src/backend/`, because it uses Node-only APIs such as `node:sqlite`.
+- **The browser talks to the backend only over HTTP.** `QuestionController` and
+  `ResultController` use `fetch()` directly. Browser code never imports `src/backend/`,
+  because it uses Node-only APIs such as `node:sqlite`.
 - **Views share one look.** Colors come from `constants`; no view defines its own.
 
 ---
 
 ## 4. Component glossary
 
-One line per component. Names match both diagrams and the code exactly. **Status** says
-what exists on `main` today.
+One line per component. **Status** says what exists on `main` today.
 
 ### App shell (`src/main.ts`, `src/types.ts`)
 
 | Component | Responsibility | Status |
 |---|---|---|
-| `Game` | Creates the Konva stage, `GameModel`, and every controller, and switches screens. | Exists (`main.ts`); results and mini-game not wired in yet |
+| `Game` | Creates the Konva stage, `GameModel`, and every controller, and switches screens. | Exists (`main.ts`) |
 | `View` | Interface every view implements: `getGroup()`, `show()`, `hide()`. | Exists (`types.ts`) |
 | `Controller` | Base class every controller extends: `getView()`, `show()`, `hide()`. | Exists (`types.ts`) |
-| `Screen` | The list of screens `Game` can switch to. | Exists (`types.ts`); needs story and answer key |
+| `Screen` | The list of screens `Game` can switch to, including options and answer key. | Exists (`types.ts`) |
 | `ScreenSwitcher` | Interface controllers use to change screens; `Game` implements it. | Exists (`types.ts`) |
 
 ### View (`src/screens/<Screen>/<Screen>View.ts`)
 
 | Component | Responsibility | Status |
 |---|---|---|
-| `MainMenuView` | Start screen with Start Trip, How to Play, and Mini Game, plus the pop-up where the player types their name. | Exists; the typed name isn't passed on yet |
+| `MainMenuView` | Start screen with Start Trip, How to Play, and Mini Game. | Exists |
+| `EnterNameView` | Name entry pop-up and welcome message. | Exists |
 | `InfoView` | How to Play instructions, with a Back button. | Exists |
-| `StoryView` | Shows the activity choices (beach, shopping, food, theme park) for the next question. | Planned |
-| `QuestionView` | Question screen: progress, score, grade scale, scenario, answer input, Submit/Next, Hint/Reveal, and feedback messages. | In progress (layout only) |
-| `ResultView` | Shows the final letter grade, percent score, wrong answers, and hints used, with Answer Key and Play Again. | Empty placeholder |
-| `AnswerKeyView` | Lists each question with the player's answers and the correct answer. | Planned |
+| `OptionsView` | Shows up to four remaining activity choices for the next question. | Exists |
+| `QuestionView` | Question screen: progress, score, grade scale, scenario, answer input, Submit/Next, Hint/Reveal, and feedback messages. | Exists |
+| `ResultView` | Shows the final letter grade, percent score, wrong answers, hints used, leaderboard, Answer Key and Play Again. | Exists |
+| `AnswerView` | Displays the trip's questions and correct answers with navigation controls. | Exists (`AnswerKeyView.ts`) |
 | `MinigameView` | Matching game screen: two columns to match, a countdown timer, and green and red cards for right and wrong pairs. | Exists |
 | `MinigameEndView` | Pop-up over the darkened mini-game: a title and message (given by its controller), with Play Again and Main Menu. The dark background blocks clicks on the cards underneath. | Exists (`src/screens/Minigame/MinigameEnd/`) |
 | `constants` | The game's shared colors and fonts. | Exists (`src/constants.ts`) |
@@ -292,12 +364,13 @@ what exists on `main` today.
 
 | Component | Responsibility | Status |
 |---|---|---|
-| `MainMenuController` | Opens the name pop-up, stores the name in `GameModel`, starts a trip, and switches to How to Play or the mini-game. | Exists; Start doesn't continue past the pop-up yet |
+| `MainMenuController` | Opens the name pop-up and switches to How to Play or the mini-game. | Exists |
+| `EnterNameController` | Validates the name, stores it in `GameModel`, starts the trip, and opens the options screen. | Exists |
 | `InfoController` | Handles Back to the main menu. | Exists |
-| `StoryController` | Records the chosen activity in `GameModel` and moves on to the question. | Planned |
-| `QuestionController` | Handles Submit, Next, Hint, and Reveal using `AnswerChecker`, `HintProvider`, and `ScoreTracker`, updates `QuestionView`, and switches to results after question 10. | In progress (handlers are empty) |
-| `ResultController` | Shows the final grade from `ScoreTracker`, saves the score through `ApiClient`, and handles Answer Key and Play Again. | Empty placeholder |
-| `AnswerKeyController` | Shows the trip's questions and answers from `GameModel`, and handles Back. | Planned |
+| `OptionsController` | Displays choices, records the chosen activity in `GameModel`, and moves on to the question. | Exists |
+| `QuestionController` | Handles Submit, Next, Hint, and Reveal using `AnswerChecker`, `HintProvider`, and `ScoreTracker`; updates `QuestionView`; posts completed results and switches to results after question 10. | Exists |
+| `ResultController` | Displays the grade from `ResultModel`, retrieves score history through HTTP, and handles Answer Key and Play Again. | Exists |
+| `AnswerController` | Shows the trip's questions and correct answers from `GameModel`, and handles navigation and Back. | Exists (`AnswerKeyController.ts`) |
 | `MinigameController` | Runs one matching game: tracks the selected question and answer, checks each submitted pair against `MinigameModel`, runs the 60-second timer, and ends the round on a win or when time runs out by switching to the minigame end screen with whether it was completed and the time taken. | Exists |
 | `MinigameEndController` | Stores the round's result in `MinigameEndModel`, gives `MinigameEndView` the title and message to show, and handles Play Again (a new round) and Main Menu. | Exists (`src/screens/Minigame/MinigameEnd/`) |
 
@@ -305,34 +378,36 @@ what exists on `main` today.
 
 | Component | Responsibility | Status |
 |---|---|---|
-| `GameModel` | Everything about the current trip: player name, questions, current position, score, wrong tries, and which hints and reveals were used. | Exists (`GameModel.ts`) |
-| `Question` | One generated question: its number, location (scenario), text, correct answer, point value, and hint. | Exists (`Question.ts`) |
-| `QuestionGenerator` | Builds a trip's 10 questions (4 easy, 3 medium, 3 hard) from the templates with new random numbers each time. | Exists (`questionGenerator.ts`) |
+| `GameModel` | Stores the current trip's player name, questions, current position, latest answer, and records of correct answers, wrong tries, hints and reveals. | Exists (`GameModel.ts`) |
+| `Question` | One generated question: its number, location (scenario), text, correct answer, point value, hint, and picture. | Exists (`Question.ts`) |
+| `QuestionGenerator` | Builds a trip's 10 questions (4 easy, 3 medium, 3 hard) from templates with new random numbers each time and selects available activity options. | Exists (`questionGenerator.ts`) |
 | `AnswerChecker` | Validates the player's input and decides whether it matches a `Question`'s correct answer. | Exists (`answerChecker.ts`) |
 | `HintProvider` | Gives the hint text and the revealed answer for a `Question`. Penalties are applied by `ScoreTracker`, not here. | Exists (`hintProvider.ts`) |
-| `ScoreTracker` | Applies all scoring rules to `GameModel`: points per question, hint and reveal penalties, the floor at zero, wrong-try counting, and the letter grade. | Exists (`scoreTracker.ts`) |
+| `ScoreTracker` | Records correct answers, wrong tries, hints and reveals; derives the running score, final earned points and result statistics from question records. | Exists (`scoreTracker.ts`) |
+| `ResultModel` | Stores final results and maps the numeric score to a letter grade and feedback message. | Exists (`Result/ResultModel.ts`) |
 | `MinigameModel` | The current matching game's shuffled questions and answers and the correct pairs made so far. | Exists (`MinigameModel.ts`) |
 | `MinigameEndModel` | The finished round's result (`MinigameEndData`: completed or not, and seconds taken) and the end screen's text: "Congratulations!" plus the time, or "You ran out of time". | Exists (`MinigameEnd/MinigameEndModel.ts`) |
-| `ApiClient` | The browser's only connection to the backend: sends the player and finished-trip score over HTTP. | Planned |
 
-`MinigameModel` is used only by the mini-game, so it lives with its screen in
-`src/screens/Minigame/` instead of in `src/model/`. For the same reason,
-`MinigameEndModel` lives in `src/screens/Minigame/MinigameEnd/`.
+`ResultModel`, `MinigameModel`, and `MinigameEndModel` are screen-specific models and
+live with their screens under `src/screens/` instead of in `src/model/`.
 
 ### Model: data (`src/model/`)
 
 | Component | Responsibility | Status |
 |---|---|---|
 | `QuestionTemplate` | The type and list of question templates: scenario, prompt, difficulty, number ranges, formula, points, and hint. | Exists (`questionTemplates.ts`, ten templates) |
+| `formulas` | Mathematical functions used by generated questions. | Exists (`formulas.ts`) |
+| `minigameQuestionGenerator` | Generates problems and answers for the matching game. | Exists (`src/screens/Minigame/minigameQuestionGenerator.ts`) |
 
-### Model: backend (`src/backend/`, runs on the server)
+### Model: backend (local development server)
 
 | Component | Responsibility | Status |
 |---|---|---|
-| `ApiRouter` | HTTP endpoints that receive requests from `ApiClient` and pass them to `Accounts` or `ScoreHolder`. | Planned |
-| `Accounts` | Creates and looks up players (name and unique ID). | Planned |
-| `ScoreHolder` | Saves and reads players' finished-trip scores. | Planned |
-| `Database` | Opens the SQLite database and creates its tables. | Exists (`src/backend/database.ts`, tables in `schema.ts`) |
+| `vite.config.ts` | Registers the development server's GET and POST `/api/scores` middleware. | Exists |
+| `database.ts` | Opens and migrates SQLite, finds or creates players, saves completed games and retrieves score history. | Exists (`src/backend/database.ts`) |
+| `schema.ts` | Defines the `players` and `scores` tables and their relationship. | Exists (`src/backend/schema.ts`) |
+| `drizzle/` | Versioned database migrations. | Exists |
+| SQLite | Persists player and score data in the local `game.sqlite` file. | Available locally |
 
 ---
 
@@ -362,29 +437,32 @@ sequenceDiagram
     QuestionController->>AnswerChecker: Check answer text against the Question
     alt Input is blank or not a number
         AnswerChecker-->>QuestionController: Invalid
-        QuestionController->>QuestionView: update: show "enter a number" message
+        QuestionController->>QuestionView: update: show validation message
         Note over GameModel: Not counted as a try, score unchanged
     else Wrong answer
         AnswerChecker-->>QuestionController: Incorrect
-        QuestionController->>ScoreTracker: Record wrong try
+        QuestionController->>ScoreTracker: recordWrongTry(model)
         ScoreTracker->>GameModel: update: count wrong try (no points lost)
         QuestionController->>QuestionView: update: show Incorrect state
     else Correct answer
         AnswerChecker-->>QuestionController: Correct
-        QuestionController->>ScoreTracker: Record correct answer
-        ScoreTracker->>GameModel: update: add the question's points
-        QuestionController->>GameModel: fetch state: new score
-        QuestionController->>QuestionView: update: new score, Correct state, Submit becomes Next
+        QuestionController->>ScoreTracker: recordCorrect(model)
+        ScoreTracker->>GameModel: update: mark current record correct
+        QuestionController->>QuestionView: update: show Correct state, Submit becomes Next
+        Note over ScoreTracker,GameModel: Running score is unchanged
     end
-    Player->>QuestionView: Press Next
-    QuestionView->>QuestionController: user action: next
-    QuestionController->>GameModel: update: move to the next question
-    alt Questions left
-        QuestionController->>GameModel: fetch state: next Question, progress, score
-        QuestionController->>QuestionView: update: show the next question
-    else All 10 answered
-        QuestionController->>Game: switch screen: switchToScreen({ type: "result", score })
-        Note over Game: Hides the question screen, shows ResultController's screen
+    opt Question is finished and player presses Next
+        Player->>QuestionView: Press Next
+        QuestionView->>QuestionController: user action: next
+        alt Questions left
+            QuestionController->>GameModel: update: move to the next question
+            QuestionController->>Game: advance trip
+        else All 10 questions finished
+            QuestionController->>ScoreTracker: getResults(model)
+            ScoreTracker-->>QuestionController: final earned score and statistics
+            QuestionController->>Game: switchToScreen(result, data)
+            Note over Game: Hides the question screen, shows ResultController's screen
+        end
     end
 ```
 
@@ -400,12 +478,15 @@ Step by step:
 4. If the answer is wrong, **`ScoreTracker`** counts the wrong try in `GameModel` (for the
    results stats; no points are lost), and the controller shows the Incorrect state so the
    player can try again as many times as they like.
-5. If the answer is right, `ScoreTracker` adds the question's points to `GameModel`. The
-   controller reads the new score and gives it to the view, along with the Correct state;
-   Submit becomes Next.
-6. **Next** moves `GameModel` to the following question, and the controller gives the view
-   the new question. After question 10, the controller calls `Game` through
-   `ScreenSwitcher` to show the results screen.
+5. If the answer is right, `ScoreTracker.recordCorrect()` marks the question's record as
+   correct. The displayed score starts at 100 and is calculated by `currentScore()` as
+   100 minus points lost to hints and reveals. A correct answer does not increase the
+   displayed score. The controller shows the Correct state; Submit becomes Next.
+6. **Next** advances the trip. After question 10, `ScoreTracker.getResults()` calculates
+   the final score as the sum of points earned on correctly answered questions after
+   penalties, along with wrong-answer and hint statistics. `QuestionController` posts
+   the result to the local score API on a best-effort basis and calls `Game` through
+   `ScreenSwitcher` to show the results screen. `ResultModel` determines the letter grade.
 
 How the design supports the quality attributes:
 
@@ -433,43 +514,45 @@ sequenceDiagram
 
     Player->>QuestionView: Press Hint
     QuestionView->>QuestionController: user action: onHintClick
+    QuestionController->>ScoreTracker: applyHint(model)
+    ScoreTracker->>GameModel: update: mark hint used
     QuestionController->>GameModel: fetch state: current Question
     QuestionController->>HintProvider: Hint for the Question
     HintProvider-->>QuestionController: Hint text
-    QuestionController->>ScoreTracker: Apply hint penalty
-    ScoreTracker->>GameModel: update: mark hint used, subtract 2 points
-    QuestionController->>GameModel: fetch state: new score
+    QuestionController->>ScoreTracker: currentScore(model)
+    ScoreTracker-->>QuestionController: 100 minus points lost
     QuestionController->>QuestionView: update: show hint and new score, Hint becomes Reveal Answer
 
     Player->>QuestionView: Press Reveal Answer
     QuestionView-->>Player: Confirm? You won't earn any points for this question
     Player->>QuestionView: Confirm
     QuestionView->>QuestionController: user action: onRevealClick
+    QuestionController->>ScoreTracker: applyReveal(model)
+    ScoreTracker->>GameModel: update: mark answer revealed (earns 0)
     QuestionController->>HintProvider: Answer for the Question
     HintProvider-->>QuestionController: Correct answer
-    QuestionController->>ScoreTracker: Apply reveal penalty
-    ScoreTracker->>GameModel: update: mark answer revealed (earns 0)
-    QuestionController->>GameModel: fetch state: new score
+    QuestionController->>ScoreTracker: currentScore(model)
+    ScoreTracker-->>QuestionController: 100 minus points lost
     QuestionController->>QuestionView: update: show answer and new score, Submit becomes Next
 ```
 
 Step by step:
 
-1. **Hint:** `QuestionController` gets the current `Question` from `GameModel`, asks
-   **`HintProvider`** for its hint, and tells **`ScoreTracker`** to apply the hint penalty.
-2. `ScoreTracker` marks the hint as used for this question in **`GameModel`** and subtracts
-   the penalty, never letting the score go below zero.
+1. **Hint:** `QuestionController` tells **`ScoreTracker`** to apply the hint penalty,
+   gets the current `Question` from `GameModel`, and asks **`HintProvider`** for its hint.
+2. `ScoreTracker` marks the hint as used for this question in **`GameModel`**. The running
+   score is derived from the records using `currentScore()`; a hint reduces it by 2 points.
 3. The controller gives `QuestionView` the hint and the new score, and the Hint button
    becomes **Reveal Answer**.
 4. **Reveal:** the confirmation dialog belongs to `QuestionView` alone, so cancelling
-   changes nothing. On confirm, the controller gets the answer from `HintProvider`, and
-   `ScoreTracker` applies the reveal penalty.
-5. The question is marked as revealed in `GameModel` and earns no points. The mark also
-   lets it show correctly on the results screen (hints used) and the answer key. Submit
-   becomes Next.
+   changes nothing. On confirm, the controller calls `ScoreTracker.applyReveal()` and
+   gets the answer from `HintProvider`.
+5. The question is marked as revealed in `GameModel` and earns no points. The running
+   score loses the full question value, including the 2 points already lost for the hint.
+   The question still counts toward hints used. Submit becomes Next.
 6. **Penalties apply once per question.** If the player presses Hint or Reveal again, or
-   the event fires twice, `ScoreTracker` sees the mark in `GameModel` and does not subtract
-   again.
+   the event fires twice, `ScoreTracker` sees the mark in `GameModel` and does not deduct
+   points again. The score is derived rather than stored as a mutable total.
 
 How the design supports the quality attributes:
 
